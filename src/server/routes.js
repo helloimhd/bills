@@ -5,7 +5,7 @@ module.exports = (app, db) => {
   const groups = require('./controllers/groups')(db);
 
 
-  app.get('/', receipts.test);
+  // app.get('/', receipts.test);
 
 
   // app.get('/products', products.getAll);

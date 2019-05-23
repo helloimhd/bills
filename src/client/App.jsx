@@ -8,14 +8,19 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      message: 'hello',
-    };
+        message: 'hello',
+    }
+  }
+
+  stuff =(e)=>{
+    console.log('fuck');
   }
 
   render() {
     return (
       <div>
         <Form />
+        <p onClick={(e)=>{this.stuff(e)}}>CLICKER</p>
         Welcome.
         <Counter message={this.state.message} />
       </div>
