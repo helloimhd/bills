@@ -12,6 +12,6 @@ INSERT INTO groups (receipt_id, friend_id, amount) VALUES (1, 2, null);
 INSERT INTO groups (receipt_id, friend_id, amount) VALUES (1, 3, null);
 
 
- INSERT INTO items (receipt_id, item_name, price, quantity, users_id) VALUES( 2, "Ice Mocha", 10.00, 1, ARRAY[1,2] )
- INSERT INTO items (receipt_id, item_name, price, quantity, users_id) VALUES( 2, "Ice Latte", 10.00, 1, ARRAY[1] )
- INSERT INTO items (receipt_id, item_name, price, quantity, users_id) VALUES( 2, "Ps.Fluffy Pancake", 10.00, 1, ARRAY[3] )
+INSERT INTO items (receipt_id, item_name, price, quantity, users_id) VALUES( 2, 'Ice Mocha', 10.00, 1, ARRAY[1,2] );
+INSERT INTO items (receipt_id, item_name, price, quantity, users_id) VALUES( 2, 'Ice Latte', 10.00, 1, ARRAY[1] );
+INSERT INTO items (receipt_id, item_name, price, quantity, users_id) VALUES( 2, 'Ps.Fluffy Pancake', 10.00, 1, ARRAY[3] );

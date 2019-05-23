@@ -1,6 +1,12 @@
 const pg = require('pg');
-const products = require('./models/products');
 const url = require('url');
+
+///MODELS
+const users = require('./models/users');
+const receipts = require('./models/receipts');
+const items = require('./models/items');
+const groups = require('./models/groups');
+
 
 var configs;
 
@@ -18,7 +24,7 @@ if (process.env.DATABASE_URL) {
   };
 } else {
   configs = {
-    user: 'herda',
+    user: 'shwj',
     host: '127.0.0.1',
     database: 'bills',
     port: 5432
@@ -35,7 +41,10 @@ module.exports = {
   /*
    * ADD APP MODELS HERE
    */
-  products: products(pool),
+  users: users(pool),
+  receipts: receipts(pool),
+  items: items(pool),
+  groups: groups(pool),
 
   //make queries directly from here
   queryInterface: (text, params, callback) => {
