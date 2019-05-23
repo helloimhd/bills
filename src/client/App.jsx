@@ -4,6 +4,10 @@ import { hot } from 'react-hot-loader';
 import Counter from './components/counter/counter';
 import Form from './components/form/form';
 
+import Receipt from './components/receipt/receipt';
+import Selection from './components/itemSelection/item';
+
+
 class App extends React.Component {
   constructor() {
     super();
@@ -19,10 +23,8 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Form />
-        <p onClick={(e)=>{this.stuff(e)}}>CLICKER</p>
-        Welcome.
-        <Counter message={this.state.message} />
+        <Receipt/>
+        <Selection/>
       </div>
     );
   }
