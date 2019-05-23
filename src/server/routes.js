@@ -7,6 +7,8 @@ module.exports = (app, db) => {
 
   // app.get('/', receipts.test);
 
+  app.get('/test/:id', receipts.giveMeReceipt);
 
+  app.get('/testmore/:id', items.getItems);
   // app.get('/products', products.getAll);
 };

@@ -2,7 +2,7 @@ import React from 'react';
 
 // import PropTypes from 'prop-types';
 
-import styles from './style.scss';
+// import styles from './style.scss';
 
 class ItemSelection extends React.Component{
     constructor(){
