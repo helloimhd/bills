@@ -1,6 +1,10 @@
 {
   "version": "2.2.0",
-  "author": "Anton Fisher <a.fschr@gmail.com> (http://antonfisher.com)",
+  "author": {
+    "name": "BILL SPLITTER",
+    "email": "dullahbillsplitter.com",
+    "url": "http://dullahbillsplitter.com"
+  },
   "description": "React boilerplate with ES2015, Express.js, and Webpack 3",
   "license": "MIT",
   "engines": {
@@ -8,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/antonfisher/react-express-webpack.git"
+    "url": "git+https://github.com/helloimhd/bills.git"
   },
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon src/server",
@@ -27,21 +31,23 @@
   "postcss": {},
   "devDependencies": {
     "@babel/core": "^7.3.3",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/preset-env": "^7.3.1",
     "babel-cli": ">=6.26.0",
     "babel-core": "^6.26.3",
     "babel-eslint": ">=10.0.1",
     "babel-loader": ">=8.0.5",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-airbnb": ">=3.2.0",
     "babel-preset-react": ">=6.24.1",
     "babel-watch": ">=7.0.0",
     "copyfiles": ">=2.1.0",
     "cross-env": ">=5.2.0",
     "css-loader": ">=2.1.0",
-    "eslint": ">=5.14.0",
+    "eslint": "^5.16.0",
     "eslint-config-prettier": ">=4.0.0",
     "eslint-import-resolver-webpack": ">=0.11.0",
-    "eslint-loader": ">=2.1.2",
+    "eslint-loader": "^2.1.2",
     "eslint-plugin-babel": ">=5.3.0",
     "eslint-plugin-flowtype": ">=3.4.2",
     "eslint-plugin-import": "^2.16.0",
@@ -53,7 +59,6 @@
     "html-loader": ">=0.5.5",
     "html-webpack-harddisk-plugin": ">=1.0.1",
     "html-webpack-plugin": ">=3.2.0",
-    "node-sass": "^4.11.0",
     "postcss-load-config": ">=2.0.0",
     "postcss-loader": ">=3.0.0",
     "prettier": ">=1.16.4",
@@ -77,6 +82,7 @@
     "immutable": ">=4.0.0-rc.12",
     "method-override": "^3.0.0",
     "node": "^12.3.0",
+    "node-sass": "^4.12.0",
     "pg": "^7.8.0",
     "prop-types": ">=15.7.2",
     "react": "^16.8.2",
