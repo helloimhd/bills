@@ -1,7 +1,31 @@
--- create pokemons table
-CREATE TABLE IF NOT EXISTS products (
+CREATE TABLE IF NOT EXISTS users (
 	id SERIAL PRIMARY KEY,
-	name TEXT,
-	price TEXT,
-	description TEXT
+	username TEXT,
+	password TEXT,
+	email TEXT
+);
+
+CREATE TABLE IF NOT EXISTS groups (
+	id SERIAL PRIMARY KEY,
+	receipt_id INTEGER,
+	friend_id INTEGER,
+	amount FLOAT
+);
+
+CREATE TABLE IF NOT EXISTS receipts (
+	id SERIAL PRIMARY KEY,
+	user_id INTEGER,
+	group_id INTEGER,
+	img_token TEXT,
+	subtotal FLOAT,
+	total FLOAT
+);
+
+CREATE TABLE IF NOT EXISTS items (
+	id SERIAL PRIMARY KEY,
+	receipt_id INTEGER,
+	item_name TEXT,
+	price FLOAT,
+	quantity INTEGER,
+	users_id INTEGER ARRAY
 );
