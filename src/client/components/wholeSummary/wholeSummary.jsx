@@ -29,6 +29,7 @@ class WholeSummary extends React.Component {
     }
 
     render() {
+
         console.log('check state', this.state.stuff);
         const stuff = this.state.change;
 
@@ -47,7 +48,7 @@ class WholeSummary extends React.Component {
                     <tbody>
                         <tr>
                             <th>Item name</th>
-                            <th>Price</th>
+                            <th>Price: {this.props.summary.items[0].price}</th>
                         </tr>
                         <tr>
                             <td>{this.state.stuff[0].item_name}</td>
@@ -59,6 +60,7 @@ class WholeSummary extends React.Component {
                         </tr>
                     </tbody>
                 </table>
+
             </div>
             )
         }

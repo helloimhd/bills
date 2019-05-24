@@ -8,10 +8,10 @@ import Receipt from './components/receipt/receipt';
 import Selection from './components/itemSelection/item';
 
 import TakePhoto from './components/receipt/takePhoto';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+// import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import WholeSummary from './components/wholeSummary/wholeSummary';
 
-
+import Test from './components/test/test';
 
 class App extends React.Component {
     constructor() {
@@ -21,11 +21,11 @@ class App extends React.Component {
             hasReceipt: false,
             hasCheckedItems:false,
         }
-
     }
 
     getReceiptHandler=()=>{
         //retrieves receipt and item info
+        console.log('SEND AND GET SOMETHING')
         var reactThis = this;
         var img_token = 'guQnFRzRY4MXMm6F';
         var receipt_id;
@@ -44,7 +44,6 @@ class App extends React.Component {
             let data = await response.json();
             return data;
         }
-
         getReceipt(img_token).then(receiptOutput=> {
 
             receipt_id = receiptOutput[0].id;
@@ -55,36 +54,47 @@ class App extends React.Component {
                     user_id: receiptOutput[0].user_id,
                     group_id: receiptOutput[0].group_id,
                     img_token: receiptOutput[0].img_token,
-                    sub_total: receiptOutput[0].sub_total,
+                    subtotal: (receiptOutput[0].subtotal).toFixed(2),
+                    serviceCharge: (receiptOutput[0].subtotal*0.1).toFixed(2),
+                    gst: (receiptOutput[0].subtotal*0.07).toFixed(2),
+                    total: ((receiptOutput[0].subtotal*0.1) + (receiptOutput[0].subtotal*0.07) + (receiptOutput[0].subtotal)).toFixed(2),
                     items: itemOutput,
-                        }
+                    };
 
                 this.setState( {receipt: obj} );
-                this.setState( {hasReceipt: true} );
+                this.doneViewingReceiptHandler();
             })
         })
     }
 
+    doneViewingReceiptHandler =()=>{
+        this.setState( {hasReceipt: true} );
+    }
+
     testHandler=()=>{
         this.setState( {hasCheckedItems:true} )
+
     }
 
   render() {
 
-    const isSomething = this.state.hasReceipt;
+    const proceedToReceipt = this.state.hasReceipt;
     return (
-      /* <Router>
+
+        /*
+      <Router>
         <Route path="/" exact component={Home} />
         <Route path="/takePhoto" component={TakePhoto} />
 
       </Router>
-        */
-      <div>
-        <Receipt getReceiptHandler={this.getReceiptHandler}/>
-        <Selection giveItems={this.state.receipt} handler={this.testHandler}/>
-        <WholeSummary/>
-      </div>
+    */
 
+      <div>
+        {proceedToReceipt ? (<p></p>) : (<button onClick={()=>{this.getReceiptHandler()}}>PRESS THIS INSTEAD</button>)}
+        {proceedToReceipt ? (<Receipt receipt={this.state.receipt}/>) : (<p></p>)}
+        <WholeSummary summary={this.state.receipt}/>
+        <Test/>
+      </div>
     );
   }
 }

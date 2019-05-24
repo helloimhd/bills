@@ -17,7 +17,7 @@ module.exports = (db) => {
 
         //can use http path or ajax put in body
         // edit argument as necessary
-        console.log('hello give receipt', req.params.id);
+        // console.log('hello give receipt', req.params.id);
         let input = req.params.id;
 
         db.receipts.getReceipt( input, (err, receipts) =>{
@@ -25,7 +25,7 @@ module.exports = (db) => {
                 console.error('error getting receipt(s)', err);
                 res.status(500).send("Error getting receipt");
             } else {
-                console.log( 'AT CONTROLLER RESULTS', receipts );
+                // console.log( 'AT CONTROLLER RESULTS', receipts );
                 if(receipts.receipt.length === 0){
                     res.send('No entry');
                 }else{
@@ -33,7 +33,7 @@ module.exports = (db) => {
                 }
             }
         })
-    }
+    };
 
     // upload photo to cloudinary and send it to tabscanner
     let uploadPhoto = (request, response) => {
@@ -102,5 +102,6 @@ module.exports = (db) => {
     giveMeReceipt,
     uploadPhoto,
     summaryReceipt,
+
   };
 };
