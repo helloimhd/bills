@@ -13,6 +13,8 @@ class App extends React.Component {
         super();
         this.state = {
             receipt: [],
+            hasReceipt: false,
+            hasCheckedItems:false,
         }
 
     }
@@ -53,16 +55,22 @@ class App extends React.Component {
                         }
 
                 this.setState( {receipt: obj} );
+                this.setState( {hasReceipt: true} );
             })
         })
     }
 
+    testHandler=()=>{
+        this.setState( {hasCheckedItems:true} )
+    }
+
   render() {
-    return (
-      <div>
-        <Receipt getReceiptHandler={this.getReceiptHandler}/>
-        <Selection/>
-      </div>
+    const isSomething = this.state.hasReceipt;
+    return(
+        <div>
+            <p>HELLO</p>
+            {isSomething ? (<Selection giveItems={this.state.receipt} handler={this.testHandler}/>) : (<Receipt getReceiptHandler={this.getReceiptHandler}/>)}
+        </div>
     );
   }
 }
