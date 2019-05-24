@@ -28,7 +28,7 @@ module.exports = (dbPI) => {
 
         dbPI.query( query, (err,r)=>{
             if(err){
-                callback(error,null)
+                callback(err,null)
             }else{
                 const result =  {
                                 allItems : r.rows,

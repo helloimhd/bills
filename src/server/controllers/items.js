@@ -1,7 +1,7 @@
 module.exports = (db) => {
 
     let getItems = ( req, res ) => {
-
+        //currently searching by receipt_id
         console.log('hello give me items from receipt', req.params.id);
         let input = req.params.id;
 
