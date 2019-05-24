@@ -26,6 +26,13 @@ module.exports = (dbPI) => {
         // edit dataIn from controller or here as required.
         let query = `SELECT * FROM items WHERE receipt_id = ${dataIn}`;
 
+        // select receipts.id, items.*
+        // from receipts inner join items
+        // on (receipts.id = items.receipt_id)
+        // where items.receipt_id = 1;
+        // THIS RETURNS ITEMS TABLE WITH RESPECTIVE RECEIPT ID
+        // CHANGE "where items.receipt.id" to be dynamic
+
         dbPI.query( query, (err,r)=>{
             if(err){
                 callback(err,null)
