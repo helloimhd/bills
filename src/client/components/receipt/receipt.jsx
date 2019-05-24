@@ -7,9 +7,13 @@ import React from 'react';
 class Receipt extends React.Component{
     constructor(){
         super();
-    }render(){
-        return(
+
+    }  //end of constructor
+
+    render() {
+        return (
             <div>
+
                 <p>Shows receipt based off JSON reply. User-main can edit individual items</p>
             </div>
         );
