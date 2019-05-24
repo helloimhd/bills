@@ -7,8 +7,9 @@ import PropTypes from 'prop-types';
 class Receipt extends React.Component{
     constructor(){
         super();
-    }
 
+
+    }  //end of constructor
     render(){
         return(
             <div>

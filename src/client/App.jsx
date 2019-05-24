@@ -7,6 +7,11 @@ import { hot } from 'react-hot-loader';
 import Receipt from './components/receipt/receipt';
 import Selection from './components/itemSelection/item';
 
+import TakePhoto from './components/receipt/takePhoto';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import WholeSummary from './components/wholeSummary/wholeSummary';
+
+
 
 class App extends React.Component {
     constructor() {
@@ -65,14 +70,33 @@ class App extends React.Component {
     }
 
   render() {
+
     const isSomething = this.state.hasReceipt;
-    return(
-        <div>
-            <p>HELLO</p>
-            {isSomething ? (<Selection giveItems={this.state.receipt} handler={this.testHandler}/>) : (<Receipt getReceiptHandler={this.getReceiptHandler}/>)}
-        </div>
+    return (
+      <Router>
+        <Route path="/" exact component={Home} />
+        <Route path="/takePhoto" component={TakePhoto} />
+
+      </Router>
+    
+      <div>
+        <Receipt getReceiptHandler={this.getReceiptHandler}/>
+        <Selection giveItems={this.state.receipt} handler={this.testHandler}/>
+        <WholeSummary/>
+      </div>
+
     );
   }
 }
+
+function Home() {
+    return (
+        <div>
+            <h1>Home</h1>
+        </div>
+    )
+}
+
+
 
 export default hot(module)(App);
