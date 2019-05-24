@@ -24,6 +24,11 @@ module.exports = (app, db) => {
 
     app.get('/receipt/:id', receipts.giveMeReceipt);
 
+    // Id is the receipt id
+    app.get('/summary/:id', receipts.summaryReceipt);
+
+    app.get('/receipt/:id/items', receipts.giveMeReceipt);
+
     app.get('/items/:id', items.getItems);
 
 };

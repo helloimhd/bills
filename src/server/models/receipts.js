@@ -46,6 +46,32 @@ module.exports = (dbPI) => {
         })
     };
 
+    let yo = (dataIn, callback) => {
+        console.log ("HELLO in the model");
+
+        let query = `SELECT receipts.id, items. *
+                    from receipts inner join items
+                    on (receipts.id = items.receipt_id)
+                    where items.receipt_id = ${dataIn};`
+
+        dbPI.query(query, (err, r) => {
+            if(err){
+                console.log('Error here?')
+                callback( err, null)
+            } else {
+                console.log(r);
+                callback(null, r);
+            }
+        })
+    }
+
+        // select receipts.id, items.*
+        // from receipts inner join items
+        // on (receipts.id = items.receipt_id)
+        // where items.receipt_id = 1;
+        // THIS RETURNS ITEMS TABLE WITH RESPECTIVE RECEIPT ID
+        // CHANGE "where items.receipt.id" to be dynamic
+
   // update
 
   // destroy
@@ -56,5 +82,6 @@ module.exports = (dbPI) => {
   return {
     createReceipt,
     getReceipt,
+    yo,
   };
 };

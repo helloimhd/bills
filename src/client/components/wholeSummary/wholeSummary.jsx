@@ -3,28 +3,56 @@ import React from 'react';
 class WholeSummary extends React.Component {
     constructor() {
         super();
+        this.state = {
+            stuff: {},
+            change: false,
+        }
+    }
+
+    receiptHandler() {
+
+        var reactThis = this;
+        console.log("clicking");
+        var id = 1;
+        fetch(`/summary/${id}`, {
+
+        }).then(res => {
+            return res.json()
+        }).then(json =>{
+            // console.log('in the jsx summary', json);
+            let obj = json;
+            this.setState({stuff: obj});
+            this.setState({change: true});
+            // console.log(this.state.stuff);
+            // console.log(this.state.change);
+        })
     }
 
     render() {
-        console.log('HELLO summary', this.props.summary);
+
+        console.log('check state', this.state.stuff);
+        const stuff = this.state.change;
 
 
-            if(this.props.summary.length === 0){
-                return (<div>
-                <p></p>
-                </div>)
-            }else {
-                return(<div>
+        if(!stuff){
+        return (
+            <div>
                 <h1>This will show the entire summary of the bill after user has assigned all items</h1>
-                <table>
+                <button onClick={()=>{this.receiptHandler()}}>YAY</button>
+            </div>
+        );
+    } else {
+        return (
+            <div>
+            <table>
                     <tbody>
                         <tr>
                             <th>Item name</th>
                             <th>Price: {this.props.summary.items[0].price}</th>
                         </tr>
                         <tr>
-                            <td>Steak</td>
-                            <td>$$$</td>
+                            <td>{this.state.stuff[0].item_name}</td>
+                            <td>{this.state.stuff[0].price}</td>
                         </tr>
                         <tr>
                             <td>Burger</td>
@@ -32,8 +60,10 @@ class WholeSummary extends React.Component {
                         </tr>
                     </tbody>
                 </table>
-            </div>);
-            }
+
+            </div>
+            )
+        }
     }
 }
 

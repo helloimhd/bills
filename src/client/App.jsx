@@ -80,6 +80,7 @@ class App extends React.Component {
 
     const proceedToReceipt = this.state.hasReceipt;
     return (
+
         /*
       <Router>
         <Route path="/" exact component={Home} />
@@ -87,6 +88,7 @@ class App extends React.Component {
 
       </Router>
     */
+
       <div>
         {proceedToReceipt ? (<p></p>) : (<button onClick={()=>{this.getReceiptHandler()}}>PRESS THIS INSTEAD</button>)}
         {proceedToReceipt ? (<Receipt receipt={this.state.receipt}/>) : (<p></p>)}
