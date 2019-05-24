@@ -6,6 +6,7 @@ import { hot } from 'react-hot-loader';
 
 import Receipt from './components/receipt/receipt';
 import Selection from './components/itemSelection/item';
+import WholeSummary from './components/wholeSummary/wholeSummary';
 
 
 class App extends React.Component {
@@ -62,6 +63,7 @@ class App extends React.Component {
       <div>
         <Receipt getReceiptHandler={this.getReceiptHandler}/>
         <Selection/>
+        <WholeSummary/>
       </div>
     );
   }
