@@ -26,7 +26,7 @@ if (process.env.DATABASE_URL) {
   configs = {
     user: 'herda',
     host: '127.0.0.1',
-    database: 'projecttwo',
+    database: 'bills',
     port: 5432
   };
 }

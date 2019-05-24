@@ -146,12 +146,13 @@ module.exports = (db) => {
         req.send();
 
         const data = JSON.parse(req.responseText);
+        const dataResult = data.result;
 
         let receiptData = {
             user_id: 1,
             group_id: 1,
             img_token: testToken,
-            subtotal: parseFloat(data.result.subTotal)
+            subtotal: parseFloat(dataResult.subTotal)
         }
         db.receipts.createReceipt(receiptData, (err, createRecResults) => {
             if (err) {
@@ -160,23 +161,36 @@ module.exports = (db) => {
 
             } else {
                 // means its successful > get receipt id that was uploaded to put inside the items table
-                db.receipts.getReceipt(token, (err, getReceiptResults) => {
+                db.receipts.getReceipt(testToken, (err, getReceiptResults) => {
+                    //console.log(testToken)
                     if (err) {
                         console.error(err);
                         response.status(500).send("Query ERROR for getting receipt info.")
 
                     } else {
-                        for (i=0; i<data.result.lineItems.length; i++) {
-                            console.log(getReceiptResults.rows[0].id)
-                            let receiptId = getReceiptResults.rows[0].id;
+                        console.log("get receipt is successful")
+                        let lineItems = dataResult.lineItems;
+                        for (i=0; i<lineItems.length; i++) {
+                            console.log("entered for loop")
+                            let receiptId = getReceiptResults.receipt[0].id;
 
                             // items
                             let itemData = {
                                 receipt_id: receiptId,
-                                item_name:
+                                item_name: lineItems[i].descClean,
+                                price: parseFloat(lineItems[i].lineTotal),
+                                quantity: lineItems[i].qty,
+                                users_id: null
                             }
                             // now add items into table
-                            db.items.createItems(itemData, (err, results) => {
+                            db.items.createItems(itemData, (err, createItemResults) => {
+                                if (err) {
+                                    console.error(err);
+                                    response.status(500).send("Query ERROR for creating items.")
+                                } else {
+                                    // yey all successful
+                                    response.send("ALL DONE")
+                                }
 
                             })  //end of db createItems
                         }  // end of for loop
@@ -185,7 +199,6 @@ module.exports = (db) => {
                 })  //end of db getReceipt
             }  //end of checking for createReceipt query
         })  //end of db createReceipt
-        response.send(typeof subtotal);
     }
 
   return {

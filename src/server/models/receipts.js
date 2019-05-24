@@ -52,23 +52,8 @@ module.exports = (dbPI) => {
   // destroy
 
 
-  // insert token in receipt
-  let insertToken = (token, callback) => {
-    console.log(token);
-    const tokenQuery = `INSERT INTO receipts (user_id, group_id, img_token, subtotal, total)
-        VALUES ($1, $2, $3, $4, $5) RETURNING id`;
-
-    const values = [null, null, token, null, null];
-
-    dbPI.query(tokenQuery, values, (err, results) => {
-        callback(err, results);
-    })
-  }
-
-
   return {
     createReceipt,
-    getReceipt,
-    insertToken
+    getReceipt
   };
 };
