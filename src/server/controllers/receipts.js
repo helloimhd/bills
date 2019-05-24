@@ -12,7 +12,11 @@ cloudinary.config({
   api_secret: 'UQBGNsgKzLZDlijgj-t1Tx6Sm84'
 });
 
+const token = "";
+
 const tabUrl = 'https://api.tabscanner.com/VCB56Md7G1imsKz6Y3FKmcNiBXNmBaClTSpyT55ciRZLTdWDKRD06iBQx4JvoSpr';
+
+
 
 module.exports = (db) => {
 
@@ -38,7 +42,7 @@ module.exports = (db) => {
         })
     }
 
-    // upload photo to cloudinary and send it to tabscanner
+    // upload photo to cloudinary > send to tabscanner > get token > send to get data
     let uploadPhoto = (request, response) => {
         console.log("Uploading up to cloudinary")
         let file = request.file.path;
@@ -46,6 +50,7 @@ module.exports = (db) => {
         let url = "";
         let publicId = "";
 
+        // uploading to cloudinary
         cloudinary.uploader.upload(
           file,
           function(error, result) {
@@ -58,8 +63,8 @@ module.exports = (db) => {
                 console.log(publicId)
                 console.log("entering to fetch and post")
 
+                // send photo to tab scanner
                 const form = new FormData();
-
                 form.append(publicId, requestPackage(url));
 
                 fetch(`${tabUrl}/process`, {
@@ -85,7 +90,34 @@ module.exports = (db) => {
 
                             const data = JSON.parse(req.responseText);
                             counter++;
+
+                            // successful
                             if (data.code === 202) {
+                                // put data into receipt table
+                                let receiptData = {
+                                    token: token,
+                                    subtotal: parseFloat(data.result.subTotal)
+                                }
+                                db.receipts.addReceipt(receiptData, (err, results) => {
+                                    if (err) {
+                                        console.error(err);
+                                        response.status(500).send("Query ERROR for adding receipt details.")
+
+                                    } else {
+                                        // means its successful > get receipt id that was uploaded to put inside the items table
+                                        db.receipts.getReceipt((err, results) => {
+                                            if (err) {
+                                                console.error(err);
+                                                response.status(500).send("Query ERROR for getting receipt info.")
+
+                                            } else {
+                                                // now add items into table
+
+                                            }
+                                        })
+
+                                    }
+                                })
                                 response.send(data);
                                 console.log(counter)
                                 break;
@@ -105,31 +137,56 @@ module.exports = (db) => {
         );  // end of cloudinary upload
     }  // end of upload photo
 
-    let testData = (request, response) => {
-        // take token
-        if (token !== "") {
-            //do ajax request
-            var req = new XMLHttpRequest();
-            req.open("GET", `${tabUrl}/result/${token}`, false);
-            req.send();
-            response.send(req.responseText);
 
-            // db.receipts.getToken(token, (err, results) => {
-            //     if (err) {
-            //         console.error(err.message);
-            //         response.status(500).send("Error getting token")
-            //     } else {
-            //         // do ajax request
-            //         var req = new XMLHttpRequest();
-            //         req.open("GET", `${tabUrl}/result/${token}`, false);
-            //         req.send();
+    const testData = (request, response) => {
+        let testToken = 'gj3QhsVlE6093LmB';
 
-            //         response.send(req.responseText);
-            //     }
-            // })
+        var req = new XMLHttpRequest();
+        req.open("GET", `${tabUrl}/result/${testToken}`, false);
+        req.send();
+
+        const data = JSON.parse(req.responseText);
+
+        let receiptData = {
+            user_id: 1,
+            group_id: 1,
+            img_token: testToken,
+            subtotal: parseFloat(data.result.subTotal)
         }
-    }
+        db.receipts.createReceipt(receiptData, (err, createRecResults) => {
+            if (err) {
+                console.error(err);
+                response.status(500).send("Query ERROR for adding receipt details.")
 
+            } else {
+                // means its successful > get receipt id that was uploaded to put inside the items table
+                db.receipts.getReceipt(token, (err, getReceiptResults) => {
+                    if (err) {
+                        console.error(err);
+                        response.status(500).send("Query ERROR for getting receipt info.")
+
+                    } else {
+                        for (i=0; i<data.result.lineItems.length; i++) {
+                            console.log(getReceiptResults.rows[0].id)
+                            let receiptId = getReceiptResults.rows[0].id;
+
+                            // items
+                            let itemData = {
+                                receipt_id: receiptId,
+                                item_name:
+                            }
+                            // now add items into table
+                            db.items.createItems(itemData, (err, results) => {
+
+                            })  //end of db createItems
+                        }  // end of for loop
+
+                    }  //end of checking for getReceipt query
+                })  //end of db getReceipt
+            }  //end of checking for createReceipt query
+        })  //end of db createReceipt
+        response.send(typeof subtotal);
+    }
 
   return {
     giveMeReceipt,
