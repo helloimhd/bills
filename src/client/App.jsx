@@ -73,12 +73,12 @@ class App extends React.Component {
 
     const isSomething = this.state.hasReceipt;
     return (
-      <Router>
+      /* <Router>
         <Route path="/" exact component={Home} />
         <Route path="/takePhoto" component={TakePhoto} />
 
       </Router>
-    
+        */
       <div>
         <Receipt getReceiptHandler={this.getReceiptHandler}/>
         <Selection giveItems={this.state.receipt} handler={this.testHandler}/>
