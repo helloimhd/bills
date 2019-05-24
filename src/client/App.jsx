@@ -76,7 +76,6 @@ class App extends React.Component {
       <Router>
         <Route path="/" exact component={Home} />
         <Route path="/takePhoto" component={TakePhoto} />
-
       </Router>
 
      /* <div>

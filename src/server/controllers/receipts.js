@@ -74,12 +74,25 @@ module.exports = (db) => {
                         response.send(json.message)
 
                     } else if (json.status === "success") {
-                        const token = json.token;
+                        //return json.token;
+                        token = json.token;
+                        let counter = 0;
+                        while (true) {
+                            var req = new XMLHttpRequest();
+                            req.open("GET", `${tabUrl}/result/${token}`, false);
+                            req.send();
 
-                        // do fetch to get data of the receipts
-                        fetch(`${tabUrl}/result/${token}`)
-                          .then(dataRes => dataRes.json())
-                          .then(json => response.send(json))
+
+                            const data = JSON.parse(req.responseText);
+                            counter++;
+                            if (data.code === 202) {
+                                response.send(data);
+                                console.log(counter)
+                                break;
+                            } else if (counter === 10) {
+                                response.send(`Connection lost. This is your token: ${token}! Please search for it later.`);
+                            }
+                        }  // end of while loop
                     }  // end of if statement for status
                 })
                 .catch(error => console.error(error));
@@ -90,12 +103,37 @@ module.exports = (db) => {
             }
           }
         );  // end of cloudinary upload
-
     }  // end of upload photo
+
+    let testData = (request, response) => {
+        // take token
+        if (token !== "") {
+            //do ajax request
+            var req = new XMLHttpRequest();
+            req.open("GET", `${tabUrl}/result/${token}`, false);
+            req.send();
+            response.send(req.responseText);
+
+            // db.receipts.getToken(token, (err, results) => {
+            //     if (err) {
+            //         console.error(err.message);
+            //         response.status(500).send("Error getting token")
+            //     } else {
+            //         // do ajax request
+            //         var req = new XMLHttpRequest();
+            //         req.open("GET", `${tabUrl}/result/${token}`, false);
+            //         req.send();
+
+            //         response.send(req.responseText);
+            //     }
+            // })
+        }
+    }
 
 
   return {
     giveMeReceipt,
-    uploadPhoto
+    uploadPhoto,
+    testData
   };
 };

@@ -22,7 +22,9 @@ module.exports = (app, db) => {
 
     ////////  RECEIPTS  ////////////
     //app.get('/takePhoto', receipts.takePhoto);
-    app.post('/uploadPhoto', upload.single('img'), receipts.uploadPhoto)
+    app.post('/uploadPhoto', upload.single('img'), receipts.uploadPhoto);
+
+    app.get('/testData', receipts.testData);
 
 
 

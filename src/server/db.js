@@ -24,9 +24,9 @@ if (process.env.DATABASE_URL) {
   };
 } else {
   configs = {
-    user: 'andrew',
+    user: 'herda',
     host: '127.0.0.1',
-    database: 'bills',
+    database: 'projecttwo',
     port: 5432
   };
 }
