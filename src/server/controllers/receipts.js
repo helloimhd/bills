@@ -1,15 +1,18 @@
-var cloudinary = require('cloudinary').v2;
+const cloudinary = require('cloudinary').v2;
 
 const fetch = require('node-fetch');
-const fs = require('fs');
+//const fs = require('fs');
 const FormData = require('form-data');
-var requestPackage = require('request');
+const requestPackage = require('request');
+const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 cloudinary.config({
   cloud_name: 'difceofnn',
   api_key: '138163593634117',
   api_secret: 'UQBGNsgKzLZDlijgj-t1Tx6Sm84'
 });
+
+const tabUrl = 'https://api.tabscanner.com/VCB56Md7G1imsKz6Y3FKmcNiBXNmBaClTSpyT55ciRZLTdWDKRD06iBQx4JvoSpr';
 
 module.exports = (db) => {
 
@@ -37,7 +40,7 @@ module.exports = (db) => {
 
     // upload photo to cloudinary and send it to tabscanner
     let uploadPhoto = (request, response) => {
-        //response.send("ajksdakjsd")
+        console.log("Uploading up to cloudinary")
         let file = request.file.path;
 
         let url = "";
@@ -59,13 +62,26 @@ module.exports = (db) => {
 
                 form.append(publicId, requestPackage(url));
 
-                fetch('https://api.tabscanner.com/VCB56Md7G1imsKz6Y3FKmcNiBXNmBaClTSpyT55ciRZLTdWDKRD06iBQx4JvoSpr/process', {
+                fetch(`${tabUrl}/process`, {
                     method: 'post',
                     body:    form,
                     headers: form.getHeaders(),
                 })
                 .then(res => res.json())
-                .then(json => response.send(json))
+                .then(json => {
+                    console.log(json)
+                    if (json.status === "failed") {
+                        response.send(json.message)
+
+                    } else if (json.status === "success") {
+                        const token = json.token;
+
+                        // do fetch to get data of the receipts
+                        fetch(`${tabUrl}/result/${token}`)
+                          .then(dataRes => dataRes.json())
+                          .then(json => response.send(json))
+                    }  // end of if statement for status
+                })
                 .catch(error => console.error(error));
 
             // if uploading on cloudinary fails
