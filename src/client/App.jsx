@@ -18,6 +18,8 @@ class App extends React.Component {
         super();
         this.state = {
             receipt: [],
+            hasReceipt: false,
+            hasCheckedItems:false,
         }
 
     }
@@ -58,15 +60,19 @@ class App extends React.Component {
                         }
 
                 this.setState( {receipt: obj} );
+                this.setState( {hasReceipt: true} );
             })
         })
     }
 
-  render() {
-    return (
+    testHandler=()=>{
+        this.setState( {hasCheckedItems:true} )
+    }
 
- 
-   
+  render() {
+
+    const isSomething = this.state.hasReceipt;
+    return (
       <Router>
         <Route path="/" exact component={Home} />
         <Route path="/takePhoto" component={TakePhoto} />
@@ -75,7 +81,7 @@ class App extends React.Component {
     
       <div>
         <Receipt getReceiptHandler={this.getReceiptHandler}/>
-        <Selection/>
+        <Selection giveItems={this.state.receipt} handler={this.testHandler}/>
         <WholeSummary/>
       </div>
 
