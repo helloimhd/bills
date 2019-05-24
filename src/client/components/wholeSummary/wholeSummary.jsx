@@ -6,15 +6,21 @@ class WholeSummary extends React.Component {
     }
 
     render() {
+        console.log('HELLO summary', this.props.summary);
 
-        return (
-            <div>
+
+            if(this.props.summary.length === 0){
+                return (<div>
+                <p></p>
+                </div>)
+            }else {
+                return(<div>
                 <h1>This will show the entire summary of the bill after user has assigned all items</h1>
                 <table>
                     <tbody>
                         <tr>
                             <th>Item name</th>
-                            <th>Price</th>
+                            <th>Price: {this.props.summary.items[0].price}</th>
                         </tr>
                         <tr>
                             <td>Steak</td>
@@ -26,8 +32,8 @@ class WholeSummary extends React.Component {
                         </tr>
                     </tbody>
                 </table>
-            </div>
-        );
+            </div>);
+            }
     }
 }
 

@@ -18,17 +18,12 @@ module.exports = (app, db) => {
     const groups = require('./controllers/groups')(db);
 
 
-
-
     ////////  RECEIPTS  ////////////
     //app.get('/takePhoto', receipts.takePhoto);
     app.post('/uploadPhoto', upload.single('img'), receipts.uploadPhoto)
 
-
-
     app.get('/receipt/:id', receipts.giveMeReceipt);
 
     app.get('/items/:id', items.getItems);
-
 
 };
