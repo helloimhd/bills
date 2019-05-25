@@ -14,6 +14,7 @@ import WholeSummary from './components/wholeSummary/wholeSummary';
 class App extends React.Component {
     constructor() {
         super();
+      
         this.state = {
             receipt: [],
             hasReceipt: false,
@@ -95,14 +96,23 @@ class App extends React.Component {
   render() {
 
     const proceedToReceipt = this.state.hasReceipt;
+
     return (
 
         /*
       <Router>
         <Route path="/" exact component={Home} />
         <Route path="/takePhoto" component={TakePhoto} />
-
       </Router>
+
+
+     /* <div>
+        <Receipt getReceiptHandler={this.getReceiptHandler}/>
+        <Selection giveItems={this.state.receipt} handler={this.testHandler}/>
+        <WholeSummary/>
+      </div> */
+
+
     */
 
       <div>
@@ -110,6 +120,7 @@ class App extends React.Component {
         {proceedToReceipt ? (<Receipt receipt={this.state.receipt} pickMeUp={this.pickMeUp}/>) : (<p></p>)}
         <WholeSummary summary={this.state.receipt}/>
       </div>
+
     );
   }
 }

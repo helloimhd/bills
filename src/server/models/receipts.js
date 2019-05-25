@@ -77,11 +77,9 @@ module.exports = (dbPI) => {
   // destroy
 
 
-
-
   return {
     createReceipt,
     getReceipt,
-    yo,
+    yo
   };
 };
