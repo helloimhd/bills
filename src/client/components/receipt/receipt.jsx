@@ -8,9 +8,21 @@ class ItemRow extends React.Component{
 
     renderEditView =(item)=>{
         return <tr>
-            <td><input type="text" defaultValue={item.quantity}/></td>
-            <td><input type="text" defaultValue={item.item_name}/></td>
-            <td><input type="text" defaultValue={(item.price).toFixed(2)}xx /></td>
+            <td>
+                <input type="text" defaultValue={item.quantity} />
+                <button onClick={()=>{this.props.editItemHandler()}}>☑️</button>
+                <button onClick={()=>{this.props.updateItemHandler()}}>OK</button>
+            </td>
+            <td>
+                <input type="text" defaultValue={item.item_name}/>
+                <button onClick={()=>{this.props.editItemHandler()}}>☑️</button>
+                <button onClick={()=>{this.props.updateItemHandler()}}>OK</button>
+            </td>
+            <td>
+                <input type="text" defaultValue={(item.price).toFixed(2)}xx />
+                <button onClick={()=>{this.props.editItemHandler()}}>☑️</button>
+                <button onClick={()=>{this.props.updateItemHandler()}}>OK</button>
+            </td>
         </tr>
     }
 
@@ -45,7 +57,9 @@ class ItemTable extends React.Component{
                     item={item}
                     key={item.item_name}
                     editItemHandler={this.props.editItemHandler}
-                    editState={this.props.editState}/>)
+                    editState={this.props.editState}
+                    updateItemHandler={this.props.updateItemHandler}/>
+                )
         })
         return(
             <table>
@@ -124,7 +138,7 @@ class Receipt extends React.Component{
         }else {
             return(
                 <div>
-                    <ItemTable items={this.props.receipt.items} editItemHandler={this.props.editItemHandler} editState={this.props.editState}/>
+                    <ItemTable items={this.props.receipt.items} editItemHandler={this.props.editItemHandler} editState={this.props.editState} updateItemHandler={this.props.updateItemHandler}/>
                     <PaymentSummary payment={this.props.receipt}/>
                     <ButtonTab/>
                 </div>

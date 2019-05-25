@@ -70,8 +70,16 @@ class App extends React.Component {
     }
 
     editItemHandler=()=>{
-        console.log('HELLO EDITTING')
-        this.setState( {isEditMode: !this.state.isEditMode} )
+        console.log('HELLO EDITTING');
+        this.setState( {isEditMode: !this.state.isEditMode} );
+    }
+
+    updateItemHandler = () =>{
+        console.log('HELLO UPDATEEE');
+        this.setState({
+            isEditMode:false,
+
+        })
     }
 
   render() {
@@ -89,7 +97,7 @@ class App extends React.Component {
 
       <div>
         {proceedToReceipt ? (<p></p>) : (<button onClick={()=>{this.getReceiptHandler()}}>PRESS THIS INSTEAD</button>)}
-        {proceedToReceipt ? (<Receipt receipt={this.state.receipt} editItemHandler={this.editItemHandler} editState={this.state.isEditMode}/>) : (<p></p>)}
+        {proceedToReceipt ? (<Receipt receipt={this.state.receipt} updateItemHandler={this.updateItemHandler} editItemHandler={this.editItemHandler} editState={this.state.isEditMode}/>) : (<p></p>)}
         <WholeSummary summary={this.state.receipt}/>
       </div>
     );
