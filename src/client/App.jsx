@@ -17,6 +17,7 @@ class App extends React.Component {
         this.state = {
             receipt: [],
             hasReceipt: false,
+            verifyReceipt: false,
         }
     }
 
@@ -68,7 +69,7 @@ class App extends React.Component {
         this.setState( {hasReceipt: true} );
     }
 
-    pickMeUp = (input, itemLocation) =>{
+    pickMeUp = (input, itemLocation) =>{ //function to take values from tableElement and update app.jsx's this.state.receipt items
 
         let latestEdit = input; //user edited input
         let itemId = itemLocation[0]; //which item is this?
@@ -85,31 +86,52 @@ class App extends React.Component {
         this.setState({receipt});
 
         console.log(receipt);
+
+        this.quickMath();
     }
 
+    quickMath = () =>{ // when user edits receipt, function checks prices and updates state
+        let updatedReceiptItems = this.state.receipt;
+        let prices = [];
 
-    quickMath = () =>{
-        let receipt = this.state.receipt;
+        const reducer = (accumulator, currentValue) => accumulator + currentValue;
+
+        for(let i = 0; i < updatedReceiptItems.items.length; i ++){
+            prices.push(updatedReceiptItems.items[i].price);
+        }
+
+        let newSubtotal = prices.reduce(reducer);
+        let newSc = newSubtotal * 0.1;
+        let newGst = (newSubtotal + newSc) * 0.07;
+        let newTotal = newSubtotal + newSc + newGst;
+        console.log('PRICE ARR', newSubtotal);
+        console.log(typeof newSc);
+        console.log('NEWWW TOTAL AMOUNT', newTotal);
+
+        let receipt = Object.assign({},this.state.receipt);
+
+            receipt.subtotal = (newSubtotal).toFixed(2);
+            receipt.serviceCharge = (newSc).toFixed(2);
+            receipt.gst = (newGst).toFixed(2);
+            receipt.total = (newTotal).toFixed(2);
+
+            this.setState({receipt});
     }
 
-  render() {
-
-    const proceedToReceipt = this.state.hasReceipt;
-    return (
-
+    render() {
+        const proceedToReceipt = this.state.hasReceipt;
+        return (
         /*
-      <Router>
-        <Route path="/" exact component={Home} />
-        <Route path="/takePhoto" component={TakePhoto} />
-
-      </Router>
-    */
-
-      <div>
-        {proceedToReceipt ? (<p></p>) : (<button onClick={()=>{this.getReceiptHandler()}}>PRESS THIS INSTEAD</button>)}
-        {proceedToReceipt ? (<Receipt receipt={this.state.receipt} pickMeUp={this.pickMeUp}/>) : (<p></p>)}
-        <WholeSummary summary={this.state.receipt}/>
-      </div>
+        <Router>
+            <Route path="/" exact component={Home} />
+            <Route path="/takePhoto" component={TakePhoto} />
+        </Router>
+        */
+        <div>
+            {proceedToReceipt ? (<p></p>) : (<button onClick={()=>{this.getReceiptHandler()}}>PRESS THIS INSTEAD</button>)}
+            {proceedToReceipt ? (<Receipt receipt={this.state.receipt} pickMeUp={this.pickMeUp}/>) : (<p></p>)}
+            <WholeSummary summary={this.state.receipt}/>
+        </div>
     );
   }
 }

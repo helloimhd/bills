@@ -13,14 +13,14 @@ class ItemElement extends React.Component{
     }
 
     editItemHandler=(e)=>{
-        console.log('HELLO EDITTING');
-        console.log(this.props);
+        // console.log('HELLO EDITTING');
+        // console.log(this.props);
         this.setState( {isEditMode: !this.state.isEditMode} );
     }
 
     updateItemHandler = () =>{
-        console.log('HELLO UPDATEEE');
-        console.log(this.refs.input.value);
+        // console.log('HELLO UPDATEEE');
+        // console.log(this.refs.input.value);
 
         this.setState({
             isEditMode:false,
@@ -192,14 +192,19 @@ ItemTable.propTypes = {
 ItemRow.propTypes = {
     item: PropTypes.object,
     pickMeUp: PropTypes.func,
+    type: PropTypes.string,
+    id: PropTypes.number,
 };
 
 ItemElement.propType = {
-    item: PropTypes.string,
+    item: PropTypes.any,
     pickMeUp: PropTypes.func,
+    type: PropTypes.string,
+    id: PropTypes.number,
 }
 
 PaymentSummary.propTypes ={
+
     payment: PropTypes.object,
 }
 
