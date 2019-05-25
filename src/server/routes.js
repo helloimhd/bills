@@ -24,8 +24,6 @@ module.exports = (app, db) => {
     //app.get('/takePhoto', receipts.takePhoto);
     app.post('/uploadPhoto', upload.single('img'), receipts.uploadPhoto);
 
-    app.get('/testData', receipts.testData);
-
 
 
     app.get('/receipt/:id', receipts.giveMeReceipt);
