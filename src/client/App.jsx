@@ -8,7 +8,7 @@ import Receipt from './components/receipt/receipt';
 import Selection from './components/itemSelection/item';
 
 import TakePhoto from './components/receipt/takePhoto';
-// import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import WholeSummary from './components/wholeSummary/wholeSummary';
 
 class App extends React.Component {
@@ -26,9 +26,11 @@ class App extends React.Component {
         //retrieves receipt and item info
         console.log('SEND AND GET SOMETHING')
         var reactThis = this;
-        var img_token = 'guQnFRzRY4MXMm6F'; // need to find a way to retrieve img token..... !!!!!!!*(****!!!)
+        var img_token = 'ws06oyvmcgCsdsNL'; // need to find a way to retrieve img token..... !!!!!!!*(****!!!)
         var receipt_id;
         var obj = {};
+        // ws06oyvmcgCsdsNL
+        // guQnFRzRY4MXMm6F
 
         async function getReceipt(token){ // async request to backend
 
@@ -67,6 +69,7 @@ class App extends React.Component {
     }
 
     doneViewingReceiptHandler =()=>{
+
         this.setState( {hasReceipt: true} );
     }
 
@@ -120,31 +123,30 @@ class App extends React.Component {
         const proceedToReceipt = this.state.hasReceipt;
         const proceedToItemSelection = this.state.verifyReceipt;
         return (
-        /*
-
-        <Router>
-            <Route path="/" exact component={Home} />
-            <Route path="/takePhoto" component={TakePhoto} />
-        </Router>
-        */
-        <div>
-            {proceedToReceipt ? (<p></p>) : (<button onClick={()=>{this.getReceiptHandler()}}>PRESS THIS INSTEAD</button>)}
-            {proceedToReceipt ? (<Receipt receipt={this.state.receipt} pickMeUp={this.pickMeUp}/>) : (<p></p>)}
-            {proceedToItemSelection ? (<Selection/>):(<p></p>)}
-            <WholeSummary summary={this.state.receipt}/>
-        </div>
+            <div>
+                {proceedToReceipt ? (<p></p>) : (<button onClick={()=>{this.getReceiptHandler()}}>PRESS THIS INSTEAD</button>)}
+                {proceedToReceipt ? (<Receipt receipt={this.state.receipt} pickMeUp={this.pickMeUp}/>) : (<p></p>)}
+                {proceedToItemSelection ? (<Selection/>):(<p></p>)}
+                <WholeSummary summary={this.state.receipt}/>
+            </div>
     );
   }
 }
 
-function Home() {
-    return (
-        <div>
-            <h1>Home</h1>
-        </div>
-    )
+class Main extends React.Component{
+    constructor(){
+        super()
+    }
+    render(){
+        return(
+            <Router>
+                <Route path="/" exact component={App} />
+                <Route path="/takePhoto" component={TakePhoto} />
+            </Router>
+        );
+    }
 }
 
 
 
-export default hot(module)(App);
+export default hot(module)(Main);
