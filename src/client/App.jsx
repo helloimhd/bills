@@ -11,15 +11,13 @@ import TakePhoto from './components/receipt/takePhoto';
 // import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import WholeSummary from './components/wholeSummary/wholeSummary';
 
-import Test from './components/test/test';
-
 class App extends React.Component {
     constructor() {
         super();
         this.state = {
             receipt: [],
+            isEditMode: false,
             hasReceipt: false,
-            hasCheckedItems:false,
         }
     }
 
@@ -71,9 +69,9 @@ class App extends React.Component {
         this.setState( {hasReceipt: true} );
     }
 
-    testHandler=()=>{
-        this.setState( {hasCheckedItems:true} )
-
+    editItemHandler=()=>{
+        console.log('HELLO EDITTING')
+        this.setState( {isEditMode: !this.state.isEditMode} )
     }
 
   render() {
@@ -91,9 +89,8 @@ class App extends React.Component {
 
       <div>
         {proceedToReceipt ? (<p></p>) : (<button onClick={()=>{this.getReceiptHandler()}}>PRESS THIS INSTEAD</button>)}
-        {proceedToReceipt ? (<Receipt receipt={this.state.receipt}/>) : (<p></p>)}
+        {proceedToReceipt ? (<Receipt receipt={this.state.receipt} editItemHandler={this.editItemHandler} editState={this.state.isEditMode}/>) : (<p></p>)}
         <WholeSummary summary={this.state.receipt}/>
-        <Test/>
       </div>
     );
   }

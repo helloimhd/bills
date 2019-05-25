@@ -3,26 +3,35 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // import styles from './style.scss';
+
 class ItemRow extends React.Component{
-    constructor(){
-        super();
+
+    renderEditView =(item)=>{
+        return <tr>
+            <td><input type="text" defaultValue={item.quantity}/></td>
+            <td><input type="text" defaultValue={item.item_name}/></td>
+            <td><input type="text" defaultValue={(item.price).toFixed(2)}xx /></td>
+        </tr>
     }
 
-    testHandler=()=>{
-        console.log('fuckkkkk');
+    renderDefaultView = (item)=>{
+        return <tr>
+            <td onClick={(e)=>{this.props.editItemHandler(e)}}>{item.quantity} X</td>
+            <td onClick={(e)=>{this.props.editItemHandler(e)}}>{item.item_name}</td>
+            <td onClick={(e)=>{this.props.editItemHandler(e)}}>$ {(item.price).toFixed(2)}</td>
+        </tr>
     }
+
     render(){
         const item = this.props.item;
+        const editState = this.props.editState;
         console.log(item);
+        console.log(this.props.editState);
         // const name = product.stocked ?  product.name :
         //                                 <span style={{color: 'red'}}> {product.name} </span>;
-        return(
-            <tr onClick={()=>{this.testHandler()}}>
-                <td>X {item.quantity}</td>
-                <td>{item.item_name}</td>
-                <td>$ {(item.price).toFixed(2)}</td>
-            </tr>
-        );
+        return editState ?
+        this.renderEditView(item) : this.renderDefaultView(item)
+
     }
 }
 
@@ -34,7 +43,9 @@ class ItemTable extends React.Component{
             rows.push(
                 <ItemRow
                     item={item}
-                    key={item.item_name}/>)
+                    key={item.item_name}
+                    editItemHandler={this.props.editItemHandler}
+                    editState={this.props.editState}/>)
         })
         return(
             <table>
@@ -59,22 +70,26 @@ class PaymentSummary extends React.Component{
 
         return(
             <table>
-                <tr>
-                    <td>Sub-Total: </td>
-                    <td>$ {this.props.payment.subtotal}</td>
-                </tr>
-                <tr>
-                    <td>Service Charge (10%): </td>
-                    <td>$ {this.props.payment.serviceCharge}</td>
-                </tr>
-                <tr>
-                    <td>GST (7%): </td>
-                    <td>$ {this.props.payment.gst}</td>
-                </tr>
-                <tr>
-                    <td>Total: </td>
-                    <td>$ {this.props.payment.total}</td>
-                </tr>
+                <thead>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Sub-Total: </td>
+                        <td>$ {this.props.payment.subtotal}</td>
+                    </tr>
+                    <tr>
+                        <td>Service Charge (10%): </td>
+                        <td>$ {this.props.payment.serviceCharge}</td>
+                    </tr>
+                    <tr>
+                        <td>GST (7%): </td>
+                        <td>$ {this.props.payment.gst}</td>
+                    </tr>
+                    <tr>
+                        <td>Total: </td>
+                        <td>$ {this.props.payment.total}</td>
+                    </tr>
+                </tbody>
             </table>
         );
     }
@@ -109,7 +124,7 @@ class Receipt extends React.Component{
         }else {
             return(
                 <div>
-                    <ItemTable items={this.props.receipt.items}/>
+                    <ItemTable items={this.props.receipt.items} editItemHandler={this.props.editItemHandler} editState={this.props.editState}/>
                     <PaymentSummary payment={this.props.receipt}/>
                     <ButtonTab/>
                 </div>
