@@ -12,9 +12,9 @@ cloudinary.config({
   api_secret: 'UQBGNsgKzLZDlijgj-t1Tx6Sm84'
 });
 
-const token = "";
+//let token = "";
 
-const tabUrl = 'https://api.tabscanner.com/VCB56Md7G1imsKz6Y3FKmcNiBXNmBaClTSpyT55ciRZLTdWDKRD06iBQx4JvoSpr';
+const tabUrl = 'https://api.tabscanner.com/AcMHx0XLLafK4avM8WdBLhZixu2fRP8WeY0z4rv1RCFPjNALkAnYIuQnJtH2BOqs';
 
 
 
@@ -80,7 +80,7 @@ module.exports = (db) => {
 
                     } else if (json.status === "success") {
                         //return json.token;
-                        token = json.token;
+                        let token = json.token;
                         let counter = 0;
                         while (true) {
                             var req = new XMLHttpRequest();
@@ -89,36 +89,61 @@ module.exports = (db) => {
 
 
                             const data = JSON.parse(req.responseText);
+                            const dataResult = data.result
                             counter++;
 
                             // successful
                             if (data.code === 202) {
-                                // put data into receipt table
                                 let receiptData = {
-                                    token: token,
-                                    subtotal: parseFloat(data.result.subTotal)
+                                    user_id: 1,
+                                    group_id: 1,
+                                    img_token: token,
+                                    subtotal: parseFloat(dataResult.subTotal)
                                 }
-                                db.receipts.addReceipt(receiptData, (err, results) => {
+                                db.receipts.createReceipt(receiptData, (err, createRecResults) => {
                                     if (err) {
                                         console.error(err);
                                         response.status(500).send("Query ERROR for adding receipt details.")
 
                                     } else {
                                         // means its successful > get receipt id that was uploaded to put inside the items table
-                                        db.receipts.getReceipt((err, results) => {
+                                        db.receipts.getReceipt(token, (err, getReceiptResults) => {
+                                            //console.log(testToken)
                                             if (err) {
                                                 console.error(err);
                                                 response.status(500).send("Query ERROR for getting receipt info.")
 
                                             } else {
-                                                // now add items into table
+                                                console.log("get receipt is successful")
+                                                let lineItems = dataResult.lineItems;
+                                                for (i=0; i<lineItems.length; i++) {
+                                                    console.log("entered for loop")
+                                                    let receiptId = getReceiptResults.receipt[0].id;
 
-                                            }
-                                        })
+                                                    // items
+                                                    let itemData = {
+                                                        receipt_id: receiptId,
+                                                        item_name: lineItems[i].descClean,
+                                                        price: parseFloat(lineItems[i].lineTotal),
+                                                        quantity: lineItems[i].qty,
+                                                        users_id: null
+                                                    }
+                                                    // now add items into table
+                                                    db.items.createItems(itemData, (err, createItemResults) => {
+                                                        if (err) {
+                                                            console.error(err);
+                                                            response.status(500).send("Query ERROR for creating items.")
+                                                        } else {
+                                                            // yey all successful
+                                                            response.send("ALL DONE")
+                                                        }
 
-                                    }
-                                })
-                                response.send(data);
+                                                    })  //end of db createItems
+                                                }  // end of for loop
+                                            }  //end of checking for getReceipt query
+                                        })  //end of db getReceipt
+                                    }  //end of checking for createReceipt query
+                                })  //end of db createReceipt
                                 console.log(counter)
                                 break;
                             } else if (counter === 10) {
@@ -138,72 +163,71 @@ module.exports = (db) => {
     }  // end of upload photo
 
 
-    const testData = (request, response) => {
-        let testToken = 'gj3QhsVlE6093LmB';
+    // const dbFunction = (dataResult, token) => {
+    //     // let token = 'gj3QhsVlE6093LmB';
 
-        var req = new XMLHttpRequest();
-        req.open("GET", `${tabUrl}/result/${testToken}`, false);
-        req.send();
+    //     // var req = new XMLHttpRequest();
+    //     // req.open("GET", `${tabUrl}/result/${token}`, false);
+    //     // req.send();
 
-        const data = JSON.parse(req.responseText);
-        const dataResult = data.result;
+    //     // const data = JSON.parse(req.responseText);
+    //     // const dataResult = data.result;
+    //     // let successful = false;
 
-        let receiptData = {
-            user_id: 1,
-            group_id: 1,
-            img_token: testToken,
-            subtotal: parseFloat(dataResult.subTotal)
-        }
-        db.receipts.createReceipt(receiptData, (err, createRecResults) => {
-            if (err) {
-                console.error(err);
-                response.status(500).send("Query ERROR for adding receipt details.")
+    //     let receiptData = {
+    //         user_id: 1,
+    //         group_id: 1,
+    //         img_token: token,
+    //         subtotal: parseFloat(dataResult.subTotal)
+    //     }
+    //     db.receipts.createReceipt(receiptData, (err, createRecResults) => {
+    //         if (err) {
+    //             console.error(err);
+    //             response.status(500).send("Query ERROR for adding receipt details.")
 
-            } else {
-                // means its successful > get receipt id that was uploaded to put inside the items table
-                db.receipts.getReceipt(testToken, (err, getReceiptResults) => {
-                    //console.log(testToken)
-                    if (err) {
-                        console.error(err);
-                        response.status(500).send("Query ERROR for getting receipt info.")
+    //         } else {
+    //             // means its successful > get receipt id that was uploaded to put inside the items table
+    //             db.receipts.getReceipt(token, (err, getReceiptResults) => {
+    //                 //console.log(testToken)
+    //                 if (err) {
+    //                     console.error(err);
+    //                     response.status(500).send("Query ERROR for getting receipt info.")
 
-                    } else {
-                        console.log("get receipt is successful")
-                        let lineItems = dataResult.lineItems;
-                        for (i=0; i<lineItems.length; i++) {
-                            console.log("entered for loop")
-                            let receiptId = getReceiptResults.receipt[0].id;
+    //                 } else {
+    //                     console.log("get receipt is successful")
+    //                     let lineItems = dataResult.lineItems;
+    //                     for (i=0; i<lineItems.length; i++) {
+    //                         console.log("entered for loop")
+    //                         let receiptId = getReceiptResults.receipt[0].id;
 
-                            // items
-                            let itemData = {
-                                receipt_id: receiptId,
-                                item_name: lineItems[i].descClean,
-                                price: parseFloat(lineItems[i].lineTotal),
-                                quantity: lineItems[i].qty,
-                                users_id: null
-                            }
-                            // now add items into table
-                            db.items.createItems(itemData, (err, createItemResults) => {
-                                if (err) {
-                                    console.error(err);
-                                    response.status(500).send("Query ERROR for creating items.")
-                                } else {
-                                    // yey all successful
-                                    response.send("ALL DONE")
-                                }
+    //                         // items
+    //                         let itemData = {
+    //                             receipt_id: receiptId,
+    //                             item_name: lineItems[i].descClean,
+    //                             price: parseFloat(lineItems[i].lineTotal),
+    //                             quantity: lineItems[i].qty,
+    //                             users_id: null
+    //                         }
+    //                         // now add items into table
+    //                         db.items.createItems(itemData, (err, createItemResults) => {
+    //                             if (err) {
+    //                                 console.error(err);
+    //                                 response.status(500).send("Query ERROR for creating items.")
+    //                             } else {
+    //                                 // yey all successful
+    //                                 response.send("ALL DONE")
+    //                             }
 
-                            })  //end of db createItems
-                        }  // end of for loop
-
-                    }  //end of checking for getReceipt query
-                })  //end of db getReceipt
-            }  //end of checking for createReceipt query
-        })  //end of db createReceipt
-    }
+    //                         })  //end of db createItems
+    //                     }  // end of for loop
+    //                 }  //end of checking for getReceipt query
+    //             })  //end of db getReceipt
+    //         }  //end of checking for createReceipt query
+    //     })  //end of db createReceipt
+    // }
 
   return {
     giveMeReceipt,
-    uploadPhoto,
-    testData
+    uploadPhoto
   };
 };
