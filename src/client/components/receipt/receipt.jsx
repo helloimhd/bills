@@ -141,7 +141,7 @@ class PaymentSummary extends React.Component{
     }
 }
 
-class ButtonTab extends React.Component{
+class ButtonProceedTab extends React.Component{
     constructor(){
         super();
     }
@@ -172,7 +172,7 @@ class Receipt extends React.Component{
                 <div>
                     <ItemTable items={this.props.receipt.items} pickMeUp={this.props.pickMeUp}/>
                     <PaymentSummary payment={this.props.receipt}/>
-                    <ButtonTab/>
+                    <ButtonProceedTab/>
                 </div>
             )
         }

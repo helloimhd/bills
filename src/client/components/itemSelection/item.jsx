@@ -11,7 +11,7 @@ class ItemSelection extends React.Component{
         return(
             <div>
                 <p>user-main chooses each item who takes a stake or not</p>
-                <button onClick={()=>{this.props.handler()}}>press me </button>
+                <button>press me </button>
             </div>
         );
     }

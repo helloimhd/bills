@@ -21,33 +21,33 @@ class App extends React.Component {
         }
     }
 
-    getReceiptHandler=()=>{
+    getReceiptHandler=()=>{ //clunky way to retrieve backend data on RECEIPT and ITEMS. sends two request.
         //retrieves receipt and item info
         console.log('SEND AND GET SOMETHING')
         var reactThis = this;
-        var img_token = 'guQnFRzRY4MXMm6F';
+        var img_token = 'guQnFRzRY4MXMm6F'; // need to find a way to retrieve img token..... !!!!!!!*(****!!!)
         var receipt_id;
         var obj = {};
 
-        async function getReceipt(token){
+        async function getReceipt(token){ // async request to backend
 
             let response = await fetch(`/receipt/${img_token}`);
             let data = await response.json();
             return data;
         }
 
-        async function getItems(id){
+        async function getItems(id){ // async request to backend
 
             let response = await fetch(`/items/${id}`);
             let data = await response.json();
             return data;
         }
-        getReceipt(img_token).then(receiptOutput=> {
+        getReceipt(img_token).then(receiptOutput=> { //sending request to get receipt
 
             receipt_id = receiptOutput[0].id;
-            getItems(receipt_id).then(itemOutput=>{
+            getItems(receipt_id).then(itemOutput=>{ // sending request to get items
 
-                obj =  {
+                obj =  { // arranging response jsons. Saving obj to this.state.receipt
                     receipt_id: receiptOutput[0].id,
                     user_id: receiptOutput[0].user_id,
                     group_id: receiptOutput[0].group_id,
@@ -60,7 +60,7 @@ class App extends React.Component {
                     };
 
                 this.setState( {receipt: obj} );
-                this.doneViewingReceiptHandler();
+                this.doneViewingReceiptHandler(); // toggles condition to view receipt component
             })
         })
     }
@@ -120,6 +120,7 @@ class App extends React.Component {
 
     render() {
         const proceedToReceipt = this.state.hasReceipt;
+        const proceedToItemSelection = this.state.verifyReceipt;
         return (
         /*
         <Router>
@@ -130,6 +131,7 @@ class App extends React.Component {
         <div>
             {proceedToReceipt ? (<p></p>) : (<button onClick={()=>{this.getReceiptHandler()}}>PRESS THIS INSTEAD</button>)}
             {proceedToReceipt ? (<Receipt receipt={this.state.receipt} pickMeUp={this.pickMeUp}/>) : (<p></p>)}
+            {proceedToItemSelection ? (<Selection/>):(<p></p>)}
             <WholeSummary summary={this.state.receipt}/>
         </div>
     );
