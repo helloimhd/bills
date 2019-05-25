@@ -24,7 +24,7 @@ module.exports = (db) => {
 
         //can use http path or ajax put in body
         // edit argument as necessary
-        console.log('hello give receipt', req.params.id);
+        // console.log('hello give receipt', req.params.id);
         let input = req.params.id;
 
         db.receipts.getReceipt( input, (err, receipts) =>{
@@ -32,7 +32,7 @@ module.exports = (db) => {
                 console.error('error getting receipt(s)', err);
                 res.status(500).send("Error getting receipt");
             } else {
-                console.log( 'AT CONTROLLER RESULTS', receipts );
+                // console.log( 'AT CONTROLLER RESULTS', receipts );
                 if(receipts.receipt.length === 0){
                     res.send('No entry');
                 }else{
@@ -40,7 +40,7 @@ module.exports = (db) => {
                 }
             }
         })
-    }
+    };
 
     // upload photo to cloudinary > send to tabscanner > get token > send to get data
     let uploadPhoto = (request, response) => {
@@ -176,8 +176,30 @@ module.exports = (db) => {
         );  // end of cloudinary upload
     }  // end of upload photo
 
+    let summaryReceipt = (req, res) => {
+        console.log("HELLO in controller");
+        var dataIn = req.params.id;
+
+        db.receipts.yo( dataIn, (err, receipts) =>{
+            if(err){
+                console.log('in here?');
+                console.error('error getting receipt(s)', err);
+                res.status(500).send("Error getting receipt");
+            } else {
+                console.log('am i here????');
+                console.log( 'AT CONTROLLER RESULTS', receipts );
+                if(receipts.rows.length === 0){
+                    res.send('No entry');
+                }else{
+                    res.send( receipts.rows );
+                }
+            }
+        })
+    }
+
   return {
     giveMeReceipt,
     uploadPhoto,
+    summaryReceipt,
   };
 };
