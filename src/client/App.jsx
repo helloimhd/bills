@@ -14,6 +14,7 @@ import WholeSummary from './components/wholeSummary/wholeSummary';
 class App extends React.Component {
     constructor() {
         super();
+
         this.state = {
             receipt: [],
             hasReceipt: false,
@@ -104,9 +105,6 @@ class App extends React.Component {
         let newSc = newSubtotal * 0.1;
         let newGst = (newSubtotal + newSc) * 0.07;
         let newTotal = newSubtotal + newSc + newGst;
-        console.log('PRICE ARR', newSubtotal);
-        console.log(typeof newSc);
-        console.log('NEWWW TOTAL AMOUNT', newTotal);
 
         let receipt = Object.assign({},this.state.receipt);
 
@@ -123,6 +121,7 @@ class App extends React.Component {
         const proceedToItemSelection = this.state.verifyReceipt;
         return (
         /*
+
         <Router>
             <Route path="/" exact component={Home} />
             <Route path="/takePhoto" component={TakePhoto} />
