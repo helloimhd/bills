@@ -4,61 +4,93 @@ import PropTypes from 'prop-types';
 
 // import styles from './style.scss';
 
-class ItemRow extends React.Component{
-
-    renderEditView =(item)=>{
-        return <tr>
-            <td>
-                <input type="text" defaultValue={item.quantity} />
-                <button onClick={()=>{this.props.editItemHandler()}}>☑️</button>
-                <button onClick={()=>{this.props.updateItemHandler()}}>OK</button>
-            </td>
-            <td>
-                <input type="text" defaultValue={item.item_name}/>
-                <button onClick={()=>{this.props.editItemHandler()}}>☑️</button>
-                <button onClick={()=>{this.props.updateItemHandler()}}>OK</button>
-            </td>
-            <td>
-                <input type="text" defaultValue={(item.price).toFixed(2)}xx />
-                <button onClick={()=>{this.props.editItemHandler()}}>☑️</button>
-                <button onClick={()=>{this.props.updateItemHandler()}}>OK</button>
-            </td>
-        </tr>
+class ItemElement extends React.Component{
+    constructor(){
+        super()
+        this.state={
+            isEditMode: false,
+        }
     }
 
-    renderDefaultView = (item)=>{
-        return <tr>
-            <td onClick={(e)=>{this.props.editItemHandler(e)}}>{item.quantity} X</td>
-            <td onClick={(e)=>{this.props.editItemHandler(e)}}>{item.item_name}</td>
-            <td onClick={(e)=>{this.props.editItemHandler(e)}}>$ {(item.price).toFixed(2)}</td>
-        </tr>
+    editItemHandler=(e)=>{
+        console.log('HELLO EDITTING');
+        console.log(this.props);
+        this.setState( {isEditMode: !this.state.isEditMode} );
+    }
+
+    updateItemHandler = () =>{
+        console.log('HELLO UPDATEEE');
+        console.log(this.refs.input.value);
+
+        this.setState({
+            isEditMode:false,
+        })
+
+        let itemEdited = this.refs.input.value;
+
+        let itemElement = [];
+
+        itemElement.push(this.props.id);
+        itemElement.push(this.props.type);
+
+        this.props.pickMeUp(itemEdited,itemElement);
+
+    }
+
+    renderEditView(item){
+        if (typeof item == 'number' && this.props.type == 'price'){
+            item = item.toFixed(2);
+        };
+        return  <td>
+                    <input id={this.props.id} type={this.props.type} defaultValue={item} ref="input" />
+                    <button onClick={(e)=>{this.editItemHandler(e)}}>❌</button>
+                    <button onClick={()=>{this.updateItemHandler()}}>☑️</button>
+                </td>
+    }
+
+    renderDefaultView=(item)=>{
+        if (typeof item == 'number' && this.props.type == 'price'){
+            item = item.toFixed(2);
+        };
+        return <td onClick={(e)=>{this.editItemHandler(e)}}>{item}</td>
     }
 
     render(){
-        const item = this.props.item;
-        const editState = this.props.editState;
-        console.log(item);
-        console.log(this.props.editState);
-        // const name = product.stocked ?  product.name :
-        //                                 <span style={{color: 'red'}}> {product.name} </span>;
-        return editState ?
-        this.renderEditView(item) : this.renderDefaultView(item)
 
+        const item = this.props.item;
+        const editState = this.state.isEditMode;
+
+        return editState ?
+            this.renderEditView(item) : this.renderDefaultView(item)
+    }
+}
+
+class ItemRow extends React.Component{
+    render(){
+
+        let quantity = "quantity";
+        let item_name = "item_name";
+        let price = "price";
+        return(
+            <tr>
+                <ItemElement id={this.props.id} type={quantity} item={this.props.item.quantity} pickMeUp={this.props.pickMeUp}/>
+                <ItemElement id={this.props.id} type={item_name} item={this.props.item.item_name} pickMeUp={this.props.pickMeUp}/>
+                <ItemElement id={this.props.id} type={price} item={this.props.item.price} pickMeUp={this.props.pickMeUp}/>
+            </tr>
+        );
     }
 }
 
 class ItemTable extends React.Component{
     render(){
         const rows = [];
-
-        this.props.items.forEach((item)=>{
+        this.props.items.forEach((item,index)=>{
             rows.push(
                 <ItemRow
                     item={item}
-                    key={item.item_name}
-                    editItemHandler={this.props.editItemHandler}
-                    editState={this.props.editState}
-                    updateItemHandler={this.props.updateItemHandler}/>
+                    id={index}
+                    key={index}
+                    pickMeUp={this.props.pickMeUp}/>
                 )
         })
         return(
@@ -138,7 +170,7 @@ class Receipt extends React.Component{
         }else {
             return(
                 <div>
-                    <ItemTable items={this.props.receipt.items} editItemHandler={this.props.editItemHandler} editState={this.props.editState} updateItemHandler={this.props.updateItemHandler}/>
+                    <ItemTable items={this.props.receipt.items} pickMeUp={this.props.pickMeUp}/>
                     <PaymentSummary payment={this.props.receipt}/>
                     <ButtonTab/>
                 </div>
@@ -146,8 +178,29 @@ class Receipt extends React.Component{
         }
     }
 }
+
 Receipt.propTypes = {
-  receipt: PropTypes.array,
+    receipt: PropTypes.object,
+    pickMeUp: PropTypes.func,
 };
+
+ItemTable.propTypes = {
+    pickMeUp: PropTypes.func,
+    items: PropTypes.array,
+}
+
+ItemRow.propTypes = {
+    item: PropTypes.object,
+    pickMeUp: PropTypes.func,
+};
+
+ItemElement.propType = {
+    item: PropTypes.string,
+    pickMeUp: PropTypes.func,
+}
+
+PaymentSummary.propTypes ={
+    payment: PropTypes.object,
+}
 
 export default Receipt;

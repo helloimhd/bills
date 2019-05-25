@@ -16,7 +16,6 @@ class App extends React.Component {
         super();
         this.state = {
             receipt: [],
-            isEditMode: false,
             hasReceipt: false,
         }
     }
@@ -69,17 +68,28 @@ class App extends React.Component {
         this.setState( {hasReceipt: true} );
     }
 
-    editItemHandler=()=>{
-        console.log('HELLO EDITTING');
-        this.setState( {isEditMode: !this.state.isEditMode} );
+    pickMeUp = (input, itemLocation) =>{
+
+        let latestEdit = input; //user edited input
+        let itemId = itemLocation[0]; //which item is this?
+        let itemType = itemLocation[1]; //which key is it?
+
+        let receipt = Object.assign({},this.state.receipt);
+        if(itemType === 'price' ){
+            receipt.items[itemId][`${itemType}`] = Number(latestEdit);
+        }else if(itemType === 'quantity'){
+            receipt.items[itemId][`${itemType}`] = Number(latestEdit);
+        }else{
+            receipt.items[itemId][`${itemType}`] = latestEdit;
+        }
+        this.setState({receipt});
+
+        console.log(receipt);
     }
 
-    updateItemHandler = () =>{
-        console.log('HELLO UPDATEEE');
-        this.setState({
-            isEditMode:false,
 
-        })
+    quickMath = () =>{
+        let receipt = this.state.receipt;
     }
 
   render() {
@@ -97,7 +107,7 @@ class App extends React.Component {
 
       <div>
         {proceedToReceipt ? (<p></p>) : (<button onClick={()=>{this.getReceiptHandler()}}>PRESS THIS INSTEAD</button>)}
-        {proceedToReceipt ? (<Receipt receipt={this.state.receipt} updateItemHandler={this.updateItemHandler} editItemHandler={this.editItemHandler} editState={this.state.isEditMode}/>) : (<p></p>)}
+        {proceedToReceipt ? (<Receipt receipt={this.state.receipt} pickMeUp={this.pickMeUp}/>) : (<p></p>)}
         <WholeSummary summary={this.state.receipt}/>
       </div>
     );
