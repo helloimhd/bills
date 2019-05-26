@@ -8,13 +8,16 @@ import Receipt from './components/receipt/receipt';
 import Selection from './components/itemSelection/item';
 
 import TakePhoto from './components/receipt/takePhoto';
-// import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import Login from './components/user/login';
+import LoginForm from './components/user/loginForm';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
 import WholeSummary from './components/wholeSummary/wholeSummary';
 
 class App extends React.Component {
     constructor() {
         super();
-      
+
         this.state = {
             receipt: [],
             hasReceipt: false,
@@ -99,9 +102,10 @@ class App extends React.Component {
 
     return (
 
-        /*
+
       <Router>
         <Route path="/" exact component={Home} />
+        <Route path="/login" component={Login} />
         <Route path="/takePhoto" component={TakePhoto} />
       </Router>
 
@@ -113,13 +117,11 @@ class App extends React.Component {
       </div> */
 
 
-    */
-
-      <div>
+    /* <div>
         {proceedToReceipt ? (<p></p>) : (<button onClick={()=>{this.getReceiptHandler()}}>PRESS THIS INSTEAD</button>)}
         {proceedToReceipt ? (<Receipt receipt={this.state.receipt} pickMeUp={this.pickMeUp}/>) : (<p></p>)}
         <WholeSummary summary={this.state.receipt}/>
-      </div>
+      </div> */
 
     );
   }

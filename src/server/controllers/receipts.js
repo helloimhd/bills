@@ -197,9 +197,30 @@ module.exports = (db) => {
         })
     }
 
+    let testItemName = (request, response) => {
+        let receipt_id = 49;
+        db.items.getItems(receipt_id, (err, results) => {
+            if (err) {
+                console.error(err);
+                response.status(500).send("Query ERROR for getting items.");
+
+            } else {
+                let allItems = results.allItems;
+                let itemName = allItems.map(obj => {
+                    let objItemName = obj.item_name
+                    let itemName = (objItemName.replace(/[^a-zA-Z ]/g, ""));
+                    console.log(itemName);
+                })
+                response.send(results.allItems);
+            }
+        })
+    }
+
+
   return {
     giveMeReceipt,
     uploadPhoto,
     summaryReceipt,
+    testItemName
   };
 };

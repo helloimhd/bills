@@ -18,9 +18,15 @@ module.exports = (app, db) => {
     const groups = require('./controllers/groups')(db);
 
 
+    ////////  USERS  //////////
+   // app.post('/login', users.login);
+    app.get('/users/:username', users.userByUsername)
+
+
     ////////  RECEIPTS  ////////////
     //app.get('/takePhoto', receipts.takePhoto);
     app.post('/uploadPhoto', upload.single('img'), receipts.uploadPhoto);
+    app.get('/testItemName', receipts.testItemName);
 
     app.get('/receipt/:id', receipts.giveMeReceipt);
 
@@ -30,5 +36,9 @@ module.exports = (app, db) => {
     app.get('/receipt/:id/items', receipts.giveMeReceipt);
 
     app.get('/items/:id', items.getItems);
+
+
+
+
 
 };
