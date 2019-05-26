@@ -3,11 +3,17 @@
  * Export model functions as a module
  * ===========================================
  */
-module.exports = (dbPoolInstance) => {
-  // `dbPoolInstance` is accessible within this function scope
+module.exports = (dbPI) => {
+    // `dbPI` is accessible within this function scope
+    let getGroupMembers = ( dataIn, callback ) =>{
+        //take in receipt ID
+        let query = `SELECT * from groups where receipt_id = ${dataIn}`;
 
-
-  return {
-
-  };
+        dbPI.query( query, (err, r)=>{
+            callback(err, r );
+        })
+    }
+    return {
+        getGroupMembers,
+    };
 };
