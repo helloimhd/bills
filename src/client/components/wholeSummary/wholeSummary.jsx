@@ -23,8 +23,8 @@ class WholeSummary extends React.Component {
             let obj = json;
             this.setState({stuff: obj});
             this.setState({change: true});
-            // console.log(this.state.stuff);
-            // console.log(this.state.change);
+            console.log(this.state.stuff);
+            console.log(this.state.change);
         })
     }
 
@@ -32,12 +32,11 @@ class WholeSummary extends React.Component {
         console.log('check state', this.state.stuff);
         const stuff = this.state.change;
 
-
         if(!stuff){
         return (
             <div>
                 <h1>This will show the entire summary of the bill after user has assigned all items</h1>
-                <button onClick={()=>{this.receiptHandler()}}>YAY</button>
+                <button onClick={()=>{this.receiptHandler()}}>Show items</button>
             </div>
         );
     } else {
@@ -47,15 +46,12 @@ class WholeSummary extends React.Component {
                     <tbody>
                         <tr>
                             <th>Item name</th>
-                            <th>Price</th>
+                            <th>Item price</th>
                         </tr>
                         <tr>
-                            <td>{this.state.stuff[0].item_name}</td>
-                            <td>{this.state.stuff[0].price}</td>
-                        </tr>
-                        <tr>
-                            <td>Burger</td>
-                            <td>$$</td>
+                            {this.state.stuff.map((foo, i) => (
+                                <td key={i}>{foo.item_name}</td>
+                                ))}
                         </tr>
                     </tbody>
                 </table>
