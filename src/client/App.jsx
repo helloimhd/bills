@@ -17,12 +17,13 @@ class App extends React.Component {
 
         this.state = {
             receipt: [],
+            groupMembers: [],
             hasReceipt: false,
             verifyReceipt: false,
         }
     }
 
-    getReceiptHandler=()=>{ //clunky way to retrieve backend data on RECEIPT and ITEMS. sends two request.
+    getReceiptHandler=()=>{ //clunky way to retrieve backend data on RECEIPT, ITEMS and GroupMembers
         //retrieves receipt and item info
         console.log('SEND AND GET SOMETHING')
         var reactThis = this;
@@ -31,6 +32,14 @@ class App extends React.Component {
         var obj = {};
         // ws06oyvmcgCsdsNL
         // guQnFRzRY4MXMm6F
+
+
+        async function getGroup(id){
+
+            let response = await fetch(`/group/${id}`);
+            let data = await response.json();
+            return data;
+        }
 
         async function getReceipt(token){ // async request to backend
 
@@ -46,11 +55,12 @@ class App extends React.Component {
             return data;
         }
 
-
         getReceipt(img_token).then(receiptOutput=> { //sending request to get receipt
 
             receipt_id = receiptOutput[0].id;
             getItems(receipt_id).then(itemOutput=>{ // sending request to get items
+
+                getGroup(receipt_id).then(groupMembers=>{
 
                 obj =  { // arranging response jsons. Saving obj to this.state.receipt
                     receipt_id: receiptOutput[0].id,
@@ -63,27 +73,24 @@ class App extends React.Component {
                     total: ((receiptOutput[0].subtotal*0.1) + (receiptOutput[0].subtotal*0.07) + (receiptOutput[0].subtotal)).toFixed(2),
                     items: itemOutput,
                     };
-
+                this.setState( {groupMembers: groupMembers} );
                 this.setState( {receipt: obj} );
-                this.doneViewingReceiptHandler(); // toggles condition to view receipt component
+                this.viewReceiptHandler();
+                this.doneViewingReceiptHandler();
+                 // toggles condition to view receipt component
+                })
             })
-        })
-
-        var testId = 1;
-        async function getGroup(){
-
-            let response = await fetch(`/group/${testId}`);
-            let data = await response.json();
-            return data;
-        }
-        getGroup().then(groupMembers=>{
-            console.log('hello back at app JSX');
         })
     }
 
-    doneViewingReceiptHandler =()=>{
+    viewReceiptHandler =()=>{
 
         this.setState( {hasReceipt: true} );
+    }
+
+    doneViewingReceiptHandler = () =>{
+
+        this.setState( {verifyReceipt: true} );
     }
 
     pickMeUp = (input, itemLocation) =>{ //function to take values from tableElement and update app.jsx's this.state.receipt items
@@ -139,8 +146,7 @@ class App extends React.Component {
             <div>
                 {proceedToReceipt ? (<p></p>) : (<button onClick={()=>{this.getReceiptHandler()}}>PRESS THIS INSTEAD</button>)}
                 {proceedToReceipt ? (<Receipt receipt={this.state.receipt} pickMeUp={this.pickMeUp}/>) : (<p></p>)}
-                {proceedToItemSelection ? (<p>For itemslection COMPONENT!</p>):(<p></p>)}
-                <Selection/>
+                {proceedToItemSelection ? (<Selection items={this.state.receipt.items} group={this.state.groupMembers}/>) : (<p></p>)}
                 <WholeSummary summary={this.state.receipt}/>
                 <a href="/takePhoto">Click here to take photo</a>
             </div>

@@ -8,21 +8,57 @@ import styles from './style.scss';
 // It needs to have all the 1) item data (price, quantity, name). 2) it needs to have group members data. (i.e receipt_id =1 ,  user-ids, usernames).
 
 class IndividualMember extends React.Component{
+    constructor(){
+        super();
+        this.state={
+            checked:false,
+        }
+    }
+
+    blah = (e)=>{
+
+        this.setState( {checked: !this.state.checked} );
+
+        this.checker(!this.state.checked,e.target.value);
+    }
+
+    checker=(status,id)=>{
+
+        if(status){
+            console.log('THIS GUY NEEDS TO PAY!!!!', status);
+        }else{
+            console.log('Nope... not him...', id)
+        }
+    }
     render(){
         return(
-            <p>Member</p>
+            <React.Fragment>
+                <input
+                    type="checkbox"
+                    value={this.props.member[0].id}
+                    ref="input"
+                    onChange={(e)=>{this.blah(e)}}
+                    checked={this.state.checked}/>{this.props.member[0].username}<br/>
+            </React.Fragment>
+
         );
     }
 }
 
 class GroupMembers extends React.Component{
     render(){
+        const members = [];
+        this.props.group.forEach((item,index)=>{
+                members.push(
+                    <IndividualMember
+                        member={item}
+                        key={index}/>
+                )
+        })
         return(
-            <div>
-                <IndividualMember/>
-                <IndividualMember/>
-                <IndividualMember/>
-            </div>
+            <React.Fragment>
+                {members}
+            </React.Fragment>
         );
     }
 }
@@ -51,8 +87,8 @@ class ItemCard extends React.Component{
     render(){
         return(
             <React.Fragment>
-                <ItemDetail/>
-                <GroupMembers/>
+                <ItemDetail items={this.props.items}/>
+                <GroupMembers group={this.props.group}/>
                 <ButtonTab/>
             </React.Fragment>
         );
@@ -66,7 +102,7 @@ class ItemSelection extends React.Component{
     //this component should keep track of how many items in the receipt
         return(
             <div className={styles.itemSelectionContainer}>
-                <ItemCard/>
+                <ItemCard items={this.props.items} group={this.props.group}/>
             </div>
         );
     }
