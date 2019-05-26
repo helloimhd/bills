@@ -26,7 +26,7 @@ class App extends React.Component {
         //retrieves receipt and item info
         console.log('SEND AND GET SOMETHING')
         var reactThis = this;
-        var img_token = 'ws06oyvmcgCsdsNL'; // need to find a way to retrieve img token..... !!!!!!!*(****!!!)
+        var img_token = 'guQnFRzRY4MXMm6F'; // need to find a way to retrieve img token..... !!!!!!!*(****!!!)
         var receipt_id;
         var obj = {};
         // ws06oyvmcgCsdsNL
@@ -45,6 +45,8 @@ class App extends React.Component {
             let data = await response.json();
             return data;
         }
+
+
         getReceipt(img_token).then(receiptOutput=> { //sending request to get receipt
 
             receipt_id = receiptOutput[0].id;
@@ -65,6 +67,17 @@ class App extends React.Component {
                 this.setState( {receipt: obj} );
                 this.doneViewingReceiptHandler(); // toggles condition to view receipt component
             })
+        })
+
+        var testId = 1;
+        async function getGroup(){
+
+            let response = await fetch(`/group/${testId}`);
+            let data = await response.json();
+            return data;
+        }
+        getGroup().then(groupMembers=>{
+            console.log('hello back at app JSX');
         })
     }
 
@@ -126,8 +139,10 @@ class App extends React.Component {
             <div>
                 {proceedToReceipt ? (<p></p>) : (<button onClick={()=>{this.getReceiptHandler()}}>PRESS THIS INSTEAD</button>)}
                 {proceedToReceipt ? (<Receipt receipt={this.state.receipt} pickMeUp={this.pickMeUp}/>) : (<p></p>)}
-                {proceedToItemSelection ? (<Selection/>):(<p></p>)}
+                {proceedToItemSelection ? (<p>For itemslection COMPONENT!</p>):(<p></p>)}
+                <Selection/>
                 <WholeSummary summary={this.state.receipt}/>
+                <a href="/takePhoto">Click here to take photo</a>
             </div>
     );
   }
