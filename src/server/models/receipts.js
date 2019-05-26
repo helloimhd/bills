@@ -28,17 +28,16 @@ module.exports = (dbPI) => {
 
   // get specific receipt with token
     let getReceipt = (dataIn, callback) =>{
-        //
-        console.log( 'INSIDE MODELS', dataIn );
 
+        // console.log( 'INSIDE MODELS', dataIn );
         let query = `SELECT * FROM receipts WHERE img_token = '${dataIn}'`;
 
         dbPI.query( query, (err,r)=>{
             if(err){
-                console.log('Error here?')
-                callback( error, null)
+                // console.log('Error here?');
+                callback( err, null)
             }else{
-                console.log('Something here?')
+                // console.log('Something here?');
                 const result = {
                                 receipt : r.rows,
                                 };
@@ -78,11 +77,9 @@ module.exports = (dbPI) => {
   // destroy
 
 
-
-
   return {
     createReceipt,
     getReceipt,
-    yo,
+    yo
   };
 };

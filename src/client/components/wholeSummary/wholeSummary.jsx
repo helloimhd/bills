@@ -43,35 +43,35 @@ class WholeSummary extends React.Component {
         return (
             <div>
                 <table>
-                <tbody>
-                    <tr>
-                        <td><strong>Receipt ID</strong></td>
-                        <td><strong>Item Name</strong></td>
-                        <td><strong>Price</strong></td>
-                        <td><strong>Quantity</strong></td>
-                    </tr>
-                        {this.state.receiptItems.map((allItems, i) => (
-                            <tr key={i}>
-                                <td>
-                                {allItems.receipt_id}
-                                </td>
-                                <td>
-                                {allItems.item_name}
-                                </td>
-                                <td>
-                                {allItems.price}
-                                </td>
-                                <td>
-                                {allItems.quantity}
-                                </td>
-                            </tr>
-                        ))}
-                    <tr>
-                        <td><strong>Total $</strong></td>
-                        <td></td>
-                        <td>$$$</td>
-                    </tr>
-                </tbody>
+                  <tbody>
+                      <tr>
+                          <td><strong>Receipt ID</strong></td>
+                          <td><strong>Item Name</strong></td>
+                          <td><strong>Price</strong></td>
+                          <td><strong>Quantity</strong></td>
+                      </tr>
+                          {this.state.receiptItems.map((allItems, i) => (
+                              <tr key={i}>
+                                  <td>
+                                  {allItems.receipt_id}
+                                  </td>
+                                  <td>
+                                  {allItems.item_name}
+                                  </td>
+                                  <td>
+                                  {allItems.price}
+                                  </td>
+                                  <td>
+                                  {allItems.quantity}
+                                  </td>
+                              </tr>
+                          ))}
+                      <tr>
+                          <td><strong>Total $</strong></td>
+                          <td></td>
+                          <td>$$$</td>
+                      </tr>
+                  </tbody>
                 </table>
             </div>
             )
