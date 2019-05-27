@@ -32,4 +32,5 @@ module.exports = (app, db) => {
     app.get('/items/:id', items.getItems);
 
     app.get('/group/search', groups.getUsersData);
+    app.post('/group/selected', groups.updateGroupData);
 };

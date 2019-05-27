@@ -2,29 +2,27 @@ import React from 'react';
 
 import styles from './style.scss';
 
-class GroupSelect extends React.Component{
+class GroupSelect extends React.Component {
     constructor(){
         super();
-        this.submitHandler = this.submitHandler.bind(this)
         this.changeHandler = this.changeHandler.bind(this)
         this.enterHandler = this.enterHandler.bind(this)
         this.updateGroupHandler = this.updateGroupHandler.bind(this)
+        this.getUsersHandler = this.getUsersHandler.bind(this)
+        this.checkerHandler = this.checkerHandler.bind(this)
 
         this.state = {
           users: [],
           search: "",
+          tickedUsers: [],
         }
 
     }
 
-    submitHandler(event){
-      let query = this.state.search
-
-      fetch(`/group/search?search=${query}`)
-        .then(response=>response.json()
-        .then(response=>this.setState({users: response.users})
-          )
-        )
+    getUsersHandler(){
+      fetch(`/group/search`)
+        .then(response=>response.json())
+        .then(response=>this.setState({users: response.users}))
     }
 
     changeHandler(event){
@@ -32,21 +30,70 @@ class GroupSelect extends React.Component{
     }
 
     enterHandler(event){
-      // console.log(event.keyCode)
       if (event.keyCode === 13) {
         this.submitHandler();
       }
     }
 
+    updateGroupHandler(event){
+      // console.log(this.state.users)
+
+      const checked = event.target.checked
+      const users = this.state.users
+      const ticked = []
+
+      for  (let index in users) {
+        let user = users[index]
+
+        if(user.checked === true) {
+          // console.log(user.id)
+          // console.log(user.checked)
+          // console.log(user)
+          ticked.push(user)
+          console.log(ticked)
+          this.setState({tickedUsers: ticked})
+        }
+      }
+
+      // fetch(`/group/selected`)
+      //   .then(response=>console.log(response.json()))
+    }
+
+    checkerHandler(event){
+      const userId = event.target.value
+      const checked = event.target.checked
+      const users = this.state.users
+
+      for (let index in users){
+        let user = users[index]
+
+        if(user.id==userId){
+          user["checked"] = checked;
+        }
+
+      }
+
+      this.setState({users:users})
+    }
+
+    componentDidMount(){
+      this.getUsersHandler()
+    }
 
     render(){
-
-      let userList = this.state.users.map((user, index) => {
-        return (
-          <li key={index}>
-            <input type="checkbox" name="group" value={index}/> {user.username}
-          </li>
-          )
+      let search = this.state.search.toLowerCase()
+      let userList = this.state.users.filter(user => user.username.includes(search)).map((user, index) => {
+          return (
+            <li key={user.id}>
+              <input
+                type="checkbox"
+                name="group"
+                value={user.id}
+                onChange={this.checkerHandler}
+                checked={user.checked}
+                /> {user.username}
+            </li>
+            )
       })
 
         return(
@@ -67,6 +114,7 @@ class GroupSelect extends React.Component{
 
 
               <button
+                onClick={this.updateGroupHandler}
                 > connect this button to next page </button>
             </div>
         );
