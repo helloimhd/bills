@@ -135,6 +135,8 @@ class GroupSelect extends React.Component {
               <button
                 onClick={(e)=>{this.updateGroupHandler(e)}}
                 > connect this button to next page </button>
+                <br />
+                <button type="button"><a href="/takePhoto">Upload Receipt</a></button>
             </div>
         );
     }
