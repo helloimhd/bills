@@ -17,11 +17,14 @@ module.exports = (app, db) => {
     const items = require('./controllers/items')(db);
     const groups = require('./controllers/groups')(db);
 
+    app.get('/checkCookie', users.checkCookie);
 
-    ////////  USERS  //////////
+
+    ////////  USERS  /////////
    // app.post('/login', users.login);
     app.post('/checkUser', users.checkUser);
     app.post('/register', users.register);
+
 
     ////////  RECEIPTS  ////////////
     //app.get('/takePhoto', receipts.takePhoto);

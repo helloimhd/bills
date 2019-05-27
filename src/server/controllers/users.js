@@ -3,6 +3,16 @@ const SALT = sha256("boss");
 
 module.exports = (db) => {
 
+    let checkCookie = (request, response) => {
+        let usernameCookie = request.cookies.username;
+
+        if (usernameCookie !== undefined) {
+            response.send({isLoggedIn: true})
+        } else {
+            response.send({isLoggedIn: false})
+        }
+    }
+
     let checkUser = (request, response) => {
         console.log(request.body);
         let username = request.body.username;
@@ -71,6 +81,7 @@ module.exports = (db) => {
     }
 
   return {
+    checkCookie,
     checkUser,
     register
   };

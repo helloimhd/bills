@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom'
 import { hot } from 'react-hot-loader';
 
 // import Counter from './components/counter/counter';
@@ -21,7 +22,14 @@ class App extends React.Component {
         this.state = {
             receipt: [],
             hasReceipt: false,
+            usernameCookie: null,
+            isLoggedIn: false,
         }
+    }
+
+    toggleLoggedIn = () => {
+        this.setState({isLoggedIn: !this.state.isLoggedIn});
+        //this.setState({isLoggedIn: true});
     }
 
     getReceiptHandler=()=>{
@@ -99,9 +107,8 @@ class App extends React.Component {
   render() {
 
     const proceedToReceipt = this.state.hasReceipt;
+
     return (
-
-
       <Router>
         <Route path="/" exact component={Home} />
         <Route path="/login" component={Login} />
@@ -127,12 +134,65 @@ class App extends React.Component {
   }
 }
 
-function Home() {
-    return (
-        <div>
-            <h1>Home</h1>
-        </div>
-    )
+class Home extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            isLoggedIn: false,
+        }
+    }
+
+    // checkIsLoggedIn = () => {
+    //     fetch('/checkCookie')
+    //       .then(function(response) {
+    //         return response.json();
+    //       })
+    //       .then(function(myJson) {
+    //         if (myJson.isLoggedIn === true) {
+    //             this.setState({isLoggedIn: true})
+    //         } else {
+    //             this.setState({isLoggedIn: false})
+    //         }
+    //       });
+    // }
+
+    renderRedirect = () => {
+        let reactThis = this;
+        fetch('/checkCookie')
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(myJson) {
+            console.log(myJson)
+            if (myJson.isLoggedIn === true) {
+                return <Redirect to='/' />
+            } else if (myJson.isLoggedIn === false) {
+                console.log("alsdad")
+                return <Redirect to='/login' />
+            }
+            // if (myJson.isLoggedIn === true) {
+            //     reactThis.setState({isLoggedIn: true})
+            //     <Redirect to='/' />
+
+            // } else {
+            //     reactThis.setState({isLoggedIn: false})
+            //     <Redirect to='/login' />
+            // }
+        });
+    }
+
+
+
+    render(){
+        return (
+            <div>
+            {this.renderRedirect()}
+                <h1>Home</h1>
+                <p>aksjdhaskdhasd</p>
+            </div>
+        )
+    }
+
 }
 
 
