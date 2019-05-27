@@ -6,6 +6,7 @@ import { hot } from 'react-hot-loader';
 
 import Receipt from './components/receipt/receipt';
 import Selection from './components/itemSelection/item';
+import GroupSelect from './components/groupSelect/groupSelect';
 
 import TakePhoto from './components/receipt/takePhoto';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
@@ -163,6 +164,7 @@ class Main extends React.Component{
             <Router>
                 <Route path="/" exact component={App} />
                 <Route path="/takePhoto" component={TakePhoto} />
+                <Route path="/group" component={GroupSelect} />
             </Router>
         );
     }
