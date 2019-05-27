@@ -15,6 +15,8 @@ class LoginForm extends React.Component {
                     <br />
                     <button type="submit">Log In</button>
                 </form>
+                <br />
+                <button type="button"><a href="/register">Sign Up</a></button>
 
             </React.Fragment>
         )

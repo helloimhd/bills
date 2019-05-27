@@ -56,12 +56,8 @@ class Register extends React.Component {
                 reactThis.setState({prompt: "Username is already taken. Choose another username."})
 
             } else if (response.status === created) {
-                reactThis.setState({prompt: "Password is WRONG!"})
-
-            } else if (response.data === true) {
-                // redirect
-                //reactThis.setState({prompt: "Valid"})
-                window.location = '/'
+                reactThis.setState({prompt: "User created! Click here to Log In"})
+                // or redirect
             }
         })
         .catch(error => console.error('Error:', error));
@@ -82,6 +78,8 @@ class Register extends React.Component {
                 email={this.state.email}
                 emailChange={this.emailChange}
                 handleRegisterSubmit={this.handleRegisterSubmit} />
+
+                <p>{this.state.prompt}</p>
 
             </React.Fragment>
 

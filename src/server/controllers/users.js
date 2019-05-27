@@ -22,10 +22,11 @@ module.exports = (db) => {
 
                 // if user is valid, check if password is correct
                 } else {
-                    if (results.rows[0].password === password) {
+                    let shaPw = sha256(password + SALT);
+                    if (results.rows[0].password === shaPw) {
                         // set cookie
                         response.cookie("userId", results.rows[0].id)
-                        response.cookie("username", sha256(results.rows[0].id + SALT))
+                        response.cookie("username", sha256(results.rows[0].username + SALT))
                         response.send({data: true})
 
                     // password is wrong

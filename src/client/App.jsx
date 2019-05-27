@@ -99,7 +99,6 @@ class App extends React.Component {
   render() {
 
     const proceedToReceipt = this.state.hasReceipt;
-
     return (
 
 
