@@ -68,7 +68,10 @@ module.exports = (dbPI) => {
     let getIndvUserItems = (dataIn, callback) => {
         console.log ("HELLO in the model");
 
-        let query = `SELECT item_name, price from items where ${dataIn} = ANY (users_id);`
+        let query = `select receipts.id, items. *
+                    from receipts inner join items
+                    on (receipts.id = items.receipt_id)
+                    where ${dataIn} = ANY (users_id);`
 
         dbPI.query(query, (err, r) => {
             if(err){
