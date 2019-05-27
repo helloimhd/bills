@@ -9,7 +9,7 @@ import Selection from './components/itemSelection/item';
 
 import TakePhoto from './components/receipt/takePhoto';
 import Login from './components/user/login';
-import LoginForm from './components/user/loginForm';
+import Register from './components/user/register';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import WholeSummary from './components/wholeSummary/wholeSummary';
@@ -106,6 +106,7 @@ class App extends React.Component {
       <Router>
         <Route path="/" exact component={Home} />
         <Route path="/login" component={Login} />
+        <Route path="/register" component={Register} />
         <Route path="/takePhoto" component={TakePhoto} />
       </Router>
 

@@ -1,80 +1,76 @@
-import React from 'react';
-import LoginForm from './loginForm';
+    import React from 'react';
+    import LoginForm from './loginForm';
 
-class Login extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            username: "",
-            password: "",
-            userValidation: "",
-            prompt: ""
+    class Login extends React.Component {
+        constructor() {
+            super();
+            this.state = {
+                username: "",
+                password: "",
+                prompt: ""
+            }
+
         }
 
-    }
+        usernameChange = e => {
+            //console.log(e.target.value)
+            this.setState({username: e.target.value});
+        }
 
-    usernameChange = e => {
-        //console.log(e.target.value)
-        this.setState({username: e.target.value});
-    }
+        passwordChange = e => {
+            //console.log(e.target.value)
+            this.setState({password: e.target.value});
+        }
 
-    passwordChange = e => {
-        //console.log(e.target.value)
-        this.setState({password: e.target.value});
-    }
+        handleLoginSubmit = (e) => {
+            e.preventDefault();
 
-    handleLoginSubmit = (e) => {
-        e.preventDefault();
+            let username = this.state.username;
+            let password = this.state.password;
+            let reactThis = this;
 
-        let username = this.state.username;
-        let password = this.state.password;
-        let reactThis = this;
+            let url = '/checkUser';
+            let userData = {username: username, password: password};
 
-        fetch(`/users/${username}`)
-          .then(function(response) {
-            return response.json();
-          })
-          .then(function(myJson) {
-            const data = myJson;
+            fetch(url, {
+              method: 'POST', // or 'PUT'
+              body: JSON.stringify(userData), // data can be `string` or {object}!
+              headers:{
+                'Content-Type': 'application/json'
+              }
+            })
+            .then(function(res) {
+                return res.json()
+            })
+            .then(function(response) {
+                console.log(response.data)
+                if (response.data === null) {
+                    reactThis.setState({prompt: "Username is invalid. Click here to Sign Up"})
 
-            // see if user is invalid
-            if (data.rowCount === 0) {
-                console.log("Username is invalid. Click here to Sign Up")
-                userValidation = null;
-                reactThis.setState({userValidation: null, prompt: "Username is invalid. Click here to Sign Up"})
+                } else if (response.data === false) {
+                    reactThis.setState({prompt: "Password is WRONG!"})
 
-            // if username is valid, check if password is correct
-            } else {
-                const dataPW = data.rows[0].password;
-                if (password === dataPW) {
-                    console.log("Valid");
-                    reactThis.setState({userValidation: true, prompt: "Valid."})
-                    //console.log(userValidation)
-
-                } else {
-                    console.log("Password is wrong")
-                    reactThis.setState({userValidation: false, prompt: "Password is wrong"})
-                    //console.log(userValidation)
-
+                } else if (response.data === true) {
+                    // redirect
+                    //reactThis.setState({prompt: "Valid"})
+                    window.location = '/'
                 }
-            }
-          });  // end of fetch
+            })
+            .catch(error => console.error('Error:', error));
 
+        }  // end handle of login submit
+
+        render() {
+
+            return (
+                <React.Fragment>
+                    <LoginForm username={this.state.username} password={this.state.password} usernameChange={this.usernameChange} passwordChange={this.passwordChange} handleLoginSubmit={this.handleLoginSubmit} />
+
+                    <p>{this.state.prompt}</p>
+                  </React.Fragment>
+
+            )
+        }
     }
 
-    render() {
-        let userValidation = this.state.userValidation;
-        //console.log("uservalidation", userValidation)
-
-        return (
-            <React.Fragment>
-                <LoginForm username={this.state.username} password={this.state.password} usernameChange={this.usernameChange} passwordChange={this.passwordChange} handleLoginSubmit={this.handleLoginSubmit} userValidation={this.state.userValidation} />
-
-                <p>{this.state.prompt}</p>
-              </React.Fragment>
-
-        )
-    }
-}
-
-export default Login;
+    export default Login;

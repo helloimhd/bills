@@ -20,8 +20,8 @@ module.exports = (app, db) => {
 
     ////////  USERS  //////////
    // app.post('/login', users.login);
-    app.get('/users/:username', users.userByUsername)
-
+    app.post('/checkUser', users.checkUser);
+    app.post('/register', users.register);
 
     ////////  RECEIPTS  ////////////
     //app.get('/takePhoto', receipts.takePhoto);
