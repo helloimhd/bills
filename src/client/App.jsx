@@ -57,10 +57,10 @@ class App extends React.Component {
     }
 
 
-    getReceiptHandler=()=>{
-            verifyReceipt: false,
-        }
-    }
+    // getReceiptHandler=()=>{
+    //         verifyReceipt: false,
+    //     }
+    // }
 
     updateReceiptHandler=()=>{
 
@@ -160,26 +160,26 @@ class App extends React.Component {
     }
 
 
-  render() {
+  // render() {
 
-    const proceedToReceipt = this.state.hasReceipt;
-    //console.log(this.state.isLoggedIn)
-    let isLoggedIn = this.state.isLoggedIn;
-    return (
+  //   const proceedToReceipt = this.state.hasReceipt;
+  //   //console.log(this.state.isLoggedIn)
+  //   let isLoggedIn = this.state.isLoggedIn;
+    // return (
 
-    <Router>
-        <Route path="/" exact component={Home} render={() => (
-          this.state.isLoggedIn ? (
-            <Redirect to="/login"/>
-          ) : (
-            <Redirect to="/"/>
-          )
-        )}  />
-        <Route path="/login" component={Login} />
-        <Route path="/register" component={Register} />
-        <Route path="/takePhoto" component={TakePhoto} />
-      </Router>
-      )
+    // <Router>
+    //     <Route path="/" exact component={Home} render={() => (
+    //       this.state.isLoggedIn ? (
+    //         <Redirect to="/login"/>
+    //       ) : (
+    //         <Redirect to="/"/>
+    //       )
+    //     )}  />
+    //     <Route path="/login" component={Login} />
+    //     <Route path="/register" component={Register} />
+    //     <Route path="/takePhoto" component={TakePhoto} />
+    //   </Router>
+    //   )
 
     // return (
     //   <Router>
@@ -206,24 +206,12 @@ class App extends React.Component {
         let newTotal = newSubtotal + newSc + newGst;
 
         let receipt = Object.assign({},this.state.receipt);
+        receipt.subtotal = (newSubtotal).toFixed(2);
+        receipt.serviceCharge = (newSc).toFixed(2);
+        receipt.gst = (newGst).toFixed(2);
+        receipt.total = (newTotal).toFixed(2);
 
-    /* <div>
-        {proceedToReceipt ? (<p></p>) : (<button onClick={()=>{this.getReceiptHandler()}}>PRESS THIS INSTEAD</button>)}
-        {proceedToReceipt ? (<Receipt receipt={this.state.receipt} pickMeUp={this.pickMeUp}/>) : (<p></p>)}
-        <WholeSummary summary={this.state.receipt}/>
-      </div> */
-
-    //);
-  }
-}
-
-
-            receipt.subtotal = (newSubtotal).toFixed(2);
-            receipt.serviceCharge = (newSc).toFixed(2);
-            receipt.gst = (newGst).toFixed(2);
-            receipt.total = (newTotal).toFixed(2);
-
-            this.setState({receipt});
+        this.setState({receipt});
     }
 
     render() {
@@ -255,6 +243,8 @@ class Main extends React.Component{
         return(
             <Router>
                 <Route path="/" exact component={App} />
+                <Route path="/home" component={Home} />
+                <Route path="/login" component={Login} />
                 <Route path="/takePhoto" component={TakePhoto} />
                 <Route path="/splitTesting" component={SplitItems} />
                 <Route path="/group" component={GroupSelect} />

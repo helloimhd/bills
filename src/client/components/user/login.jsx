@@ -86,7 +86,8 @@ class Login extends React.Component {
                 //reactThis.setState({prompt: "Valid"})
                 // set logged in to true
                 //reactThis.setState({isLoggedIn: true})
-                window.location = '/'
+                //window.location = '/'
+                window.location = '/home'
 
             }
         })
