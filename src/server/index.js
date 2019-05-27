@@ -1,6 +1,7 @@
 const http = require('http');
 const express = require('express');
 const methodOverride = require('method-override');
+const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const db = require('./db');
 const bodyParser = require('body-parser');
@@ -35,6 +36,12 @@ app.use(bodyParser.json())
 
 app.use(cookieParser());
 
+// app.use(bodyParser.json({limit: '10mb', extended: true}))
+// app.use(
+//   express.urlencoded({
+//     extended: true
+//   })
+// );
 
 // Set react-views to be the default view engine
 const reactEngine = require('express-react-views').createEngine();

@@ -16,6 +16,7 @@ class ItemElement extends React.Component{
         // console.log('HELLO EDITTING');
         // console.log(this.props);
         this.setState( {isEditMode: !this.state.isEditMode} );
+
     }
 
     updateItemHandler = () =>{
@@ -56,7 +57,6 @@ class ItemElement extends React.Component{
     }
 
     render(){
-
         const item = this.props.item;
         const editState = this.state.isEditMode;
 
@@ -66,6 +66,12 @@ class ItemElement extends React.Component{
 }
 
 class ItemRow extends React.Component{
+    constructor(){
+        super()
+        this.state={
+            status:false,
+        }
+    }
     render(){
 
         let quantity = "quantity";
@@ -73,9 +79,9 @@ class ItemRow extends React.Component{
         let price = "price";
         return(
             <tr>
-                <ItemElement id={this.props.id} type={quantity} item={this.props.item.quantity} pickMeUp={this.props.pickMeUp}/>
-                <ItemElement id={this.props.id} type={item_name} item={this.props.item.item_name} pickMeUp={this.props.pickMeUp}/>
-                <ItemElement id={this.props.id} type={price} item={this.props.item.price} pickMeUp={this.props.pickMeUp}/>
+                <ItemElement id={this.props.id} type={quantity} item={this.props.item.quantity} pickMeUp={this.props.pickMeUp} status={this.state.status}/>
+                <ItemElement id={this.props.id} type={item_name} item={this.props.item.item_name} pickMeUp={this.props.pickMeUp} status={this.state.status}/>
+                <ItemElement id={this.props.id} type={price} item={this.props.item.price} pickMeUp={this.props.pickMeUp} status={this.state.status}/>
             </tr>
         );
     }
