@@ -7,7 +7,8 @@ class Login extends React.Component {
         this.state = {
             username: "",
             password: "",
-            userValidation: undefined
+            userValidation: "",
+            prompt: ""
         }
 
     }
@@ -23,41 +24,54 @@ class Login extends React.Component {
     }
 
     handleLoginSubmit = (e) => {
+        e.preventDefault();
+
         let username = this.state.username;
         let password = this.state.password;
+        let reactThis = this;
 
         fetch(`/users/${username}`)
           .then(function(response) {
             return response.json();
           })
           .then(function(myJson) {
-            //const data = JSON.stringify(myJson);
             const data = myJson;
+
             // see if user is invalid
             if (data.rowCount === 0) {
                 console.log("Username is invalid. Click here to Sign Up")
-                this.setState({userValidation: null});
+                userValidation = null;
+                reactThis.setState({userValidation: null, prompt: "Username is invalid. Click here to Sign Up"})
 
             // if username is valid, check if password is correct
             } else {
-                console.log(data["rows"])
                 const dataPW = data.rows[0].password;
                 if (password === dataPW) {
                     console.log("Valid");
-                    this.setState({userValidation: true});
+                    reactThis.setState({userValidation: true, prompt: "Valid."})
+                    //console.log(userValidation)
+
                 } else {
                     console.log("Password is wrong")
-                    this.setState({userValidation: false});
+                    reactThis.setState({userValidation: false, prompt: "Password is wrong"})
+                    //console.log(userValidation)
+
                 }
             }
-          });
+          });  // end of fetch
 
-        e.preventDefault();
     }
 
     render() {
+        let userValidation = this.state.userValidation;
+        //console.log("uservalidation", userValidation)
+
         return (
-            <LoginForm username={this.state.username} password={this.state.password} usernameChange={this.usernameChange} passwordChange={this.passwordChange} handleLoginSubmit={this.handleLoginSubmit} userValidation={this.state.userValidation} />
+            <React.Fragment>
+                <LoginForm username={this.state.username} password={this.state.password} usernameChange={this.usernameChange} passwordChange={this.passwordChange} handleLoginSubmit={this.handleLoginSubmit} userValidation={this.state.userValidation} />
+
+                <p>{this.state.prompt}</p>
+              </React.Fragment>
 
         )
     }
