@@ -32,4 +32,6 @@ module.exports = (app, db) => {
     app.get('/receipt/:id/items', receipts.giveMeReceipt);
 
 
+    app.get('/group/search', groups.getUsersData);
+    app.post('/group/selected', groups.updateGroupData);
 };
