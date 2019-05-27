@@ -65,6 +65,10 @@ module.exports = (dbPI) => {
         })
     }
 
+    let updateReceipt = ( dataIn, callback)=>{
+        console.log('send me');
+        // let query = ``
+    }
         // select receipts.id, items.*
         // from receipts inner join items
         // on (receipts.id = items.receipt_id)
@@ -80,6 +84,7 @@ module.exports = (dbPI) => {
   return {
     createReceipt,
     getReceipt,
-    yo
+    yo,
+    updateReceipt,
   };
 };

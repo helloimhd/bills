@@ -20,6 +20,7 @@ const tabUrl = 'https://api.tabscanner.com/AcMHx0XLLafK4avM8WdBLhZixu2fRP8WeY0z4
 
 module.exports = (db) => {
 
+
     let giveMeReceipt = ( req, res ) =>{
 
         //can use http path or ajax put in body
@@ -216,11 +217,27 @@ module.exports = (db) => {
         })
     }
 
+    let updateReceipt = ( req, res)=>{ // update receipt and items;
+        console.log('helo in update receipt controller');
+
+        let dataIn = req.body.obj;
+        console.log(dataIn);
+        // db.receipts.updateReceipt(dataIn, (err,data)=>{
+        //     if(err){
+        //         console.error('error updating items entry', err);
+        //         res.status(500).send("Error getting group stuff");
+        //     } else {
+        //         console.log('back in Receipt CONTROLLER');
+        //         res.send(data);
+        //     }
+        // })
+    }
 
   return {
     giveMeReceipt,
     uploadPhoto,
     summaryReceipt,
-    testItemName
+    updateReceipt,
+    testItemName,
   };
 };
