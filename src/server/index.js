@@ -4,6 +4,7 @@ const methodOverride = require('method-override');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const db = require('./db');
+const bodyParser = require('body-parser');
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 process.env.PORT = process.env.PORT || 3000;
@@ -23,15 +24,24 @@ const app = express();
 
 app.set('env', process.env.NODE_ENV);
 
+
 // Set up middleware
-app.use(methodOverride('_method'));
+app.use(methodOverride('_method'))
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
+
 app.use(cookieParser());
-app.use(bodyParser.json({limit: '10mb', extended: true}))
-app.use(
-  express.urlencoded({
-    extended: true
-  })
-);
+
+// app.use(bodyParser.json({limit: '10mb', extended: true}))
+// app.use(
+//   express.urlencoded({
+//     extended: true
+//   })
+// );
 
 // Set react-views to be the default view engine
 const reactEngine = require('express-react-views').createEngine();
