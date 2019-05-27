@@ -57,6 +57,7 @@ class WholeSummary extends React.Component {
     } else {
         return (
             <div>
+                <h1>Bill Summary</h1>
                 <table>
                   <tbody>
                       <tr>
