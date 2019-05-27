@@ -5,15 +5,6 @@
  */
 
 module.exports = (dbPI) => {
-    // `dbPI` is accessible within this function scope
-    let getGroupMembers = ( dataIn, callback ) =>{
-        //take in receipt ID
-        let query = `SELECT * from groups where receipt_id = ${dataIn}`;
-
-        dbPI.query( query, (err, r)=>{
-            callback(err, r );
-        })
-    }
 
   let getUsersData = (callback) => {
         // let query = `SELECT * FROM users WHERE username ILIKE '%${data}%';`
@@ -27,33 +18,44 @@ module.exports = (dbPI) => {
         })
     }
 
-  let updateGroupData = (data, callback) => {
+    let updateGroupData = (data, callback) => {
 
-        // let query = `INSERT INTO groups
-        //             (receipt_id, friend_id, amount)
-        //             VALUES
-        //             ($1, $2, $3);`
+        console.log('INSIDE MODELS', data)
 
-        // let values;
+        let query = `INSERT INTO groups (friend_id, amount) VALUES `;
+        //////NEED RECEIPT INFO SOMEHWERWE
+        ////GIVING DEFAULT VALUE FIRST
+        let values="";
 
-        // for (i=0; i<data.length; i++) {
-        //   values = values + `(${data.receiptId}, ${data.friendId}, null)`
-        // }
+        for (i=0; i<data.length; i++) {
+          values = values + `( ${data[i]}, null),` // can add more column variables here
+        }
 
-        // dbPI.query(query, values, (err, r) => {
-        //     if(err){
-        //         callback( err, null)
-        //     } else {
-        //         callback(null, r.rows);
-        //     }
-        // })
+        query = query + values.slice(0,values.length-1);
+
+        dbPI.query(query,(err, r) => {
+            if(err){
+                callback( err, null)
+            } else {
+                callback(null, r.rows);
+            }
+        })
     }
 
 
+    let getGroupMembers = ( dataIn, callback ) =>{
+        //take in receipt ID
+        let query = `SELECT * from groups where receipt_id = ${dataIn}`;
+
+        dbPI.query( query, (err, r)=>{
+            callback(err, r );
+        })
+    }
 
   return {
     getUsersData,
     updateGroupData,
     getGroupMembers,
+
   };
 };

@@ -27,7 +27,7 @@ class IndividualMember extends React.Component{
     // }
 
     render(){
-
+        let status = false;
         return(
             <React.Fragment>
                 <input
@@ -36,7 +36,7 @@ class IndividualMember extends React.Component{
                     id={this.props.member[0].id}
                     ref="input"
                     onChange={(e)=>{this.checkBoxHandler(e)}}
-                    checked={this.props.status}
+
                     />{this.props.member[0].username}<br/>{this.props.currentItem.item_name}<br/>
             </React.Fragment>
         );
@@ -68,7 +68,7 @@ class ItemDetail extends React.Component{
                         currentItem={this.props.item}
                         member={item}
                         key={index}
-                        checked={status}
+                        // checked={status}
                         takeStatus={this.takeStatusFromChild}/>
                 )
         })

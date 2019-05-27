@@ -1,5 +1,57 @@
 module.exports = (db) => {
 
+  let getUsersData = (req, res) => {
+        // var dataIn = req.query.search;
+        // console.log(dataIn)
+        // if (dataIn === undefined) {
+        //   dataIn = ""
+        // }
+
+        db.groups.getUsersData((err, data) =>{
+            if(err){
+                res.status(500).send("Error getting users");
+            } else {
+                if(data.length === 0){
+                    res.send('No entry');
+                }else{
+                    res.send( {users: data} );
+                }
+            }
+        })
+    }
+
+
+    let updateGroupData = (req, res) => {
+        console.log('UPDATE GROUP DATA CONTROLLER');
+
+        let dataIn = req.body.obj;
+
+
+        db.groups.updateGroupData( dataIn,(err,data)=>{
+            if(err){
+                console.error('error adding new group entry', err);
+                res.status(500).send("Error getting group stuff");
+            } else {
+                console.log('back in GROUP CONTROLLER');
+                res.send(data);
+            }
+        })
+
+
+
+        // db.groups.getUsersData( dataIn, (err, data) =>{
+        //     if(err){
+        //         res.status(500).send("Error getting users");
+        //     } else {
+        //         if(data.length === 0){
+        //             res.send('No entry');
+        //         }else{
+        //             res.send( {users: data} );
+        //         }
+        //     }
+        // })
+    }
+
     let giveMeGroupMembers = ( req, res ) =>{
         // console.log('hello group controllers')
         let input = req.params.id;
@@ -28,50 +80,15 @@ module.exports = (db) => {
                         }
                     })
                     // console.log('BACK at GROUP Controllers', userIdsArr); // get the group members id. need to get their user details;
-
-  let getUsersData = (req, res) => {
-        // var dataIn = req.query.search;
-        // console.log(dataIn)
-        // if (dataIn === undefined) {
-        //   dataIn = ""
-        // }
-
-        db.groups.getUsersData((err, data) =>{
-            if(err){
-                res.status(500).send("Error getting users");
-            } else {
-                if(data.length === 0){
-                    res.send('No entry');
-                }else{
-                    res.send( {users: data} );
-
                 }
             }
         })
-    }
-
-
-
-  let updateGroupData = (req, res) => {
-        var dataIn = req.query.search;
-        console.log(req.body.group)
-
-        // db.groups.getUsersData( dataIn, (err, data) =>{
-        //     if(err){
-        //         res.status(500).send("Error getting users");
-        //     } else {
-        //         if(data.length === 0){
-        //             res.send('No entry');
-        //         }else{
-        //             res.send( {users: data} );
-        //         }
-        //     }
-        // })
     }
 
   return {
     getUsersData,
     updateGroupData,
     giveMeGroupMembers,
+
   };
 };

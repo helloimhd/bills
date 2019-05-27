@@ -1,6 +1,7 @@
 const http = require('http');
 const express = require('express');
 const methodOverride = require('method-override');
+const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const db = require('./db');
 
@@ -25,6 +26,7 @@ app.set('env', process.env.NODE_ENV);
 // Set up middleware
 app.use(methodOverride('_method'));
 app.use(cookieParser());
+app.use(bodyParser.json({limit: '10mb', extended: true}))
 app.use(
   express.urlencoded({
     extended: true

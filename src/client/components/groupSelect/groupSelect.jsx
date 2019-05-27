@@ -20,7 +20,7 @@ class GroupSelect extends React.Component {
     }
 
     getUsersHandler(){
-      fetch(`/group/search`)
+      fetch(`/search/group`)
         .then(response=>response.json())
         .then(response=>this.setState({users: response.users}))
     }
@@ -31,12 +31,15 @@ class GroupSelect extends React.Component {
 
     enterHandler(event){
       if (event.keyCode === 13) {
-        this.submitHandler();
+
       }
     }
 
     updateGroupHandler(event){
-      // console.log(this.state.users)
+        console.log('helloo SEND TO BACK END');
+        // console.log(this.state.users);
+        // console.log(this.state.tickedUsers);
+        // console.log(this.state.users)
 
       const checked = event.target.checked
       const users = this.state.users
@@ -50,19 +53,34 @@ class GroupSelect extends React.Component {
           // console.log(user.checked)
           // console.log(user)
           ticked.push(user)
-          console.log(ticked)
           this.setState({tickedUsers: ticked})
         }
       }
+      console.log(ticked)
+      let idInGroup = [];
+      ticked.forEach((r)=>{
+        idInGroup.push(r.id);
+      })
 
-      // fetch(`/group/selected`)
-      //   .then(response=>console.log(response.json()))
+      let input = { obj : idInGroup};
+
+      fetch(`/selected/group`,{
+        method: 'POST',
+        headers:{
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify(input),
+      }).then(res=>console.log(res.json()))
     }
 
+
     checkerHandler(event){
+
       const userId = event.target.value
       const checked = event.target.checked
       const users = this.state.users
+
 
       for (let index in users){
         let user = users[index]
@@ -77,6 +95,7 @@ class GroupSelect extends React.Component {
     }
 
     componentDidMount(){
+        console.log('helo');
       this.getUsersHandler()
     }
 
@@ -114,7 +133,7 @@ class GroupSelect extends React.Component {
 
 
               <button
-                onClick={this.updateGroupHandler}
+                onClick={(e)=>{this.updateGroupHandler(e)}}
                 > connect this button to next page </button>
             </div>
         );
