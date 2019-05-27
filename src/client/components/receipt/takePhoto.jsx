@@ -2,11 +2,6 @@ import React from 'react';
 
 class TakePhoto extends React.Component {
 
-    sendPhoto = e => {
-        e.preventDefault();
-        console.log(e);
-    }
-
     render() {
         return (
             <div>

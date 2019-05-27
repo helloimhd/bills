@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom'
 import { hot } from 'react-hot-loader';
 
 // import Counter from './components/counter/counter';
@@ -6,9 +7,17 @@ import { hot } from 'react-hot-loader';
 
 import Receipt from './components/receipt/receipt';
 import Selection from './components/itemSelection/item';
+import GroupSelect from './components/groupSelect/groupSelect';
+
+import Home from './components/home/home';
 
 import TakePhoto from './components/receipt/takePhoto';
+
+import Login from './components/user/login';
+import Register from './components/user/register';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
+
 import WholeSummary from './components/wholeSummary/wholeSummary';
 
 import SplitItems from './components/splitItems/splitItems'
@@ -21,6 +30,34 @@ class App extends React.Component {
             receipt: [],
             // groupMembers: [],
             hasReceipt: false,
+
+            isLoggedIn: false,
+        }
+    }
+
+    componentDidMount() {
+        this.checkLoggedIn();
+    }
+
+    checkLoggedIn = () => {
+        let reactThis = this;
+        fetch('/checkCookie')
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(myJson) {
+           // console.log(myJson)
+            if (myJson.isLoggedIn === true) {
+                reactThis.setState({isLoggedIn: true})
+
+            } else if (myJson.isLoggedIn === false) {
+                reactThis.setState({isLoggedIn: false})
+            }
+        });
+    }
+
+
+    getReceiptHandler=()=>{
             verifyReceipt: false,
         }
     }
@@ -116,11 +153,42 @@ class App extends React.Component {
         this.quickMath();
     }
 
+
+  render() {
+
+    const proceedToReceipt = this.state.hasReceipt;
+    //console.log(this.state.isLoggedIn)
+    let isLoggedIn = this.state.isLoggedIn;
+    return (
+
+    <Router>
+        <Route path="/" exact component={Home} render={() => (
+          this.state.isLoggedIn ? (
+            <Redirect to="/login"/>
+          ) : (
+            <Redirect to="/"/>
+          )
+        )}  />
+        <Route path="/login" component={Login} />
+        <Route path="/register" component={Register} />
+        <Route path="/takePhoto" component={TakePhoto} />
+      </Router>
+      )
+
+    // return (
+    //   <Router>
+    //     <Route path="/" exact component={Home} />
+    //     <Route path="/login" component={Login} />
+    //     <Route path="/register" component={Register} />
+    //     <Route path="/takePhoto" component={TakePhoto} />
+    //   </Router>
+
     quickMath = () =>{ // when user edits receipt, function checks prices and updates state
         let updatedReceiptItems = this.state.receipt;
         let prices = [];
 
         const reducer = (accumulator, currentValue) => accumulator + currentValue;
+
 
         for(let i = 0; i < updatedReceiptItems.items.length; i ++){
             prices.push(updatedReceiptItems.items[i].price);
@@ -132,6 +200,17 @@ class App extends React.Component {
         let newTotal = newSubtotal + newSc + newGst;
 
         let receipt = Object.assign({},this.state.receipt);
+
+    /* <div>
+        {proceedToReceipt ? (<p></p>) : (<button onClick={()=>{this.getReceiptHandler()}}>PRESS THIS INSTEAD</button>)}
+        {proceedToReceipt ? (<Receipt receipt={this.state.receipt} pickMeUp={this.pickMeUp}/>) : (<p></p>)}
+        <WholeSummary summary={this.state.receipt}/>
+      </div> */
+
+    //);
+  }
+}
+
 
             receipt.subtotal = (newSubtotal).toFixed(2);
             receipt.serviceCharge = (newSc).toFixed(2);
@@ -167,6 +246,7 @@ class Main extends React.Component{
                 <Route path="/" exact component={App} />
                 <Route path="/takePhoto" component={TakePhoto} />
                 <Route path="/splitTesting" component={SplitItems} />
+                <Route path="/group" component={GroupSelect} />
             </Router>
         );
     }
