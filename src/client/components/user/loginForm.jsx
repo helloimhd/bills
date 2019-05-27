@@ -17,7 +17,6 @@ class LoginForm extends React.Component {
                 </form>
                 <br />
                 <button type="button"><a href="/register">Sign Up</a></button>
-
             </React.Fragment>
         )
 

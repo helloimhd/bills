@@ -1,6 +1,8 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom'
 import LoginForm from './loginForm';
+import Home from '../home/home';
+
 
 class Login extends React.Component {
     constructor() {
@@ -14,41 +16,31 @@ class Login extends React.Component {
         this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
     }
 
-    // checkIsLoggedIn = () => {
-    //     fetch('/checkCookie')
-    //       .then(function(response) {
-    //         return response.json();
-    //       })
-    //       .then(function(myJson) {
-    //         if (myJson.isLoggedIn === true) {
-    //             this.setState({isLoggedIn: true})
-    //         }
-    //       });
+    // componentDidMount() {
+    //     this.checkLoggedIn();
     // }
 
-    renderRedirect = () => {
-        let reactThis = this;
-        fetch('/checkCookie')
-        .then(function(response) {
-            return response.json();
-        })
-        .then(function(myJson) {
-           // console.log(myJson)
-            if (myJson.isLoggedIn === true) {
-                window.location = '/'
-            } else if (myJson.isLoggedIn === false) {
-                window.location = '/login'
-            }
-            // if (myJson.isLoggedIn === true) {
-            //     reactThis.setState({isLoggedIn: true})
-            //     <Redirect to='/' />
-
-            // } else {
-            //     reactThis.setState({isLoggedIn: false})
-            //     <Redirect to='/login' />
-            // }
-        });
-    }
+    // checkLoggedIn = () => {
+    //     let reactThis = this;
+    //     fetch('/checkCookie')
+    //     .then(function(response) {
+    //         return response.json();
+    //     })
+    //     .then(function(myJson) {
+    //        // console.log(myJson)
+    //         if (myJson.isLoggedIn === true) {
+    //             //window.location.href = '/'
+    //             reactThis.setState({isLoggedIn: true})
+    //             return <Redirect to="/" />
+    //             //this.props.history.push('/');
+    //         } else if (myJson.isLoggedIn === false) {
+    //             //window.location.href = '/login'
+    //             reactThis.setState({isLoggedIn: false})
+    //             //this.props.history.push('/login');
+    //             return <Redirect to="/login" />
+    //         }
+    //     });
+    // }
 
     usernameChange = e => {
         //console.log(e.target.value)
@@ -95,22 +87,25 @@ class Login extends React.Component {
                 // set logged in to true
                 //reactThis.setState({isLoggedIn: true})
                 window.location = '/'
+
             }
         })
         .catch(error => console.error('Error:', error));
 
     }  // end handle of login submit
 
+
     render() {
-        return (
-            <React.Fragment>
-                {this.renderRedirect()}
-                <LoginForm username={this.state.username} password={this.state.password} usernameChange={this.usernameChange} passwordChange={this.passwordChange} handleLoginSubmit={this.handleLoginSubmit} />
 
-                <p>{this.state.prompt}</p>
-              </React.Fragment>
+            return (
+                <React.Fragment>
+                    <LoginForm username={this.state.username} password={this.state.password} usernameChange={this.usernameChange} passwordChange={this.passwordChange} handleLoginSubmit={this.handleLoginSubmit} />
 
-        )
+                    <p>{this.state.prompt}</p>
+                  </React.Fragment>
+
+            )
+
     }
 }
 

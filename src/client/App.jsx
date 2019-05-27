@@ -8,6 +8,8 @@ import { hot } from 'react-hot-loader';
 import Receipt from './components/receipt/receipt';
 import Selection from './components/itemSelection/item';
 
+import Home from './components/home/home';
+
 import TakePhoto from './components/receipt/takePhoto';
 import Login from './components/user/login';
 import Register from './components/user/register';
@@ -22,15 +24,31 @@ class App extends React.Component {
         this.state = {
             receipt: [],
             hasReceipt: false,
-            usernameCookie: null,
             isLoggedIn: false,
         }
     }
 
-    toggleLoggedIn = () => {
-        this.setState({isLoggedIn: !this.state.isLoggedIn});
-        //this.setState({isLoggedIn: true});
+    componentDidMount() {
+        this.checkLoggedIn();
     }
+
+    checkLoggedIn = () => {
+        let reactThis = this;
+        fetch('/checkCookie')
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(myJson) {
+           // console.log(myJson)
+            if (myJson.isLoggedIn === true) {
+                reactThis.setState({isLoggedIn: true})
+
+            } else if (myJson.isLoggedIn === false) {
+                reactThis.setState({isLoggedIn: false})
+            }
+        });
+    }
+
 
     getReceiptHandler=()=>{
         //retrieves receipt and item info
@@ -107,14 +125,31 @@ class App extends React.Component {
   render() {
 
     const proceedToReceipt = this.state.hasReceipt;
-
+    //console.log(this.state.isLoggedIn)
+    let isLoggedIn = this.state.isLoggedIn;
     return (
-      <Router>
-        <Route path="/" exact component={Home} />
+
+    <Router>
+        <Route path="/" exact component={Home} render={() => (
+          this.state.isLoggedIn ? (
+            <Redirect to="/login"/>
+          ) : (
+            <Redirect to="/"/>
+          )
+        )}  />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
         <Route path="/takePhoto" component={TakePhoto} />
       </Router>
+      )
+
+    // return (
+    //   <Router>
+    //     <Route path="/" exact component={Home} />
+    //     <Route path="/login" component={Login} />
+    //     <Route path="/register" component={Register} />
+    //     <Route path="/takePhoto" component={TakePhoto} />
+    //   </Router>
 
 
      /* <div>
@@ -130,69 +165,8 @@ class App extends React.Component {
         <WholeSummary summary={this.state.receipt}/>
       </div> */
 
-    );
+    //);
   }
-}
-
-class Home extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            isLoggedIn: false,
-        }
-    }
-
-    // checkIsLoggedIn = () => {
-    //     fetch('/checkCookie')
-    //       .then(function(response) {
-    //         return response.json();
-    //       })
-    //       .then(function(myJson) {
-    //         if (myJson.isLoggedIn === true) {
-    //             this.setState({isLoggedIn: true})
-    //         } else {
-    //             this.setState({isLoggedIn: false})
-    //         }
-    //       });
-    // }
-
-    renderRedirect = () => {
-        let reactThis = this;
-        fetch('/checkCookie')
-        .then(function(response) {
-            return response.json();
-        })
-        .then(function(myJson) {
-            console.log(myJson)
-            if (myJson.isLoggedIn === true) {
-                return <Redirect to='/' />
-            } else if (myJson.isLoggedIn === false) {
-                console.log("alsdad")
-                return <Redirect to='/login' />
-            }
-            // if (myJson.isLoggedIn === true) {
-            //     reactThis.setState({isLoggedIn: true})
-            //     <Redirect to='/' />
-
-            // } else {
-            //     reactThis.setState({isLoggedIn: false})
-            //     <Redirect to='/login' />
-            // }
-        });
-    }
-
-
-
-    render(){
-        return (
-            <div>
-            {this.renderRedirect()}
-                <h1>Home</h1>
-                <p>aksjdhaskdhasd</p>
-            </div>
-        )
-    }
-
 }
 
 
