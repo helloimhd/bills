@@ -65,24 +65,24 @@ class WholeSummary extends React.Component {
                           <td><strong>Price</strong></td>
                           <td><strong>Quantity</strong></td>
                       </tr>
-                          {this.state.receiptItems.map((allItems, i) =>
-{
-    return                           (
-                              <tr key={i}>
-                                  <td>
-                                  {allItems.receipt_id}
-                                  </td>
-                                  <td>
-                                  {allItems.item_name}
-                                  </td>
-                                  <td>
-                                  {allItems.price}
-                                  </td>
-                                  <td>
-                                  {allItems.quantity}
-                                  </td>
-                              </tr>
-                          )})}
+                          {this.state.receiptItems.map((allItems, i) => {
+                                return (
+                                  <tr key={i}>
+                                      <td>
+                                      {allItems.receipt_id}
+                                      </td>
+                                      <td>
+                                      {allItems.item_name}
+                                      </td>
+                                      <td>
+                                      {allItems.price}
+                                      </td>
+                                      <td>
+                                      {allItems.quantity}
+                                      </td>
+                                  </tr>
+                                )}
+                            )}
                       <tr>
                           <td><strong>Total $</strong></td>
                           <td></td>

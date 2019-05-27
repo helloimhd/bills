@@ -10,6 +10,7 @@ import Selection from './components/itemSelection/item';
 import TakePhoto from './components/receipt/takePhoto';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import WholeSummary from './components/wholeSummary/wholeSummary';
+import IndividualSummary from './components/individualSummary/individualSummary';
 
 class App extends React.Component {
     constructor() {
@@ -148,6 +149,7 @@ class App extends React.Component {
                 {proceedToReceipt ? (<Receipt receipt={this.state.receipt} pickMeUp={this.pickMeUp}/>) : (<p></p>)}
                 {proceedToItemSelection ? (<Selection items={this.state.receipt.items} group={this.state.groupMembers}/>) : (<p></p>)}
                 <WholeSummary summary={this.state.receipt}/>
+                <IndividualSummary/>
                 <a href="/takePhoto">Click here to take photo</a>
             </div>
     );
