@@ -222,22 +222,32 @@ module.exports = (db) => {
 
         let dataIn = req.body.obj;
         console.log(dataIn);
-        // db.receipts.updateReceipt(dataIn, (err,data)=>{
-        //     if(err){
-        //         console.error('error updating items entry', err);
-        //         res.status(500).send("Error getting group stuff");
-        //     } else {
-        //         console.log('back in Receipt CONTROLLER');
-        //         res.send(data);
-        //     }
-        // })
+        let updateReceiptObj = {
+                receipt_id: dataIn.receipt_id,
+                user_id: dataIn.user_id,
+                group_id: dataIn.group_id,
+                img_token: dataIn.img_token,
+                subtotal: Number(Number(dataIn.subtotal).toFixed(2)),
+                total: Number(Number(dataIn.total).toFixed(2)),
+            }
+
+            // console.log('bOOM',updateReceiptObj)
+        db.receipts.updateReceipt(updateReceiptObj, (err,data)=>{
+            if(err){
+                console.error('error updating items entry', err);
+                res.status(500).send("Error getting group stuff");
+            } else {
+                console.log('back in Receipt CONTROLLER');
+                res.send(data);
+            }
+        })
     }
 
   return {
     giveMeReceipt,
     uploadPhoto,
     summaryReceipt,
-    updateReceipt,
     testItemName,
+    updateReceipt,
   };
 };

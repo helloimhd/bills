@@ -220,17 +220,19 @@ class MainReceipt extends React.Component {
     //     });
     // }
     updateReceiptRequest=()=>{
+        console.log('wtf')
+        let receipt = this.state.receipt;
+        let input = { obj: receipt };
 
-        let input = { obj: this.state.receipt };
-        console.log('HELLO ', receiptUpdate);
-        fetch(`/receipt/update`,{
+        fetch(`/update/receipt`,{
             method:'POST',
             headers:{
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
             },
             body: JSON.stringify(input),
-        }).then(res=>console.log(res.json()));
+        }).then(res=>console.log('hello'));
+        // console.log(res.json())
     }
 
 
@@ -240,7 +242,9 @@ class MainReceipt extends React.Component {
     }
 
     componentDidMount=()=>{
+        console.log('fucker mount');
         this.getReceiptHandler();
+
     }
 
     getReceiptHandler=()=>{ //clunky way to retrieve backend data on RECEIPT, ITEMS and GroupMembers
@@ -356,7 +360,7 @@ class MainReceipt extends React.Component {
 
        return (
             <div>
-                <Receipt receipt={this.state.receipt} pickMeUp={this.pickMeUp} updateReceipt={this.updateHandler}/>
+                <Receipt receipt={this.state.receipt} pickMeUp={this.pickMeUp} updateReceipt={this.updateReceiptRequest}/>
                 <WholeSummary summary={this.state.receipt}/>
                 <a href="/takePhoto">Click here to take photo</a>
             </div>
