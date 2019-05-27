@@ -20,6 +20,10 @@ const tabUrl = 'https://api.tabscanner.com/AcMHx0XLLafK4avM8WdBLhZixu2fRP8WeY0z4
 
 module.exports = (db) => {
 
+    let updateReceipt = ( req, res)=>{
+
+    }
+
     let giveMeReceipt = ( req, res ) =>{
 
         //can use http path or ajax put in body
@@ -201,5 +205,6 @@ module.exports = (db) => {
     giveMeReceipt,
     uploadPhoto,
     summaryReceipt,
+    updateReceipt,
   };
 };

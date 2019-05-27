@@ -156,7 +156,7 @@ class ButtonProceedTab extends React.Component{
             <div>
                 <p>Proceed?</p>
                 <button>No</button>
-                <button>Yes</button>
+                <button onClick={()=>{this.props.updateReceipt()}}>Yes</button>
             </div>
         );
     }
@@ -178,7 +178,7 @@ class Receipt extends React.Component{
                 <div>
                     <ItemTable items={this.props.receipt.items} pickMeUp={this.props.pickMeUp}/>
                     <PaymentSummary payment={this.props.receipt}/>
-                    <ButtonProceedTab/>
+                    <ButtonProceedTab updateReceipt={this.props.updateReceipt}/>
                 </div>
             )
         }

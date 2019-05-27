@@ -24,6 +24,12 @@ class App extends React.Component {
         }
     }
 
+    updateReceiptHandler=()=>{
+
+
+        console.log('hello');
+    }
+
     getReceiptHandler=()=>{ //clunky way to retrieve backend data on RECEIPT, ITEMS and GroupMembers
         //retrieves receipt and item info
         console.log('SEND AND GET SOMETHING')
@@ -146,7 +152,7 @@ class App extends React.Component {
         return (
             <div>
                 {proceedToReceipt ? (<p></p>) : (<button onClick={()=>{this.getReceiptHandler()}}>PRESS THIS INSTEAD</button>)}
-                {proceedToReceipt ? (<Receipt receipt={this.state.receipt} pickMeUp={this.pickMeUp}/>) : (<p></p>)}
+                {proceedToReceipt ? (<Receipt receipt={this.state.receipt} pickMeUp={this.pickMeUp} updateReceipt={this.updateReceiptHandler} />) : (<p></p>)}
                 {proceedToItemSelection ? (<Selection items={this.state.receipt.items} group={this.state.groupMembers}/>) : (<p></p>)}
                 <WholeSummary summary={this.state.receipt}/>
                 <a href="/takePhoto">Click here to take photo</a>

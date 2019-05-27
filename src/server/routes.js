@@ -25,6 +25,7 @@ module.exports = (app, db) => {
     app.get('/receipt/:id', receipts.giveMeReceipt);
     app.get('/items/:id', items.getItems);
     app.get('/group/:id', groups.giveMeGroupMembers);
+    app.post('receipt/update', receipts.updateReceipt);
 
     // Id is the receipt id
     app.get('/summary/:id', receipts.summaryReceipt);
@@ -32,6 +33,6 @@ module.exports = (app, db) => {
     app.get('/receipt/:id/items', receipts.giveMeReceipt);
 
 
-    app.get('/search/group', groups.getUsersData);
-    app.post('/selected/group', groups.updateGroupData);
+    app.get('/search/group', groups.getUsersData); // gets all users
+    app.post('/selected/group', groups.updateGroupData); // add new group & create new receipt
 };
