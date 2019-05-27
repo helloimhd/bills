@@ -5,9 +5,6 @@ import Login from '../user/login';
 class Home extends React.Component {
     constructor() {
         super();
-        this.state = {
-            isLoggedIn: ""
-        }
     }
 
     // checkLoggedIn = () => {
