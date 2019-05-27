@@ -4,7 +4,7 @@
  * ===========================================
  */
 module.exports = (dbPoolInstance) => {
-  // `dbPoolInstance` is accessible within this function scope
+  // `dbPoopInstance` is accessible within this function scope
 
   let getAll = (callback) => {
     dbPoolInstance.query('SELECT * from products', (error, queryResult) => {

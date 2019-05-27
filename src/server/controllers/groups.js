@@ -85,10 +85,33 @@ module.exports = (db) => {
         })
     }
 
+    let involvedInReceipt = ( req, res ) =>{
+        // console.log('hello group controllers')
+        let input = req.params.id;
+        console.log(input)
+        console.log("MERMMBEMMMERRERERERSSS")
+        db.groups.getGroupMembers( input, (err, grpMembersId) =>{
+            if(err){
+                console.error('error getting group member(s)', err);
+                res.status(500).send("Error getting group stuff");
+            } else {
+                if(grpMembersId.rows.length === 0 ){
+                    res.send('No group members here');
+                } else {
+                    // console.log(grpMembersId.rows)
+                    // console.log('BEFORE RESPONSENENENE')
+                    res.send(grpMembersId.rows)
+                }
+            }
+        })
+    }
+
+
   return {
     getUsersData,
     updateGroupData,
     giveMeGroupMembers,
+    involvedInReceipt,
 
   };
 };
