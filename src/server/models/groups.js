@@ -40,9 +40,17 @@ module.exports = (dbPoolInstance) => {
     }
 
 
+    let getGroupMembers = ( dataIn, callback ) =>{
+        //take in receipt ID
+        let query = `SELECT * from groups where receipt_id = ${dataIn}`;
+
+        dbPI.query( query, (err, r)=>{
+            callback(err, r );
+        })
+    }
 
   return {
     getUsersData,
     updateGroupData,
+    getGroupMembers,
   };
-};
