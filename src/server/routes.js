@@ -37,6 +37,7 @@ module.exports = (app, db) => {
     // app.get('/group/:id', groups.giveMeGroupMembers);
 
     app.post('/update/receipt', receipts.updateReceipt);
+    app.post('/update/items', items.updateItems);
 
     // Splitting items path
     app.get('/group/:id', groups.involvedInReceipt)

@@ -156,7 +156,7 @@ class ButtonProceedTab extends React.Component{
         return(
             <div>
                 <p>Proceed?</p>
-                <button>No</button>
+                <button><a href="/takePhoto">Go back to retake photo?</a></button>
                 <button onClick={()=>{this.props.updateReceipt()}}>Yes</button>
             </div>
         );
@@ -199,28 +199,9 @@ class MainReceipt extends React.Component {
         }
     }
 
-    // componentDidMount() {
-    //     this.checkLoggedIn();
-    // }
-
-    // checkLoggedIn = () => {
-    //     let reactThis = this;
-    //     fetch('/checkCookie')
-    //     .then(function(response) {
-    //         return response.json();
-    //     })
-    //     .then(function(myJson) {
-    //        // console.log(myJson)
-    //         if (myJson.isLoggedIn === true) {
-    //             reactThis.setState({isLoggedIn: true})
-
-    //         } else if (myJson.isLoggedIn === false) {
-    //             reactThis.setState({isLoggedIn: false})
-    //         }
-    //     });
-    // }
     updateReceiptRequest=()=>{
-        console.log('wtf')
+
+        console.log('send request to update receipt')
         let receipt = this.state.receipt;
         let input = { obj: receipt };
 
@@ -235,14 +216,29 @@ class MainReceipt extends React.Component {
         // console.log(res.json())
     }
 
+    updateItemsRequest=()=>{
+
+        console.log('send request to update items');
+        let items = this.state.receipt.items;
+        let input = {obj : items};
+        console.log(input);
+        fetch(`/update/items`,{
+            method:'POST',
+            headers:{
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify(input),
+        }).then(res=>console.log('Updated receipts and items'));
+    }
 
     updateHandler=()=>{
+        console.log('updates receipt and items');
         this.updateReceiptRequest();
-        // this.updateItemsRequest();
+        this.updateItemsRequest();
     }
 
     componentDidMount=()=>{
-        console.log('fucker mount');
         this.getReceiptHandler();
 
     }
@@ -360,7 +356,7 @@ class MainReceipt extends React.Component {
 
        return (
             <div>
-                <Receipt receipt={this.state.receipt} pickMeUp={this.pickMeUp} updateReceipt={this.updateReceiptRequest}/>
+                <Receipt receipt={this.state.receipt} pickMeUp={this.pickMeUp} updateReceipt={this.updateHandler}/>
                 <WholeSummary summary={this.state.receipt}/>
                 <a href="/takePhoto">Click here to take photo</a>
             </div>

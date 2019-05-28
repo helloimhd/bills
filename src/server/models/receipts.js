@@ -85,8 +85,7 @@ module.exports = (dbPI) => {
     }
 
     let updateReceipt = ( dataIn, callback)=>{
-        console.log('send me');
-        console.log('fuck me',dataIn)
+
         let query = `UPDATE receipts
                     SET subtotal = ${dataIn.subtotal}, total = ${dataIn.total}
                     WHERE img_token = '${dataIn.img_token}'`
@@ -105,11 +104,11 @@ module.exports = (dbPI) => {
         // where items.receipt_id = 1;
         // THIS RETURNS ITEMS TABLE WITH RESPECTIVE RECEIPT ID
         // CHANGE "where items.receipt.id" to be dynamic
-    
+
   // update
 
   // destroy
-    
+
     let getUserReceipts = (userId, callback) => {
     let receiptQuery = `SELECT * FROM receipts WHERE user_id = '${userId}'`;
 
