@@ -6,6 +6,7 @@ import { hot } from 'react-hot-loader';
 // import Form from './components/form/form';
 
 import Receipt from './components/receipt/receipt';
+import MainReceipt from './components/receipt/receipt';
 import Selection from './components/itemSelection/item';
 import GroupSelect from './components/groupSelect/groupSelect';
 
@@ -195,6 +196,8 @@ class Main extends React.Component{
                   )
                 )} />
 
+                <Route path="/register" component={Register} />
+
                 <Route path="/login" render={() => (
                   isLoggedIn ? (
                     <Home />
@@ -236,6 +239,9 @@ class Main extends React.Component{
                     <Login />
                   )
                 )} />
+
+                <Route path="/wholeSummary" component={WholeSummary} />
+                <Route path="/summaryReceipt" component={IndividualSummary} />
             </Router>
         );
     }
