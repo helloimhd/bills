@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { Redirect } from 'react-router-dom'
 import Login from '../user/login';
-import pic from './a.jpg';
+// import pic from './a.jpg';
 
 class Home extends React.Component {
     constructor() {
@@ -58,7 +58,6 @@ class Home extends React.Component {
                     {allReceipts}
                 </div>
 
-                <img src={pic}/>
             </React.Fragment>
         )
     }

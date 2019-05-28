@@ -15,8 +15,8 @@ class WholeSummary extends React.Component {
 
         var reactThis = this;
         console.log("clicking");
-        //var id = 1;
-        var id = Cookies.get('receiptId');
+        var id = 1;
+        // var id = Cookies.get('receiptId');
         fetch(`/summary/${id}`, {
 
         }).then(res => {

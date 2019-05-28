@@ -62,9 +62,9 @@ class GroupSelect extends React.Component {
       ticked.forEach((r)=>{
         idInGroup.push(r.id);
       })
-
+       // Cookies.get('receiptId')
       let input = { obj : idInGroup,
-                    receipt_id : Cookies.get('receiptId'),
+                    receipt_id : 1,
                    };
 
       fetch(`/selected/group`,{
