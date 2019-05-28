@@ -1,7 +1,7 @@
 import React from 'react';
 import Cookies from 'js-cookie';
 
-import styles from './style.scss';
+//import styles from './style.scss';
 
 class GroupSelect extends React.Component {
     constructor(){

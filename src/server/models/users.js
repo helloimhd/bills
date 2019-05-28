@@ -53,10 +53,19 @@ module.exports = (dbPI) => {
         })
     }
 
+    let findUserById = (userId, callback) => {
+        let findQuery = `SELECT * FROM users WHERE id = '${userId}'`;
+
+        dbPI.query(findQuery, (err, results) => {
+            callback(err, results);
+        })
+    }
+
 
     return {
       findByUsername,
       createUser,
       getUsersDetails,
+      findUserById
     };
 };

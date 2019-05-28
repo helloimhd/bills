@@ -1,7 +1,5 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom'
 import LoginForm from './loginForm';
-import Home from '../home/home';
 
 
 class Login extends React.Component {
@@ -15,32 +13,6 @@ class Login extends React.Component {
         }
         this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
     }
-
-    // componentDidMount() {
-    //     this.checkLoggedIn();
-    // }
-
-    // checkLoggedIn = () => {
-    //     let reactThis = this;
-    //     fetch('/checkCookie')
-    //     .then(function(response) {
-    //         return response.json();
-    //     })
-    //     .then(function(myJson) {
-    //        // console.log(myJson)
-    //         if (myJson.isLoggedIn === true) {
-    //             //window.location.href = '/'
-    //             reactThis.setState({isLoggedIn: true})
-    //             return <Redirect to="/" />
-    //             //this.props.history.push('/');
-    //         } else if (myJson.isLoggedIn === false) {
-    //             //window.location.href = '/login'
-    //             reactThis.setState({isLoggedIn: false})
-    //             //this.props.history.push('/login');
-    //             return <Redirect to="/login" />
-    //         }
-    //     });
-    // }
 
     usernameChange = e => {
         //console.log(e.target.value)
@@ -74,7 +46,7 @@ class Login extends React.Component {
             return res.json()
         })
         .then(response => {
-            console.log(response.data)
+            //console.log(response.data)
             if (response.data === null) {
                 reactThis.setState({prompt: "Username is invalid. Click here to Sign Up"})
 
@@ -93,7 +65,7 @@ class Login extends React.Component {
 
             }
         })
-        .catch(error => console.error('Error:', error));
+        //.catch(error => console.error('Error:', error));
 
     }  // end handle of login submit
 

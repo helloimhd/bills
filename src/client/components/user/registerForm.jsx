@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class RegisterForm extends React.Component {
 
@@ -25,5 +26,15 @@ class RegisterForm extends React.Component {
 
     }
 }
+
+RegisterForm.propTypes = {
+  username: PropTypes.string,
+  email: PropTypes.email,
+  password: PropTypes.password,
+  handleRegisterSubmit: PropTypes.func,
+  usernameChange: PropTypes.func,
+  passwordChange: PropTypes.func,
+  emailChange: PropTypes.func
+};
 
 export default RegisterForm;
