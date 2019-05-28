@@ -161,7 +161,7 @@ class ButtonProceedTab extends React.Component{
         return(
             <div>
                 <p>Proceed?</p>
-                <button onClick={()=>{this.props.updateReceipt()}}>Yes</button>
+                <button onClick={()=>{this.props.updateReceipt()}}><a href="/splitTesting">Yes</a></button>
             </div>
         );
     }
