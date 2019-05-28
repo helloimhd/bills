@@ -46,6 +46,8 @@ module.exports = (app, db) => {
 
     app.get('/summary/user/:id', receipts.usersSummaryReceipt);
 
+    // app.get('/foobar/:id', receipts.getUsername);
+
     app.get('/receipt/:id/items', receipts.giveMeReceipt);
 
     app.get('/search/group', groups.getUsersData); // gets all users

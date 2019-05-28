@@ -8,8 +8,6 @@ class WholeSummary extends React.Component {
             change: false,
             total:0,
         }
-
-
     }
 
     receiptHandler() {

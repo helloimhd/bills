@@ -84,6 +84,22 @@ module.exports = (dbPI) => {
         })
     }
 
+    // let getUsername = (dataIn, callback) => {
+    //     console.log ("HELLO in the model");
+
+    //     let query = `select username from users where id = ${dataIn};`
+
+    //     dbPI.query(query, (err, r) => {
+    //         if(err){
+    //             console.log('Error here?')
+    //             callback( err, null)
+    //         } else {
+    //             console.log(r);
+    //             callback(null, r);
+    //         }
+    //     })
+    // }
+
     let updateReceipt = ( dataIn, callback)=>{
         console.log('send me');
         // let query = ``
@@ -94,11 +110,11 @@ module.exports = (dbPI) => {
         // where items.receipt_id = 1;
         // THIS RETURNS ITEMS TABLE WITH RESPECTIVE RECEIPT ID
         // CHANGE "where items.receipt.id" to be dynamic
-    
+
   // update
 
   // destroy
-    
+
     let getUserReceipts = (userId, callback) => {
     let receiptQuery = `SELECT * FROM receipts WHERE user_id = '${userId}'`;
 
@@ -112,6 +128,7 @@ module.exports = (dbPI) => {
     getReceipt,
     getAllItems,
     getIndvUserItems,
+    // getUsername,
     updateReceipt,
   };
 };
