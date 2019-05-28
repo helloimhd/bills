@@ -24,12 +24,11 @@ class Register extends React.Component {
     }
 
     emailChange = e => {
-        console.log(e.target.value)
+        //console.log(e.target.value)
         this.setState({email: e.target.value});
     }
 
     handleRegisterSubmit = (e) => {
-        console.log("ajsdhaljh")
         e.preventDefault();
 
         let username = this.state.username;
@@ -51,16 +50,17 @@ class Register extends React.Component {
             return res.json()
         })
         .then(function(response) {
-            console.log(response.status)
+            //console.log(response.status)
             if (response.status === "duplicate") {
                 reactThis.setState({prompt: "Username is already taken. Choose another username."})
 
-            } else if (response.status === created) {
-                reactThis.setState({prompt: "User created! Click here to Log In"})
+            } else if (response.status === "created") {
+                // reactThis.setState({prompt: "User created! Click here to "})
                 // or redirect
+                window.location.href = '/login';
             }
         })
-        .catch(error => console.error('Error:', error));
+      //  .catch(error => console.error('Error:', error));
 
     }  // end handle of login submit
 

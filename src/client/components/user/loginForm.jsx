@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class LoginForm extends React.Component {
 
@@ -23,5 +24,13 @@ class LoginForm extends React.Component {
 
     }
 }
+
+LoginForm.propTypes = {
+  username: PropTypes.string,
+  password: PropTypes.password,
+  handleLoginSubmit: PropTypes.func,
+  usernameChange: PropTypes.func,
+  passwordChange: PropTypes.func,
+};
 
 export default LoginForm;

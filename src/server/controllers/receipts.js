@@ -221,75 +221,66 @@ module.exports = (db) => {
         })
     }
 
-    let testItemName = (request, response) => {
-        let receipt_id = 49;
-        db.items.getItems(receipt_id, (err, results) => {
-            if (err) {
-                console.error(err);
-                response.status(500).send("Query ERROR for getting items.");
-
-            } else {
-                let allItems = results.allItems;
-                let itemName = allItems.map(obj => {
-                    let objItemName = obj.item_name
-                    let itemName = (objItemName.replace(/[^a-zA-Z ]/g, ""));
-                    console.log(itemName);
-                })
-                response.send(results.allItems);
-            }
-        })
-    }
-
     let getUserReceipts = (request, response) =>{
         const userId = parseInt(request.cookies.userId);
 
-        // get user's receipts
-        db.receipts.getUserReceipts(userId, (err, receiptsResults) => {
+        db.groups.getUserGroups(userId, (err, groupResults) => {
             if (err) {
                 console.error(err);
-                response.status(500).send("Query ERROR for getting user's receipts.");
+                response.status(500).send("Query ERROR for users group.");
 
             } else {
-                // get the groups that he is involved in
-                //console.log(receiptsResults.rows)
-                let recResults = receiptsResults.rows;
-                //response.send(results.rows)
-                // for each receipt, take info from database and group it to get the sum
                 let dataArray = [];
+                let groupsObj = groupResults.rows;
 
                 let completed = 0;
-                let getInfo = recResults.map(obj => {
-                    // pass user id and receipt id to database
-                    let info = {receiptId: obj.id, userId: userId, date: obj.date_created};
-
-                    // go to database for each id
-                    db.groups.indvGroupInfo(info, (err, indvGroupInfoRes) => {
+                let amountInfo = groupsObj.map(obj =>{
+                    // for each receipt get date and owner id
+                    let dataObj = {receiptId: obj.receipt_id, sum: obj.sum};
+                    db.receipts.getReceiptById(dataObj.receiptId, (err, receiptResults) => {
                         if (err) {
-                            console.error(err)
-                            response.status(500).send("Query ERROR for users group info.");
+                            console.error(err);
+                            response.status(500).send("Query ERROR to get receipts by id");
+
                         } else {
-                           // info.
-                           let sum = indvGroupInfoRes.rows[0].sum;
-                           // put inside the info obj
-                           info.sum = sum;
+                            // take the user id and put inside dataObj
+                            console.log(receiptResults.rows[0].user_id)
+                            let userId = receiptResults.rows[0].user_id;
+                            let date = receiptResults.rows[0].date_created;
+                            dataObj.ownBy = userId;
+                            dataObj.date = date;
 
-                           // push into the array to send to browser
-                           dataArray.push(info);
+                            // query for to get users' info
+                            db.users.findUserById(dataObj.ownBy, (err, userResults) => {
+                                if (err) {
+                                    console.error(err);
+                                    response.status(500).send("Query ERROR to get user info.");
+
+                                } else {
+                                    console.log("userresults ", userResults.rows[0])
+                                    let username = userResults.rows[0].username;
+                                    dataObj.username = username;
+
+                                    // push into array
+                                    dataArray.push(dataObj);
+                                }
+                                completed++;
+                                if (groupsObj.length === completed){
+                                    console.log("done", dataArray)
+                                    response.send(dataArray);
+                                }
+                            })
 
                         }
-                        completed++;
-                        if (recResults.length === completed){
-                            console.log("done", dataArray)
-                            response.send(dataArray);
-                        }
-
                     })
 
-                })  // end of map
-                //console.log(dataArray);
+
+
+                })
             }
         })
-    }
+
+    } // end of test home
 
     let updateReceipt = ( req, res)=>{ // update receipt and items;
         console.log('helo in update receipt controller');
@@ -323,7 +314,6 @@ module.exports = (db) => {
     summaryReceipt,
     usersSummaryReceipt,
     getUserReceipts,
-    updateReceipt,
-    testItemName,
+    updateReceipt
   };
 };

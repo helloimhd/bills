@@ -1,13 +1,10 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom'
+//import { Redirect } from 'react-router-dom'
 import { hot } from 'react-hot-loader';
 
-// import Counter from './components/counter/counter';
-// import Form from './components/form/form';
-
 import Receipt from './components/receipt/receipt';
-import MainReceipt from './components/receipt/receipt';
-import Selection from './components/itemSelection/item';
+//import MainReceipt from './components/receipt/receipt';
+//import Selection from './components/itemSelection/item';
 import GroupSelect from './components/groupSelect/groupSelect';
 
 import Home from './components/home/home';
@@ -16,7 +13,7 @@ import TakePhoto from './components/receipt/takePhoto';
 
 import Login from './components/user/login';
 import Register from './components/user/register';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import WholeSummary from './components/wholeSummary/wholeSummary';
 import IndividualSummary from './components/individualSummary/individualSummary';
 
