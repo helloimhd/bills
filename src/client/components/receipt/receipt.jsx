@@ -159,7 +159,6 @@ class ButtonProceedTab extends React.Component{
         return(
             <div>
                 <p>Proceed?</p>
-                <button><a href="/takePhoto">Go back to retake photo?</a></button>
                 <button onClick={()=>{this.props.updateReceipt()}}>Yes</button>
             </div>
         );
@@ -239,6 +238,8 @@ class MainReceipt extends React.Component {
         console.log('updates receipt and items');
         this.updateReceiptRequest();
         this.updateItemsRequest();
+
+        window.location.href = '/splitTesting'
     }
 
     componentDidMount=()=>{
@@ -250,7 +251,7 @@ class MainReceipt extends React.Component {
         //retrieves receipt and item info
         console.log('SEND AND GET SOMETHING')
         var reactThis = this;
-        var img_token = 'guQnFRzRY4MXMm6F'; // need to find a way to retrieve img token..... !!!!!!!*(****!!!)
+        var img_token = 'mt8NZBA4CPJ6rpGO'; // need to find a way to retrieve img token..... !!!!!!!*(****!!!)
         var receipt_id;
         var obj = {};
         // ws06oyvmcgCsdsNL

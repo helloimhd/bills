@@ -6,6 +6,7 @@ import { hot } from 'react-hot-loader';
 // import Form from './components/form/form';
 
 import Receipt from './components/receipt/receipt';
+import MainReceipt from './components/receipt/receipt';
 import Selection from './components/itemSelection/item';
 import GroupSelect from './components/groupSelect/groupSelect';
 
@@ -187,13 +188,15 @@ class Main extends React.Component{
 
         return(
             <Router>
-                <Route path="/home" render={() => (
+                <Route path="/" exact render={() => (
                   isLoggedIn ? (
                     <Home />
                   ) : (
                     <Login />
                   )
                 )} />
+
+                <Route path="/register" component={Register} />
 
                 <Route path="/login" render={() => (
                   isLoggedIn ? (
@@ -211,9 +214,34 @@ class Main extends React.Component{
                   )
                 )} />
 
-                <Route path="/receipt" exact component={Receipt} />
-                <Route path="/splitTesting" component={SplitItems} />
-                <Route path="/group" component={GroupSelect} />
+                <Route path="/receipt" render={() => (
+                  isLoggedIn ? (
+                    <Receipt />
+                  ) : (
+                    <Login />
+                  )
+                )} />
+
+
+                <Route path="/splitTesting" render={() => (
+                  isLoggedIn ? (
+                    <SplitItems />
+                  ) : (
+                    <Login />
+                  )
+                )} />
+
+
+                <Route path="/group" render={() => (
+                  isLoggedIn ? (
+                    <GroupSelect />
+                  ) : (
+                    <Login />
+                  )
+                )} />
+
+                <Route path="/wholeSummary" component={WholeSummary} />
+                <Route path="/summaryReceipt" component={IndividualSummary} />
             </Router>
         );
     }

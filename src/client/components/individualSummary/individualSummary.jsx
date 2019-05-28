@@ -1,4 +1,5 @@
 import React from 'react';
+import Cookies from 'js-cookie';
 
 class IndividualSummary extends React.Component {
     constructor() {
@@ -14,7 +15,8 @@ class IndividualSummary extends React.Component {
 
         var reactThis = this;
         console.log("clicking");
-        var id = 1;
+        //var id = 1;
+        var id = Cookies.get('receiptId');
         fetch(`/summary/user/${id}`, {
 
         }).then(res => {
