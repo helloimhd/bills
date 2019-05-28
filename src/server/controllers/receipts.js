@@ -43,7 +43,6 @@ module.exports = (db) => {
         })
     };
 
-    // upload photo to cloudinary > send to tabscanner > get token > send to get data
     let uploadPhoto = (request, response) => {
         console.log("Uploading up to cloudinary")
         let file = request.file.path;
@@ -96,13 +95,15 @@ module.exports = (db) => {
 
                             // successful
                             if (data.code === 202) {
-
+                                const userId = request.cookies.userId;
+                                console.log("user id ", userId)
                                 let receiptData = {
-                                    user_id: 1,
-                                    group_id: 1,
+                                    user_id: userId,
+                                    group_id: null,
                                     img_token: token,
                                     subtotal: parseFloat(dataResult.subTotal)
                                 }
+
                                 db.receipts.createReceipt(receiptData, (err, createRecResults) => {
                                     if (err) {
                                         console.error(err);
@@ -127,14 +128,14 @@ module.exports = (db) => {
                                                     console.log("entered for loop")
 
                                                     let receiptId = getReceiptResults.receipt[0].id;
-
+                                                    response.cookie("receiptId", getReceiptResults.receipt[0].id)
                                                     // items
                                                     let itemData = {
                                                         receipt_id: receiptId,
                                                         item_name: lineItems[i].descClean,
                                                         price: parseFloat(lineItems[i].lineTotal),
                                                         quantity: lineItems[i].qty,
-                                                        users_id: null
+                                                        users_id: []
                                                     }
                                                     // now add items into table
                                                     db.items.createItems(itemData, (err, createItemResults) => {
@@ -146,7 +147,8 @@ module.exports = (db) => {
                                                             lineItemsCounter++
                                                             if (lineItemsCounter === lineItems.length) {
                                                                 console.log(lineItemsCounter);
-                                                                response.send("Databases are updated");
+                                                                //response.send("Databases are updated");
+                                                                response.redirect('/group');
                                                             } else {
                                                                 console.log("not yet")
                                                             }
@@ -261,15 +263,51 @@ module.exports = (db) => {
 
     let getUserReceipts = (request, response) =>{
         const userId = parseInt(request.cookies.userId);
-        console.log(userId)
 
-        // get
-        db.receipts.getUserReceipts(userId, (err, results) => {
+        // get user's receipts
+        db.receipts.getUserReceipts(userId, (err, receiptsResults) => {
             if (err) {
                 console.error(err);
                 response.status(500).send("Query ERROR for getting user's receipts.");
+
             } else {
-                response.send(results.rows)
+                // get the groups that he is involved in
+                //console.log(receiptsResults.rows)
+                let recResults = receiptsResults.rows;
+                //response.send(results.rows)
+                // for each receipt, take info from database and group it to get the sum
+                let dataArray = [];
+
+                let completed = 0;
+                let getInfo = recResults.map(obj => {
+                    // pass user id and receipt id to database
+                    let info = {receiptId: obj.id, userId: userId, date: obj.date_created};
+
+                    // go to database for each id
+                    db.groups.indvGroupInfo(info, (err, indvGroupInfoRes) => {
+                        if (err) {
+                            console.error(err)
+                            response.status(500).send("Query ERROR for users group info.");
+                        } else {
+                           // info.
+                           let sum = indvGroupInfoRes.rows[0].sum;
+                           // put inside the info obj
+                           info.sum = sum;
+
+                           // push into the array to send to browser
+                           dataArray.push(info);
+
+                        }
+                        completed++;
+                        if (recResults.length === completed){
+                            console.log("done", dataArray)
+                            response.send(dataArray);
+                        }
+
+                    })
+
+                })  // end of map
+                //console.log(dataArray);
             }
         })
     }
@@ -279,15 +317,25 @@ module.exports = (db) => {
 
         let dataIn = req.body.obj;
         console.log(dataIn);
-        // db.receipts.updateReceipt(dataIn, (err,data)=>{
-        //     if(err){
-        //         console.error('error updating items entry', err);
-        //         res.status(500).send("Error getting group stuff");
-        //     } else {
-        //         console.log('back in Receipt CONTROLLER');
-        //         res.send(data);
-        //     }
-        // })
+        let updateReceiptObj = {
+                receipt_id: dataIn.receipt_id,
+                user_id: dataIn.user_id,
+                group_id: dataIn.group_id,
+                img_token: dataIn.img_token,
+                subtotal: Number(Number(dataIn.subtotal).toFixed(2)),
+                total: Number(Number(dataIn.total).toFixed(2)),
+            }
+
+            // console.log('bOOM',updateReceiptObj)
+        db.receipts.updateReceipt(updateReceiptObj, (err,data)=>{
+            if(err){
+                console.error('error updating items entry', err);
+                res.status(500).send("Error getting group stuff");
+            } else {
+                console.log('back in Receipt CONTROLLER');
+                res.send(data);
+            }
+        })
     }
 
   return {

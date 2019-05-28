@@ -1,4 +1,5 @@
 import React from 'react';
+import Cookies from 'js-cookie';
 
 class WholeSummary extends React.Component {
     constructor() {
@@ -14,7 +15,8 @@ class WholeSummary extends React.Component {
 
         var reactThis = this;
         console.log("clicking");
-        var id = 1;
+        //var id = 1;
+        var id = Cookies.get('receiptId');
         fetch(`/summary/${id}`, {
 
         }).then(res => {
@@ -50,6 +52,8 @@ class WholeSummary extends React.Component {
             <div>
                 <h1>Bill Summary</h1>
                 <button onClick={()=>{this.receiptHandler()}}>Show items</button>
+                <br />
+                <a href="/summaryReceipt">Individual</a>
             </div>
         );
     } else {
@@ -89,6 +93,8 @@ class WholeSummary extends React.Component {
                       </tr>
                   </tbody>
                 </table>
+                <br />
+                <a href="/summaryReceipt">Individual</a>
             </div>
             )
         }

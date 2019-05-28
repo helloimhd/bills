@@ -101,8 +101,18 @@ module.exports = (dbPI) => {
     // }
 
     let updateReceipt = ( dataIn, callback)=>{
-        console.log('send me');
-        // let query = ``
+
+        let query = `UPDATE receipts
+                    SET subtotal = ${dataIn.subtotal}, total = ${dataIn.total}
+                    WHERE img_token = '${dataIn.img_token}'`
+
+        dbPI.query( query, (err,r)=>{
+            if(err){
+                callback(err,null);
+            }else{
+                callback(null,r);
+            }
+        })
     }
         // select receipts.id, items.*
         // from receipts inner join items
@@ -116,15 +126,16 @@ module.exports = (dbPI) => {
   // destroy
 
     let getUserReceipts = (userId, callback) => {
-    let receiptQuery = `SELECT * FROM receipts WHERE user_id = '${userId}'`;
+        let receiptQuery = `SELECT * FROM receipts WHERE user_id = '${userId}'`;
 
-    dbPI.query(receiptQuery, (err, results) => {
-        callback(err, results)
-    })
-  }
+        dbPI.query(receiptQuery, (err, results) => {
+            callback(err, results)
+        })
+    }
 
   return {
     createReceipt,
+    getUserReceipts,
     getReceipt,
     getAllItems,
     getIndvUserItems,

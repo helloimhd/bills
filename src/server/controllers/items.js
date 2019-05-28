@@ -14,14 +14,40 @@ module.exports = (db) => {
                     res.send('No Such ITEMS FROM RECEIPT ID');
                 }else{
                   console.log(items.allItems)
-                  console.log('KJAFGADFGHADOHADOHINADFO')
                     res.send( items.allItems );
                 }
             }
         })
     }
 
+    let updateItems = ( req, res )=>{
+
+        let input = req.body.obj;
+
+        // db.items.updateItems(input[0], (err,data)=>{
+        //     if(err){
+        //             console.error('error updating items ', err);
+        //             res.status(500).send("Error updating items!");
+        //         } else {
+        //             res.send('hello');
+        //         }
+        // })
+        input.forEach((item)=>{
+
+            db.items.updateItems(item, (err,data)=>{
+                if(err){
+                    console.error('error updating items ', err);
+                    res.status(500).send("Error updating items!");
+                } else {
+                    console.log('okay')
+                }
+            })
+        })
+    }
+
+
   return {
     getItems,
+    updateItems,
   };
 };

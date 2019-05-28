@@ -89,7 +89,7 @@ class Login extends React.Component {
                 //window.location = '/'
                 //console.log("aldalsda")
                 //this.props.history.push('/home')
-                window.location.href = '/home';
+                window.location.href = '/';
 
             }
         })

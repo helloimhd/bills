@@ -9,7 +9,6 @@ class TakePhoto extends React.Component {
                 <input type="file" name="img" />
                 <button type="submit">Upload</button>
             </form>
-            <a href="/">Click here to view receipt</a>
             </div>
         )
     }

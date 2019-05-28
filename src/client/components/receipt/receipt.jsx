@@ -1,7 +1,7 @@
 import React from 'react';
 
 import PropTypes from 'prop-types';
-import WholeSummary from '../wholeSummary/wholeSummary';
+// import WholeSummary from '../wholeSummary/wholeSummary';
 
 // import styles from './style.scss';
 
@@ -20,23 +20,28 @@ class ItemElement extends React.Component{
 
     }
 
-    updateItemHandler = () =>{
+    updateItemHandler = (e) =>{
         // console.log('HELLO UPDATEEE');
         // console.log(this.refs.input.value);
+        if(e.keyCode === 13){
 
-        this.setState({
-            isEditMode:false,
-        })
+            this.setState({
+                isEditMode:false,
+            })
 
-        let itemEdited = this.refs.input.value;
+            let itemEdited = this.refs.input.value;
 
-        let itemElement = [];
+            let itemElement = [];
 
-        itemElement.push(this.props.id);
-        itemElement.push(this.props.type);
+            itemElement.push(this.props.id);
+            itemElement.push(this.props.type);
 
-        this.props.pickMeUp(itemEdited,itemElement);
+            this.props.pickMeUp(itemEdited,itemElement);
+        }
+    }
 
+    test = ()=>{
+        console.log('OUT OF FOCUSSSS');
     }
 
     renderEditView(item){
@@ -44,9 +49,7 @@ class ItemElement extends React.Component{
             item = item.toFixed(2);
         };
         return  <td>
-                    <input id={this.props.id} type={this.props.type} defaultValue={item} ref="input" />
-                    <button onClick={(e)=>{this.editItemHandler(e)}}>❌</button>
-                    <button onClick={()=>{this.updateItemHandler()}}>☑️</button>
+                    <input id={this.props.id} type={this.props.type} defaultValue={item} ref="input" onKeyDown={(e)=>{this.updateItemHandler(e)}} onBlur={()=>{this.test()}}/>
                 </td>
     }
 
@@ -156,7 +159,6 @@ class ButtonProceedTab extends React.Component{
         return(
             <div>
                 <p>Proceed?</p>
-                <button>No</button>
                 <button onClick={()=>{this.props.updateReceipt()}}>Yes</button>
             </div>
         );
@@ -199,55 +201,57 @@ class MainReceipt extends React.Component {
         }
     }
 
-    // componentDidMount() {
-    //     this.checkLoggedIn();
-    // }
-
-    // checkLoggedIn = () => {
-    //     let reactThis = this;
-    //     fetch('/checkCookie')
-    //     .then(function(response) {
-    //         return response.json();
-    //     })
-    //     .then(function(myJson) {
-    //        // console.log(myJson)
-    //         if (myJson.isLoggedIn === true) {
-    //             reactThis.setState({isLoggedIn: true})
-
-    //         } else if (myJson.isLoggedIn === false) {
-    //             reactThis.setState({isLoggedIn: false})
-    //         }
-    //     });
-    // }
     updateReceiptRequest=()=>{
 
-        let input = { obj: this.state.receipt };
-        console.log('HELLO ', receiptUpdate);
-        fetch(`/receipt/update`,{
+        console.log('send request to update receipt')
+        let receipt = this.state.receipt;
+        let input = { obj: receipt };
+
+        fetch(`/update/receipt`,{
             method:'POST',
             headers:{
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
             },
             body: JSON.stringify(input),
-        }).then(res=>console.log(res.json()));
+        }).then(res=>console.log('hello'));
+        // console.log(res.json())
     }
 
+    updateItemsRequest=()=>{
+
+        console.log('send request to update items');
+        let items = this.state.receipt.items;
+        let input = {obj : items};
+        console.log(input);
+        fetch(`/update/items`,{
+            method:'POST',
+            headers:{
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify(input),
+        }).then(res=>console.log('Updated receipts and items'));
+    }
 
     updateHandler=()=>{
+        console.log('updates receipt and items');
         this.updateReceiptRequest();
-        // this.updateItemsRequest();
+        this.updateItemsRequest();
+
+        window.location.href = '/splitTesting'
     }
 
     componentDidMount=()=>{
         this.getReceiptHandler();
+
     }
 
     getReceiptHandler=()=>{ //clunky way to retrieve backend data on RECEIPT, ITEMS and GroupMembers
         //retrieves receipt and item info
         console.log('SEND AND GET SOMETHING')
         var reactThis = this;
-        var img_token = 'guQnFRzRY4MXMm6F'; // need to find a way to retrieve img token..... !!!!!!!*(****!!!)
+        var img_token = 'mt8NZBA4CPJ6rpGO'; // need to find a way to retrieve img token..... !!!!!!!*(****!!!)
         var receipt_id;
         var obj = {};
         // ws06oyvmcgCsdsNL
@@ -311,7 +315,7 @@ class MainReceipt extends React.Component {
 
         let receipt = Object.assign({},this.state.receipt);
         if(itemType === 'price' ){
-            receipt.items[itemId][`${itemType}`] = Number(latestEdit);
+            receipt.items[itemId][`${itemType}`] = Number(Number(latestEdit).toFixed(2));
         }else if(itemType === 'quantity'){
             receipt.items[itemId][`${itemType}`] = Number(latestEdit);
         }else{
@@ -357,11 +361,9 @@ class MainReceipt extends React.Component {
        return (
             <div>
                 <Receipt receipt={this.state.receipt} pickMeUp={this.pickMeUp} updateReceipt={this.updateHandler}/>
-                <WholeSummary summary={this.state.receipt}/>
-                <a href="/takePhoto">Click here to take photo</a>
             </div>
     );
-  }
+   }
 }
 
 Receipt.propTypes = {
