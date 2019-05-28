@@ -52,6 +52,17 @@ module.exports = (dbPI) => {
         })
     }
 
+    let getUserGroups = (userId, callback) => {
+        let getQuery = `SELECT receipt_id, friend_id, SUM(amount)
+                        FROM groups
+                        WHERE friend_id = '${userId}'
+                        GROUP BY receipt_id, friend_id`;
+
+        dbPI.query(getQuery, (err, results) => {
+            callback(err, results);
+        })
+    }
+
     let indvGroupInfo = (info, callback) => {
         const receiptId = info.receiptId;
         const userId = info.userId;
@@ -66,7 +77,8 @@ module.exports = (dbPI) => {
     getUsersData,
     updateGroupData,
     getGroupMembers,
-    indvGroupInfo
+    indvGroupInfo,
+    getUserGroups
 
   };
 };
