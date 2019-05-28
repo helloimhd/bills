@@ -38,7 +38,7 @@ module.exports = (dbPI) => {
         })
     }
 
-    let updateItems = (dataIn, callback)=>{
+     let updateItems = (dataIn, callback)=>{
 
         let query = `UPDATE items set item_name = ($1), price = ($2), quantity = ($3), users_id = ($4) where id = ${dataIn.id}`
 
