@@ -96,13 +96,15 @@ module.exports = (db) => {
 
                             // successful
                             if (data.code === 202) {
-
+                                const userId = request.cookies.userId;
+                                console.log("user id ", userId)
                                 let receiptData = {
-                                    user_id: 1,
-                                    group_id: 1,
+                                    user_id: userId,
+                                    group_id: null,
                                     img_token: token,
                                     subtotal: parseFloat(dataResult.subTotal)
                                 }
+
                                 db.receipts.createReceipt(receiptData, (err, createRecResults) => {
                                     if (err) {
                                         console.error(err);
@@ -127,7 +129,7 @@ module.exports = (db) => {
                                                     console.log("entered for loop")
 
                                                     let receiptId = getReceiptResults.receipt[0].id;
-
+                                                    response.cookie("receiptId", getReceiptResults.receipt[0].id)
                                                     // items
                                                     let itemData = {
                                                         receipt_id: receiptId,
@@ -240,15 +242,51 @@ module.exports = (db) => {
 
     let getUserReceipts = (request, response) =>{
         const userId = parseInt(request.cookies.userId);
-        console.log(userId)
 
-        // get
-        db.receipts.getUserReceipts(userId, (err, results) => {
+        // get user's receipts
+        db.receipts.getUserReceipts(userId, (err, receiptsResults) => {
             if (err) {
                 console.error(err);
                 response.status(500).send("Query ERROR for getting user's receipts.");
+
             } else {
-                response.send(results.rows)
+                // get the groups that he is involved in
+                //console.log(receiptsResults.rows)
+                let recResults = receiptsResults.rows;
+                //response.send(results.rows)
+                // for each receipt, take info from database and group it to get the sum
+                let dataArray = [];
+
+                let completed = 0;
+                let getInfo = recResults.map(obj => {
+                    // pass user id and receipt id to database
+                    let info = {receiptId: obj.id, userId: userId, date: obj.date_created};
+
+                    // go to database for each id
+                    db.groups.indvGroupInfo(info, (err, indvGroupInfoRes) => {
+                        if (err) {
+                            console.error(err)
+                            response.status(500).send("Query ERROR for users group info.");
+                        } else {
+                           // info.
+                           let sum = indvGroupInfoRes.rows[0].sum;
+                           // put inside the info obj
+                           info.sum = sum;
+
+                           // push into the array to send to browser
+                           dataArray.push(info);
+
+                        }
+                        completed++;
+                        if (recResults.length === completed){
+                            console.log("done", dataArray)
+                            response.send(dataArray);
+                        }
+
+                    })
+
+                })  // end of map
+                //console.log(dataArray);
             }
         })
     }
