@@ -14,8 +14,9 @@ cloudinary.config({
 
 //let token = "";
 
-const tabUrl = 'https://api.tabscanner.com/AcMHx0XLLafK4avM8WdBLhZixu2fRP8WeY0z4rv1RCFPjNALkAnYIuQnJtH2BOqs';
-
+const tabUrl = 'https://api.tabscanner.com/pcVKfMzzwCYEkSUKcXvBWfb3ywzPg46WtUoTs6UsCduGfbYNToC0z6BmK0bvRLnB';
+// pcVKfMzzwCYEkSUKcXvBWfb3ywzPg46WtUoTs6UsCduGfbYNToC0z6BmK0bvRLnB
+// AcMHx0XLLafK4avM8WdBLhZixu2fRP8WeY0z4rv1RCFPjNALkAnYIuQnJtH2BOqs
 
 
 module.exports = (db) => {
@@ -221,6 +222,27 @@ module.exports = (db) => {
         })
     }
 
+    // let getUsername = (req, res) => {
+    //     console.log("HELLO in controller");
+    //     var dataIn = req.params.id;
+
+    //     db.receipts.getUsername( dataIn, (err, receipts) =>{
+    //         if(err){
+    //             console.log('in here?');
+    //             console.error('error getting receipt(s)', err);
+    //             res.status(500).send("Error getting receipt");
+    //         } else {
+    //             console.log('am i here????');
+    //             console.log( 'AT CONTROLLER RESULTS', receipts );
+    //             if(receipts.rows.length === 0){
+    //                 res.send('No entry');
+    //             }else{
+    //                 res.send( receipts.rows );
+    //             }
+    //         }
+    //     })
+    // }
+
     let testItemName = (request, response) => {
         let receipt_id = 49;
         db.items.getItems(receipt_id, (err, results) => {
@@ -322,6 +344,7 @@ module.exports = (db) => {
     uploadPhoto,
     summaryReceipt,
     usersSummaryReceipt,
+    // getUsername,
     getUserReceipts,
     updateReceipt,
     testItemName,

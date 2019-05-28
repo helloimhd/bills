@@ -11,6 +11,7 @@ class SplitItems extends React.Component{
         this.onNextClick = this.onNextClick.bind(this)
         this.onPreviousClick = this.onPreviousClick.bind(this)
         this.selectChangeHandler = this.selectChangeHandler.bind(this)
+        this.updateItems = this.updateItems.bind(this);
 
         this.state = {
           items: null,
@@ -21,7 +22,6 @@ class SplitItems extends React.Component{
 
     getAllItems(){
       let receiptId = Cookies.get('receiptId')
-      console.log('hello')
       fetch(`/items/${receiptId}`)
         .then(response=>response.json())
         .then(response=>this.setState({items: response}))
@@ -87,6 +87,22 @@ class SplitItems extends React.Component{
       this.setState({activeIndex: value})
     }
 
+    updateItems(){
+
+        let items = this.state.items;
+        let input = {obj : items};
+        console.log(input);
+        fetch(`/update/items`,{
+            method:'POST',
+            headers:{
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify(input),
+        }).then(res=>console.log('Updated items'));
+
+    }
+
     render(){
 
       if (this.state.users === null) {
@@ -137,24 +153,24 @@ class SplitItems extends React.Component{
           }
         })
 
-        let options = this.state.items.map((item, index) => {
-          return (
-              <option value={index}>{item.item_name} {index}</option>
-            )
-        })
+      let options = this.state.items.map((item, index) => {
+        return (
+            <option value={index}>{item.item_name} {index}</option>
+          )
+      })
 
-          return(
-                  <ul>
-                    <li>
-                      <select onChange={this.selectChangeHandler} value={this.state.activeIndex}>
-                        {options}
-                      </select>
-                    </li>
-                    {itemList}
-                    <li><a href="/wholeSummary">Whole Summary</a></li>
-                  </ul>
-          );
-      }
+        return(
+                <ul>
+                  <li>
+                    <select onChange={this.selectChangeHandler} value={this.state.activeIndex}>
+                      {options}
+                    </select>
+                  </li>
+                  {itemList}
+                  <li><button ><a href="/wholeSummary">Whole Summary</a></button>
+                  <button onClick={this.updateItems}>save EVERYTHING PLS</button></li>
+                </ul>
+        );
     }
 }
 
