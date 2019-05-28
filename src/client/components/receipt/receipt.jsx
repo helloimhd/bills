@@ -1,7 +1,7 @@
 import React from 'react';
 
 import PropTypes from 'prop-types';
-import WholeSummary from '../wholeSummary/wholeSummary';
+// import WholeSummary from '../wholeSummary/wholeSummary';
 
 // import styles from './style.scss';
 
@@ -360,8 +360,6 @@ class MainReceipt extends React.Component {
        return (
             <div>
                 <Receipt receipt={this.state.receipt} pickMeUp={this.pickMeUp} updateReceipt={this.updateHandler}/>
-                <WholeSummary summary={this.state.receipt}/>
-                <a href="/takePhoto">Click here to take photo</a>
             </div>
     );
    }
