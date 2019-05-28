@@ -44,8 +44,9 @@ module.exports = (app, db) => {
     // Id is the receipt id
     app.get('/summary/:id', receipts.summaryReceipt);
 
-    app.get('/receipt/:id/items', receipts.giveMeReceipt);
+    app.get('/summary/user/:id', receipts.usersSummaryReceipt);
 
+    app.get('/receipt/:id/items', receipts.giveMeReceipt);
 
     app.get('/search/group', groups.getUsersData); // gets all users
     app.post('/selected/group', groups.updateGroupData); // add new group & create new receipt

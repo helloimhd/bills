@@ -16,6 +16,8 @@ import TakePhoto from './components/receipt/takePhoto';
 import Login from './components/user/login';
 import Register from './components/user/register';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import WholeSummary from './components/wholeSummary/wholeSummary';
+import IndividualSummary from './components/individualSummary/individualSummary';
 
 
 import SplitItems from './components/splitItems/splitItems'
@@ -163,6 +165,7 @@ class App extends React.Component {
             <div>
                 <Receipt receipt={this.state.receipt} pickMeUp={this.pickMeUp} updateReceipt={this.updateReceiptHandler}/>
                 <WholeSummary summary={this.state.receipt}/>
+                <IndividualSummary/>
                 <a href="/takePhoto">Click here to take photo</a>
             </div>
     );

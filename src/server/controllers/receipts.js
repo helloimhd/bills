@@ -181,7 +181,28 @@ module.exports = (db) => {
         console.log("HELLO in controller");
         var dataIn = req.params.id;
 
-        db.receipts.yo( dataIn, (err, receipts) =>{
+        db.receipts.getAllItems( dataIn, (err, receipts) =>{
+            if(err){
+                console.log('in here?');
+                console.error('error getting receipt(s)', err);
+                res.status(500).send("Error getting receipt");
+            } else {
+                console.log('am i here????');
+                console.log( 'AT CONTROLLER RESULTS', receipts );
+                if(receipts.rows.length === 0){
+                    res.send('No entry');
+                }else{
+                    res.send( receipts.rows );
+                }
+            }
+        })
+    }
+
+    let usersSummaryReceipt = (req, res) => {
+        console.log("HELLO in controller");
+        var dataIn = req.params.id;
+
+        db.receipts.getIndvUserItems( dataIn, (err, receipts) =>{
             if(err){
                 console.log('in here?');
                 console.error('error getting receipt(s)', err);
@@ -252,7 +273,8 @@ module.exports = (db) => {
     giveMeReceipt,
     uploadPhoto,
     summaryReceipt,
-    getUserReceipts
+    usersSummaryReceipt,
+    getUserReceipts,
     updateReceipt,
     testItemName,
   };
