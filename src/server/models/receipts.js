@@ -156,7 +156,7 @@ module.exports = (dbPI) => {
     getIndvUserItems,
     // getUsername,
     updateReceipt,
-    getReceiptById
+    getReceiptById,
     getReceiptByToken,
   };
 };
