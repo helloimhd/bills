@@ -52,10 +52,21 @@ module.exports = (dbPI) => {
         })
     }
 
+    let indvGroupInfo = (info, callback) => {
+        const receiptId = info.receiptId;
+        const userId = info.userId;
+        let getQuery = `SELECT SUM(amount) from groups WHERE receipt_id = '${receiptId}' AND friend_id = '${userId}'`
+
+        dbPI.query(getQuery, (err, results) => {
+            callback(err, results);
+        })
+    }
+
   return {
     getUsersData,
     updateGroupData,
     getGroupMembers,
+    indvGroupInfo
 
   };
 };

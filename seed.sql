@@ -8,10 +8,19 @@ INSERT INTO receipts (user_id, group_id, img_token, subtotal, total) VALUES (1, 
 
 
 
+
 INSERT INTO groups (receipt_id, friend_id, amount) VALUES (1, 2, null);
 INSERT INTO groups (receipt_id, friend_id, amount) VALUES (1, 3, null);
-
 
 INSERT INTO items (receipt_id, item_name, price, quantity, users_id) VALUES( 1, 'Ice Mocha', 10.00, 1, ARRAY[1,2] );
 INSERT INTO items (receipt_id, item_name, price, quantity, users_id) VALUES( 1, 'Ice Latte', 10.00, 1, ARRAY[1] );
 INSERT INTO items (receipt_id, item_name, price, quantity, users_id) VALUES( 1, 'Ps.Fluffy Pancake', 10.00, 1, ARRAY[3] );
+
+
+
+
+-- img token
+-- J5LnLAjvkIiLdqLF
+-- 63tVCbpFsFMpvE9A
+-- 4fC7yVPQ9uzfdmJD
+-- 5GpcpUozlUTCbEtd

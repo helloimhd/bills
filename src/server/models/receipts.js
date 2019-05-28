@@ -94,21 +94,22 @@ module.exports = (dbPI) => {
         // where items.receipt_id = 1;
         // THIS RETURNS ITEMS TABLE WITH RESPECTIVE RECEIPT ID
         // CHANGE "where items.receipt.id" to be dynamic
-    
+
   // update
 
   // destroy
-    
-    let getUserReceipts = (userId, callback) => {
-    let receiptQuery = `SELECT * FROM receipts WHERE user_id = '${userId}'`;
 
-    dbPI.query(receiptQuery, (err, results) => {
-        callback(err, results)
-    })
-  }
+    let getUserReceipts = (userId, callback) => {
+        let receiptQuery = `SELECT * FROM receipts WHERE user_id = '${userId}'`;
+
+        dbPI.query(receiptQuery, (err, results) => {
+            callback(err, results)
+        })
+    }
 
   return {
     createReceipt,
+    getUserReceipts,
     getReceipt,
     getAllItems,
     getIndvUserItems,

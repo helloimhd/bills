@@ -38,7 +38,7 @@ class App extends React.Component {
     //         verifyReceipt: false,
     //     }
     // }
-    
+
 
     updateReceiptHandler=()=>{
 
@@ -187,7 +187,6 @@ class Main extends React.Component{
 
         return(
             <Router>
-                <Route path="/" exact component={App} />
                 <Route path="/home" render={() => (
                   isLoggedIn ? (
                     <Home />
