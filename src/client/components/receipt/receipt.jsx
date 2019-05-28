@@ -311,7 +311,7 @@ class MainReceipt extends React.Component {
 
         let receipt = Object.assign({},this.state.receipt);
         if(itemType === 'price' ){
-            receipt.items[itemId][`${itemType}`] = Number(latestEdit);
+            receipt.items[itemId][`${itemType}`] = Number(Number(latestEdit).toFixed(2));
         }else if(itemType === 'quantity'){
             receipt.items[itemId][`${itemType}`] = Number(latestEdit);
         }else{
@@ -361,7 +361,7 @@ class MainReceipt extends React.Component {
                 <a href="/takePhoto">Click here to take photo</a>
             </div>
     );
-  }
+   }
 }
 
 Receipt.propTypes = {
