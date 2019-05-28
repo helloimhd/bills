@@ -29,31 +29,14 @@ class App extends React.Component {
             receipt: [],
             // groupMembers: [],
             hasReceipt: false,
-
-            isLoggedIn: false,
         }
     }
 
-    // componentDidMount() {
-    //     this.checkLoggedIn();
+    // getReceiptHandler=()=>{
+    //         verifyReceipt: false,
+    //     }
     // }
-
-    // checkLoggedIn = () => {
-    //     let reactThis = this;
-    //     fetch('/checkCookie')
-    //     .then(function(response) {
-    //         return response.json();
-    //     })
-    //     .then(function(myJson) {
-    //        // console.log(myJson)
-    //         if (myJson.isLoggedIn === true) {
-    //             reactThis.setState({isLoggedIn: true})
-
-    //         } else if (myJson.isLoggedIn === false) {
-    //             reactThis.setState({isLoggedIn: false})
-    //         }
-    //     });
-    // }
+    
 
     updateReceiptHandler=()=>{
 
@@ -189,15 +172,44 @@ class App extends React.Component {
 
 class Main extends React.Component{
     constructor(){
-        super()
+        super();
     }
+
     render(){
+        let isLoggedIn = false;
+        //console.log(document.cookie);
+        if (document.cookie !== "") {
+            isLoggedIn = true
+        }
+
         return(
             <Router>
+                <Route path="/" exact component={App} />
+                <Route path="/home" render={() => (
+                  isLoggedIn ? (
+                    <Home />
+                  ) : (
+                    <Login />
+                  )
+                )} />
+
+                <Route path="/login" render={() => (
+                  isLoggedIn ? (
+                    <Home />
+                  ) : (
+                    <Login />
+                  )
+                )} />
+
+                <Route path="/takePhoto" render={() => (
+                  isLoggedIn ? (
+                    <TakePhoto />
+                  ) : (
+                    <Login />
+                  )
+                )} />
+
                 <Route path="/" exact component={Receipt} />
-                <Route path="/home" component={Home} />
-                <Route path="/login" component={Login} />
-                <Route path="/takePhoto" component={TakePhoto} />
                 <Route path="/splitTesting" component={SplitItems} />
                 <Route path="/group" component={GroupSelect} />
             </Router>

@@ -6,32 +6,28 @@ class Home extends React.Component {
     constructor() {
         super();
         this.state = {
-            isLoggedIn: ""
+            receipts: []
         }
     }
 
-    // checkLoggedIn = () => {
-    //     let reactThis = this;
-    //     fetch('/checkCookie')
-    //     .then(function(response) {
-    //         return response.json();
-    //     })
-    //     .then(function(myJson) {
-    //        // console.log(myJson)
-    //         if (myJson.isLoggedIn === true) {
-    //             reactThis.setState({isLoggedIn: true})
-    //             return true;
+    // fetch the data
+    getUserReceipts = () => {
+        fetch('/getUserReceipts')
+        .then(response => {
+            return response.json();
+        })
+        .then(response => {
+            console.log(response)
+           // this.setState({receipts: response});
+        })
+    }
 
-    //         } else if (myJson.isLoggedIn === false) {
-    //             reactThis.setState({isLoggedIn: false})
 
-    //         }
-    //     });
-    // }
 
     render() {
         return(
             <React.Fragment>
+                {this.getUserReceipts()}
                 <div>
                     <h1>HOME</h1>
                     <button type="button"><a href='/group'>Split a Bill</a></button>
