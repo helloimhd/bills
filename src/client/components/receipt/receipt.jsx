@@ -20,23 +20,28 @@ class ItemElement extends React.Component{
 
     }
 
-    updateItemHandler = () =>{
+    updateItemHandler = (e) =>{
         // console.log('HELLO UPDATEEE');
         // console.log(this.refs.input.value);
+        if(e.keyCode === 13){
 
-        this.setState({
-            isEditMode:false,
-        })
+            this.setState({
+                isEditMode:false,
+            })
 
-        let itemEdited = this.refs.input.value;
+            let itemEdited = this.refs.input.value;
 
-        let itemElement = [];
+            let itemElement = [];
 
-        itemElement.push(this.props.id);
-        itemElement.push(this.props.type);
+            itemElement.push(this.props.id);
+            itemElement.push(this.props.type);
 
-        this.props.pickMeUp(itemEdited,itemElement);
+            this.props.pickMeUp(itemEdited,itemElement);
+        }
+    }
 
+    test = ()=>{
+        console.log('OUT OF FOCUSSSS');
     }
 
     renderEditView(item){
@@ -44,9 +49,7 @@ class ItemElement extends React.Component{
             item = item.toFixed(2);
         };
         return  <td>
-                    <input id={this.props.id} type={this.props.type} defaultValue={item} ref="input" />
-                    <button onClick={(e)=>{this.editItemHandler(e)}}>❌</button>
-                    <button onClick={()=>{this.updateItemHandler()}}>☑️</button>
+                    <input id={this.props.id} type={this.props.type} defaultValue={item} ref="input" onKeyDown={(e)=>{this.updateItemHandler(e)}} onBlur={()=>{this.test()}}/>
                 </td>
     }
 
