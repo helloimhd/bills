@@ -172,6 +172,7 @@ class SplitItems extends React.Component{
                 </ul>
         );
     }
+  }
 }
 
 export default SplitItems;

@@ -14,6 +14,7 @@ cloudinary.config({
 
 //let token = "";
 
+
 const tabUrl = 'https://api.tabscanner.com/pcVKfMzzwCYEkSUKcXvBWfb3ywzPg46WtUoTs6UsCduGfbYNToC0z6BmK0bvRLnB';
 // pcVKfMzzwCYEkSUKcXvBWfb3ywzPg46WtUoTs6UsCduGfbYNToC0z6BmK0bvRLnB
 // AcMHx0XLLafK4avM8WdBLhZixu2fRP8WeY0z4rv1RCFPjNALkAnYIuQnJtH2BOqs
@@ -112,7 +113,7 @@ module.exports = (db) => {
 
                                     } else {
                                         // means its successful > get receipt id that was uploaded to put inside the items table
-                                        db.receipts.getReceipt(token, (err, getReceiptResults) => {
+                                        db.receipts.getReceiptByToken(token, (err, getReceiptResults) => {
                                             //console.log(testToken)
                                             if (err) {
                                                 console.error(err);

@@ -133,6 +133,25 @@ module.exports = (dbPI) => {
         })
     }
 
+    let getReceiptByToken = (dataIn, callback) =>{
+
+        // console.log( 'INSIDE MODELS', dataIn );
+        let query = `SELECT * FROM receipts WHERE img_token = '${dataIn}'`;
+
+        dbPI.query( query, (err,r)=>{
+            if(err){
+                // console.log('Error here?');
+                callback( err, null)
+            }else{
+                // console.log('Something here?');
+                const result = {
+                                receipt : r.rows,
+                                };
+                callback( null, result );
+            }
+        })
+    };
+
   return {
     createReceipt,
     getUserReceipts,
@@ -141,5 +160,6 @@ module.exports = (dbPI) => {
     getIndvUserItems,
     // getUsername,
     updateReceipt,
+    getReceiptByToken,
   };
 };
