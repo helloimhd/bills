@@ -221,6 +221,27 @@ module.exports = (db) => {
         })
     }
 
+    // let getUsername = (req, res) => {
+    //     console.log("HELLO in controller");
+    //     var dataIn = req.params.id;
+
+    //     db.receipts.getUsername( dataIn, (err, receipts) =>{
+    //         if(err){
+    //             console.log('in here?');
+    //             console.error('error getting receipt(s)', err);
+    //             res.status(500).send("Error getting receipt");
+    //         } else {
+    //             console.log('am i here????');
+    //             console.log( 'AT CONTROLLER RESULTS', receipts );
+    //             if(receipts.rows.length === 0){
+    //                 res.send('No entry');
+    //             }else{
+    //                 res.send( receipts.rows );
+    //             }
+    //         }
+    //     })
+    // }
+
     let testItemName = (request, response) => {
         let receipt_id = 49;
         db.items.getItems(receipt_id, (err, results) => {
@@ -322,6 +343,7 @@ module.exports = (db) => {
     uploadPhoto,
     summaryReceipt,
     usersSummaryReceipt,
+    // getUsername,
     getUserReceipts,
     updateReceipt,
     testItemName,

@@ -84,6 +84,22 @@ module.exports = (dbPI) => {
         })
     }
 
+    // let getUsername = (dataIn, callback) => {
+    //     console.log ("HELLO in the model");
+
+    //     let query = `select username from users where id = ${dataIn};`
+
+    //     dbPI.query(query, (err, r) => {
+    //         if(err){
+    //             console.log('Error here?')
+    //             callback( err, null)
+    //         } else {
+    //             console.log(r);
+    //             callback(null, r);
+    //         }
+    //     })
+    // }
+
     let updateReceipt = ( dataIn, callback)=>{
 
         let query = `UPDATE receipts
@@ -123,6 +139,7 @@ module.exports = (dbPI) => {
     getReceipt,
     getAllItems,
     getIndvUserItems,
+    // getUsername,
     updateReceipt,
   };
 };

@@ -19,6 +19,7 @@ import Register from './components/user/register';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import WholeSummary from './components/wholeSummary/wholeSummary';
 import IndividualSummary from './components/individualSummary/individualSummary';
+import Username from './components/individualSummary/usernameSummary';
 
 
 import SplitItems from './components/splitItems/splitItems'
@@ -188,7 +189,9 @@ class Main extends React.Component{
 
         return(
             <Router>
+
                 <Route path="/" exact render={() => (
+
                   isLoggedIn ? (
                     <Home />
                   ) : (
@@ -242,6 +245,7 @@ class Main extends React.Component{
 
                 <Route path="/wholeSummary" component={WholeSummary} />
                 <Route path="/summaryReceipt" component={IndividualSummary} />
+
             </Router>
         );
     }
@@ -251,3 +255,5 @@ class Main extends React.Component{
 
 
 export default hot(module)(Main);
+
+/* <Route path="/userNames" component={Username} /> */
