@@ -20,6 +20,7 @@ const tabUrl = 'https://api.tabscanner.com/AcMHx0XLLafK4avM8WdBLhZixu2fRP8WeY0z4
 
 module.exports = (db) => {
 
+
     let giveMeReceipt = ( req, res ) =>{
 
         //can use http path or ajax put in body
@@ -218,10 +219,47 @@ module.exports = (db) => {
         })
     }
 
+    let testItemName = (request, response) => {
+        let receipt_id = 49;
+        db.items.getItems(receipt_id, (err, results) => {
+            if (err) {
+                console.error(err);
+                response.status(500).send("Query ERROR for getting items.");
+
+            } else {
+                let allItems = results.allItems;
+                let itemName = allItems.map(obj => {
+                    let objItemName = obj.item_name
+                    let itemName = (objItemName.replace(/[^a-zA-Z ]/g, ""));
+                    console.log(itemName);
+                })
+                response.send(results.allItems);
+            }
+        })
+    }
+
+    let updateReceipt = ( req, res)=>{ // update receipt and items;
+        console.log('helo in update receipt controller');
+
+        let dataIn = req.body.obj;
+        console.log(dataIn);
+        // db.receipts.updateReceipt(dataIn, (err,data)=>{
+        //     if(err){
+        //         console.error('error updating items entry', err);
+        //         res.status(500).send("Error getting group stuff");
+        //     } else {
+        //         console.log('back in Receipt CONTROLLER');
+        //         res.send(data);
+        //     }
+        // })
+    }
+
   return {
     giveMeReceipt,
     uploadPhoto,
     summaryReceipt,
     usersSummaryReceipt,
+    updateReceipt,
+    testItemName,
   };
 };

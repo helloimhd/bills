@@ -72,7 +72,7 @@
   "dependencies": {
     "airbnb-browser-shims": ">=3.1.0",
     "babel-polyfill": ">=6.26.0",
-    "body-parser": ">=1.18.3",
+    "body-parser": "^1.19.0",
     "cloudinary": "^1.14.0",
     "compression": ">=1.7.3",
     "cookie-parser": "^1.4.4",
@@ -82,6 +82,7 @@
     "express-react-views": "^0.11.0",
     "form-data": "^2.3.3",
     "immutable": ">=4.0.0-rc.12",
+    "js-sha256": "^0.9.0",
     "method-override": "^3.0.0",
     "multer": "^1.4.1",
     "node": "^12.3.0",

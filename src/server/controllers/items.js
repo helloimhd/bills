@@ -13,6 +13,8 @@ module.exports = (db) => {
                 if(items.allItems.length === 0){
                     res.send('No Such ITEMS FROM RECEIPT ID');
                 }else{
+                  console.log(items.allItems)
+                  console.log('KJAFGADFGHADOHADOHINADFO')
                     res.send( items.allItems );
                 }
             }

@@ -1,5 +1,57 @@
 module.exports = (db) => {
 
+  let getUsersData = (req, res) => {
+        // var dataIn = req.query.search;
+        // console.log(dataIn)
+        // if (dataIn === undefined) {
+        //   dataIn = ""
+        // }
+
+        db.groups.getUsersData((err, data) =>{
+            if(err){
+                res.status(500).send("Error getting users");
+            } else {
+                if(data.length === 0){
+                    res.send('No entry');
+                }else{
+                    res.send( {users: data} );
+                }
+            }
+        })
+    }
+
+
+    let updateGroupData = (req, res) => {
+        console.log('UPDATE GROUP DATA CONTROLLER');
+
+        let dataIn = req.body.obj;
+
+
+        db.groups.updateGroupData( dataIn,(err,data)=>{
+            if(err){
+                console.error('error adding new group entry', err);
+                res.status(500).send("Error getting group stuff");
+            } else {
+                console.log('back in GROUP CONTROLLER');
+                res.send(data);
+            }
+        })
+
+
+
+        // db.groups.getUsersData( dataIn, (err, data) =>{
+        //     if(err){
+        //         res.status(500).send("Error getting users");
+        //     } else {
+        //         if(data.length === 0){
+        //             res.send('No entry');
+        //         }else{
+        //             res.send( {users: data} );
+        //         }
+        //     }
+        // })
+    }
+
     let giveMeGroupMembers = ( req, res ) =>{
         // console.log('hello group controllers')
         let input = req.params.id;
@@ -33,7 +85,33 @@ module.exports = (db) => {
         })
     }
 
-    return {
-        giveMeGroupMembers,
-    };
+    let involvedInReceipt = ( req, res ) =>{
+        // console.log('hello group controllers')
+        let input = req.params.id;
+        console.log(input)
+        console.log("MERMMBEMMMERRERERERSSS")
+        db.groups.getGroupMembers( input, (err, grpMembersId) =>{
+            if(err){
+                console.error('error getting group member(s)', err);
+                res.status(500).send("Error getting group stuff");
+            } else {
+                if(grpMembersId.rows.length === 0 ){
+                    res.send('No group members here');
+                } else {
+                    // console.log(grpMembersId.rows)
+                    // console.log('BEFORE RESPONSENENENE')
+                    res.send(grpMembersId.rows)
+                }
+            }
+        })
+    }
+
+
+  return {
+    getUsersData,
+    updateGroupData,
+    giveMeGroupMembers,
+    involvedInReceipt,
+
+  };
 };

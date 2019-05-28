@@ -84,6 +84,17 @@ module.exports = (dbPI) => {
         })
     }
 
+    let updateReceipt = ( dataIn, callback)=>{
+        console.log('send me');
+        // let query = ``
+    }
+        // select receipts.id, items.*
+        // from receipts inner join items
+        // on (receipts.id = items.receipt_id)
+        // where items.receipt_id = 1;
+        // THIS RETURNS ITEMS TABLE WITH RESPECTIVE RECEIPT ID
+        // CHANGE "where items.receipt.id" to be dynamic
+    
   // update
 
   // destroy
@@ -93,5 +104,6 @@ module.exports = (dbPI) => {
     getReceipt,
     getAllItems,
     getIndvUserItems,
+    updateReceipt,
   };
 };
