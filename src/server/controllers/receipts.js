@@ -20,6 +20,7 @@ const tabUrl = 'https://api.tabscanner.com/AcMHx0XLLafK4avM8WdBLhZixu2fRP8WeY0z4
 
 module.exports = (db) => {
 
+
     let giveMeReceipt = ( req, res ) =>{
 
         //can use http path or ajax put in body
@@ -180,7 +181,28 @@ module.exports = (db) => {
         console.log("HELLO in controller");
         var dataIn = req.params.id;
 
-        db.receipts.yo( dataIn, (err, receipts) =>{
+        db.receipts.getAllItems( dataIn, (err, receipts) =>{
+            if(err){
+                console.log('in here?');
+                console.error('error getting receipt(s)', err);
+                res.status(500).send("Error getting receipt");
+            } else {
+                console.log('am i here????');
+                console.log( 'AT CONTROLLER RESULTS', receipts );
+                if(receipts.rows.length === 0){
+                    res.send('No entry');
+                }else{
+                    res.send( receipts.rows );
+                }
+            }
+        })
+    }
+
+    let usersSummaryReceipt = (req, res) => {
+        console.log("HELLO in controller");
+        var dataIn = req.params.id;
+
+        db.receipts.getIndvUserItems( dataIn, (err, receipts) =>{
             if(err){
                 console.log('in here?');
                 console.error('error getting receipt(s)', err);
@@ -216,11 +238,44 @@ module.exports = (db) => {
         })
     }
 
+    let getUserReceipts = (request, response) =>{
+        const userId = parseInt(request.cookies.userId);
+        console.log(userId)
+
+        // get
+        db.receipts.getUserReceipts(userId, (err, results) => {
+            if (err) {
+                console.error(err);
+                response.status(500).send("Query ERROR for getting user's receipts.");
+            } else {
+                response.send(results.rows)
+            }
+        })
+    }
+
+    let updateReceipt = ( req, res)=>{ // update receipt and items;
+        console.log('helo in update receipt controller');
+
+        let dataIn = req.body.obj;
+        console.log(dataIn);
+        // db.receipts.updateReceipt(dataIn, (err,data)=>{
+        //     if(err){
+        //         console.error('error updating items entry', err);
+        //         res.status(500).send("Error getting group stuff");
+        //     } else {
+        //         console.log('back in Receipt CONTROLLER');
+        //         res.send(data);
+        //     }
+        // })
+    }
 
   return {
     giveMeReceipt,
     uploadPhoto,
     summaryReceipt,
-    testItemName
+    usersSummaryReceipt,
+    getUserReceipts,
+    updateReceipt,
+    testItemName,
   };
 };

@@ -11,7 +11,7 @@ class Login extends React.Component {
             username: "",
             password: "",
             prompt: "",
-            isLoggedIn: ""
+            isLoggedIn: false
         }
         this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
     }
@@ -58,7 +58,7 @@ class Login extends React.Component {
         let username = this.state.username;
         let password = this.state.password;
         let reactThis = this;
-        console.log('reactThis', reactThis);
+        // console.log('reactThis', reactThis);
 
         let url = '/checkUser';
         let userData = {username: username, password: password};
@@ -73,7 +73,7 @@ class Login extends React.Component {
         .then(function(res) {
             return res.json()
         })
-        .then(function(response) {
+        .then(response => {
             console.log(response.data)
             if (response.data === null) {
                 reactThis.setState({prompt: "Username is invalid. Click here to Sign Up"})
@@ -85,9 +85,11 @@ class Login extends React.Component {
                 // redirect
                 //reactThis.setState({prompt: "Valid"})
                 // set logged in to true
-                //reactThis.setState({isLoggedIn: true})
+                reactThis.setState({isLoggedIn: true})
                 //window.location = '/'
-                window.location = '/home'
+                //console.log("aldalsda")
+                //this.props.history.push('/home')
+                window.location.href = '/home';
 
             }
         })

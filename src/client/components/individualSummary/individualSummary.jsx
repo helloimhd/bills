@@ -1,6 +1,6 @@
 import React from 'react';
 
-class WholeSummary extends React.Component {
+class IndividualSummary extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -8,8 +8,6 @@ class WholeSummary extends React.Component {
             change: false,
             total:0,
         }
-
-
     }
 
     receiptHandler() {
@@ -17,7 +15,7 @@ class WholeSummary extends React.Component {
         var reactThis = this;
         console.log("clicking");
         var id = 1;
-        fetch(`/summary/${id}`, {
+        fetch(`/summary/user/${id}`, {
 
         }).then(res => {
             return res.json()
@@ -50,14 +48,14 @@ class WholeSummary extends React.Component {
         if(!receiptItems){
         return (
             <div>
-                <h1>Bill Summary</h1>
+                <h1>Your Bill Summary</h1>
                 <button onClick={()=>{this.receiptHandler()}}>Show items</button>
             </div>
         );
     } else {
         return (
             <div>
-                <h1>Bill Summary</h1>
+                <h1>Your Bill Summary</h1>
                 <table>
                   <tbody>
                       <tr>
@@ -97,4 +95,4 @@ class WholeSummary extends React.Component {
     }
 }
 
-export default WholeSummary;
+export default IndividualSummary;

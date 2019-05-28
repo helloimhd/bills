@@ -71,7 +71,7 @@ class GroupSelect extends React.Component {
             'Accept': 'application/json',
         },
         body: JSON.stringify(input),
-      }).then(res=>console.log(res.json()))
+      }).then(res=>console.log(res.json()));
     }
 
 

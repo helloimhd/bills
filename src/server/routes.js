@@ -27,10 +27,13 @@ module.exports = (app, db) => {
     //app.get('/takePhoto', receipts.takePhoto);
     app.post('/uploadPhoto', upload.single('img'), receipts.uploadPhoto);
     app.get('/testItemName', receipts.testItemName);
+    app.get('/getUserReceipts', receipts.getUserReceipts);
 
     app.get('/receipt/:id', receipts.giveMeReceipt);
     app.get('/items/:id', items.getItems);
     // app.get('/group/:id', groups.giveMeGroupMembers);
+
+    app.post('receipt/update', receipts.updateReceipt);
 
     // Splitting items path
     app.get('/group/:id', groups.involvedInReceipt)
@@ -38,9 +41,10 @@ module.exports = (app, db) => {
     // Id is the receipt id
     app.get('/summary/:id', receipts.summaryReceipt);
 
+    app.get('/summary/user/:id', receipts.usersSummaryReceipt);
+
     app.get('/receipt/:id/items', receipts.giveMeReceipt);
 
-
-    app.get('/search/group', groups.getUsersData);
-    app.post('/selected/group', groups.updateGroupData);
+    app.get('/search/group', groups.getUsersData); // gets all users
+    app.post('/selected/group', groups.updateGroupData); // add new group & create new receipt
 };
