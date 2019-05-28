@@ -219,6 +219,7 @@ class Main extends React.Component{
     }
 }
 
+ // <Route path="/" exact component={Receipt} />
 
 
 export default hot(module)(Main);

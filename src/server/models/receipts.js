@@ -85,8 +85,18 @@ module.exports = (dbPI) => {
     }
 
     let updateReceipt = ( dataIn, callback)=>{
-        console.log('send me');
-        // let query = ``
+
+        let query = `UPDATE receipts
+                    SET subtotal = ${dataIn.subtotal}, total = ${dataIn.total}
+                    WHERE img_token = '${dataIn.img_token}'`
+
+        dbPI.query( query, (err,r)=>{
+            if(err){
+                callback(err,null);
+            }else{
+                callback(null,r);
+            }
+        })
     }
         // select receipts.id, items.*
         // from receipts inner join items
