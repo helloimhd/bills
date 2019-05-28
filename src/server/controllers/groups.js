@@ -23,10 +23,11 @@ module.exports = (db) => {
 
     let updateGroupData = (req, res) => {
         console.log('UPDATE GROUP DATA CONTROLLER');
-
+        console.log(req.body);
         let dataIn = req.body.obj;
+        let receiptId = req.body.receipt_id;
 
-        db.groups.updateGroupData( dataIn,(err,data)=>{
+        db.groups.updateGroupData( dataIn, receiptId, (err,data)=>{
             if(err){
                 console.error('error updating group entry', err);
                 res.status(500).send("Error updating groups");
@@ -70,7 +71,7 @@ module.exports = (db) => {
     }
 
     let involvedInReceipt = ( req, res ) =>{
-        // console.log('hello group controllers')
+        console.log('hello group controllers')
         let input = req.params.id;
         console.log(input)
         console.log("MERMMBEMMMERRERERERSSS")
