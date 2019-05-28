@@ -18,7 +18,8 @@ CREATE TABLE IF NOT EXISTS receipts (
 	group_id INTEGER,
 	img_token TEXT,
 	subtotal FLOAT,
-	total FLOAT
+	total FLOAT,
+	date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS items (

@@ -238,6 +238,21 @@ module.exports = (db) => {
         })
     }
 
+    let getUserReceipts = (request, response) =>{
+        const userId = parseInt(request.cookies.userId);
+        console.log(userId)
+
+        // get
+        db.receipts.getUserReceipts(userId, (err, results) => {
+            if (err) {
+                console.error(err);
+                response.status(500).send("Query ERROR for getting user's receipts.");
+            } else {
+                response.send(results.rows)
+            }
+        })
+    }
+
     let updateReceipt = ( req, res)=>{ // update receipt and items;
         console.log('helo in update receipt controller');
 
@@ -259,6 +274,7 @@ module.exports = (db) => {
     uploadPhoto,
     summaryReceipt,
     usersSummaryReceipt,
+    getUserReceipts,
     updateReceipt,
     testItemName,
   };
