@@ -52,7 +52,7 @@ class Home extends React.Component {
             <React.Fragment>
                 <div>
                     <h1>HOME</h1>
-                    <button type="button"><a href='/group'>Split a Bill</a></button>
+                    <button type="button"><a href='/takePhoto'>Split a Bill</a></button>
                     {allReceipts}
                 </div>
             </React.Fragment>

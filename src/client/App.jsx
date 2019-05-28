@@ -187,7 +187,7 @@ class Main extends React.Component{
 
         return(
             <Router>
-                <Route path="/home" render={() => (
+                <Route path="/" exact render={() => (
                   isLoggedIn ? (
                     <Home />
                   ) : (
@@ -211,9 +211,31 @@ class Main extends React.Component{
                   )
                 )} />
 
-                <Route path="/receipt" exact component={Receipt} />
-                <Route path="/splitTesting" component={SplitItems} />
-                <Route path="/group" component={GroupSelect} />
+                <Route path="/receipt" render={() => (
+                  isLoggedIn ? (
+                    <Receipt />
+                  ) : (
+                    <Login />
+                  )
+                )} />
+
+
+                <Route path="/splitTesting" render={() => (
+                  isLoggedIn ? (
+                    <SplitItems />
+                  ) : (
+                    <Login />
+                  )
+                )} />
+
+
+                <Route path="/group" render={() => (
+                  isLoggedIn ? (
+                    <GroupSelect />
+                  ) : (
+                    <Login />
+                  )
+                )} />
             </Router>
         );
     }
