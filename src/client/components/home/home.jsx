@@ -7,6 +7,7 @@ import Login from '../user/login';
 // Ok so some weird shit here, we have to this for every image we want to place in our app. So in the image tag, just apply it like a variable. For example, <img src={pic}/>. What a day to be alive.
 import pic from './a.jpg';
 
+
 import styles from './style.scss';
 
 class Home extends React.Component {
@@ -78,7 +79,6 @@ class Home extends React.Component {
                     <button type="button" onClick={this.testFunction}><h2>Split a Bill</h2></button>
                     {allReceipts}
                 </div>
-
                 <br/> <br/> <br/>
                 <span className={styles.bodyTextBold}>This is for testing styles, chill bruh</span>
 
