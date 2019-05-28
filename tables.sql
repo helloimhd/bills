@@ -30,3 +30,7 @@ CREATE TABLE IF NOT EXISTS items (
 	quantity INTEGER,
 	users_id INTEGER ARRAY
 );
+
+ALTER TABLE items ALTER COLUMN users_id SET DEFAULT '{}';
+
+-- psql -d bills -U Chris -f tables.sql

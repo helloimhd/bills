@@ -13,8 +13,8 @@ class SplitItems extends React.Component{
         this.selectChangeHandler = this.selectChangeHandler.bind(this)
 
         this.state = {
-          items: [],
-          users: [],
+          items: null,
+          users: null,
           activeIndex: 0,
         }
     }
@@ -89,73 +89,72 @@ class SplitItems extends React.Component{
 
     render(){
 
+      if (this.state.users === null) {
+        return <p>loading</p>
+      } else {
 
-      // let sliderStyle = {
-      //   transform: `translateX(${this.state.activeIndex * -100}%)`,
-      //   transition: `0.2s`
-      // }
-
-      let usersList = this.state.users.map((user, index) => {
-        return(
-            <li key={user.friend_id}>
-              <input
-                type="checkbox"
-                value={user.friend_id}
-                onChange={this.checkerHandler}
-              /> {user.friend_id}
-            </li>
-          )
-      })
-
-      let itemList = this.state.items.map((item, index) => {
-
-        if (index === this.state.activeIndex) {
-          return (
-              <li key={index} id={index}
-                  style={{display: "block"}}
-              >
-                <h1>{item.item_name}</h1>
-                <h1>${item.price}</h1>
-                <ul id={index}>
-                  {usersList}
-                </ul>
-                <button onClick={this.onPreviousClick}>Previous</button>
-                <button onClick={this.onNextClick}>Next</button>
+        let usersList = this.state.users.map((user, index) => {
+          return(
+              <li key={user.friend_id}>
+                <input
+                  type="checkbox"
+                  value={user.friend_id}
+                  onChange={this.checkerHandler}
+                /> {user.friend_id}
               </li>
             )
-        } else {
+        })
+
+        let itemList = this.state.items.map((item, index) => {
+
+          if (index === this.state.activeIndex) {
+            return (
+                <li key={index} id={index}
+                    style={{display: "block"}}
+                >
+                  <h1>{item.item_name}</h1>
+                  <h1>${item.price}</h1>
+                  <ul id={index}>
+                    {usersList}
+                  </ul>
+                  <button onClick={this.onPreviousClick}>Previous</button>
+                  <button onClick={this.onNextClick}>Next</button>
+                </li>
+              )
+          } else {
+            return (
+                <li key={index} id={index}
+                    style={{display: "none"}}
+                >
+                  <h1>{item.item_name}</h1>
+                  <h1>${item.price}</h1>
+                  <ul id={index}>
+                    {usersList}
+                  </ul>
+                  <button onClick={this.onNextClick}>Next</button>
+                </li>
+              )
+          }
+        })
+
+        let options = this.state.items.map((item, index) => {
           return (
-              <li key={index} id={index}
-                  style={{display: "none"}}
-              >
-                <h1>{item.item_name}</h1>
-                <h1>${item.price}</h1>
-                <ul id={index}>
-                  {usersList}
-                </ul>
-                <button onClick={this.onNextClick}>Next</button>
-              </li>
+              <option value={index}>{item.item_name} {index}</option>
             )
-        }
-      })
+        })
 
-      let options = this.state.items.map((item, index) => {
-        return (
-            <option value={index}>{item.item_name} {index}</option>
-          )
-      })
-
-        return(
-                <ul>
-                  <li>
-                    <select onChange={this.selectChangeHandler} value={this.state.activeIndex}>
-                      {options}
-                    </select>
-                  </li>
-                  {itemList}
-                  <li><a href="/wholeSummary">Whole Summary</a></li>
-                </ul>
-        );
+          return(
+                  <ul>
+                    <li>
+                      <select onChange={this.selectChangeHandler} value={this.state.activeIndex}>
+                        {options}
+                      </select>
+                    </li>
+                    {itemList}
+                    <li><a href="/wholeSummary">Whole Summary</a></li>
+                  </ul>
+          );
+      }
     }
 }
 

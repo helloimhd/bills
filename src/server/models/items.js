@@ -45,29 +45,19 @@ module.exports = (dbPI) => {
         })
     }
 
-    let updateItems = (dataIn, callback)=>{
+     let updateItems = (dataIn, callback)=>{
 
-        let buildArrString = `[`;
-        for(let i = 0; i < dataIn.users_id.length; i++){
-            buildArrString = buildArrString + " "+ dataIn.users_id[i] + ',';
-        }
-        let removeComma = buildArrString.slice(0,buildArrString.length-1);
-        buildArrString = removeComma +' ]';
+        let query = `UPDATE items set item_name = ($1), price = ($2), quantity = ($3), users_id = ($4) where id = ${dataIn.id}`
 
-        //apparently putting an array is not possible.. it has to be an array in a string format.
+        let valuesUpdate = [ dataIn.item_name, dataIn.price, dataIn.quantity, dataIn.users_id]
 
-        let query = `UPDATE items
-                    SET item_name = '${dataIn.item_name}', price = ${dataIn.price}, quantity = ${dataIn.quantity}, users_id = ARRAY${buildArrString}
-                    WHERE id = ${dataIn.id}`;
-
-        dbPI.query( query, (err,r)=>{
+        dbPI.query( query, valuesUpdate, (err,r)=>{
             if(err){
                 callback( err, null)
             } else {
                 callback(null, 'SUCCESS');
             }
         });
-
     }
 
   return {

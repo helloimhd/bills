@@ -2,6 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { Redirect } from 'react-router-dom'
 import Login from '../user/login';
+import pic from './a.jpg';
 
 class Home extends React.Component {
     constructor() {
@@ -15,7 +16,6 @@ class Home extends React.Component {
     componentDidMount() {
         this.getUserReceipts();
     }
-
 
     // fetch the data
     getUserReceipts = () => {
@@ -35,6 +35,7 @@ class Home extends React.Component {
     render() {
         let receipts = this.state.receipts;
        // console.log(receipts)
+    //      console.log(pic)
 
         let allReceipts = receipts.map(obj => {
             // if null means user is involved in the receipt but not paying (for now)
@@ -48,6 +49,7 @@ class Home extends React.Component {
             }
 
         })
+
         return(
             <React.Fragment>
                 <div>
@@ -55,6 +57,8 @@ class Home extends React.Component {
                     <button type="button"><a href='/takePhoto'>Split a Bill</a></button>
                     {allReceipts}
                 </div>
+
+                <img src={pic}/>
             </React.Fragment>
         )
     }

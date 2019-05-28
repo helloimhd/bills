@@ -17,7 +17,6 @@ class ItemElement extends React.Component{
         // console.log('HELLO EDITTING');
         // console.log(this.props);
         this.setState( {isEditMode: !this.state.isEditMode} );
-
     }
 
     updateItemHandler = (e) =>{
@@ -136,10 +135,12 @@ class PaymentSummary extends React.Component{
                     <tr>
                         <td>Service Charge (10%): </td>
                         <td>$ {this.props.payment.serviceCharge}</td>
+                        <td><button onClick={this.props.serviceChargeBooleanHandler}>click</button></td>
                     </tr>
                     <tr>
                         <td>GST (7%): </td>
                         <td>$ {this.props.payment.gst}</td>
+                        <td><button  onClick={this.props.gstBooleanHandler}>click</button></td>
                     </tr>
                     <tr>
                         <td>Total: </td>
@@ -180,7 +181,9 @@ class Receipt extends React.Component{
             return(
                 <div>
                     <ItemTable items={this.props.receipt.items} pickMeUp={this.props.pickMeUp}/>
-                    <PaymentSummary payment={this.props.receipt}/>
+                    <PaymentSummary payment={this.props.receipt}
+                      serviceChargeBooleanHandler={this.props.serviceChargeBooleanHandler}
+                      gstBooleanHandler={this.props.gstBooleanHandler}/>
                     <ButtonProceedTab updateReceipt={this.props.updateReceipt}/>
                 </div>
             )
@@ -193,11 +196,14 @@ class MainReceipt extends React.Component {
         super();
 
         this.state = {
-            receipt: [],
+            receipt: null,
             // groupMembers: [],
             hasReceipt: false,
 
             isLoggedIn: false,
+
+            serviceChargeBoolean: true,
+            gstBoolean: true,
         }
     }
 
@@ -251,7 +257,7 @@ class MainReceipt extends React.Component {
         //retrieves receipt and item info
         console.log('SEND AND GET SOMETHING')
         var reactThis = this;
-        var img_token = 'mt8NZBA4CPJ6rpGO'; // need to find a way to retrieve img token..... !!!!!!!*(****!!!)
+        var img_token = '280gTIQNwoTQeInc'; // need to find a way to retrieve img token..... !!!!!!!*(****!!!)
         var receipt_id;
         var obj = {};
         // ws06oyvmcgCsdsNL
@@ -325,11 +331,11 @@ class MainReceipt extends React.Component {
 
         console.log(receipt);
 
-        this.quickMath();
+        this.quickMath(this.state.serviceChargeBoolean, this.state.gstBoolean);
     }
 
 
-    quickMath = () =>{ // when user edits receipt, function checks prices and updates state
+    quickMath = (serviceChargeBoolean,gstBoolean) =>{ // when user edits receipt, function checks prices and updates state
         let updatedReceiptItems = this.state.receipt;
         let prices = [];
 
@@ -341,8 +347,22 @@ class MainReceipt extends React.Component {
         }
 
         let newSubtotal = prices.reduce(reducer);
-        let newSc = newSubtotal * 0.1;
-        let newGst = (newSubtotal + newSc) * 0.07;
+
+        let newSc;
+        let newGst;
+
+        if (serviceChargeBoolean === true) {
+          newSc = newSubtotal * 0.1;
+        } else {
+          newSc = 0;
+        }
+
+        if (gstBoolean === true) {
+          newGst = (newSubtotal + newSc) * 0.07;
+        } else {
+          newGst = 0;
+        }
+
         let newTotal = newSubtotal + newSc + newGst;
 
         let receipt = Object.assign({},this.state.receipt);
@@ -354,15 +374,45 @@ class MainReceipt extends React.Component {
         this.setState({receipt});
     }
 
+    serviceChargeBooleanHandler = (event) => {
+      if (this.state.serviceChargeBoolean === true) {
+        this.setState({serviceChargeBoolean: false})
+        this.quickMath(false,this.state.gstBoolean)
+      } else {
+        this.setState({serviceChargeBoolean: true})
+        this.quickMath(true,this.state.gstBoolean)
+      }
+    }
+
+    gstBooleanHandler = (event) => {
+      if (this.state.gstBoolean === true) {
+        this.setState({gstBoolean: false})
+        this.quickMath(this.state.serviceChargeBoolean, false)
+      } else {
+        this.setState({gstBoolean: true})
+        this.quickMath(this.state.serviceChargeBoolean, true)
+      }
+      // this.quickMath()
+    }
+
     render() {
+      if (this.state.receipt === null){
+        return <p>loading</p>
+      } else {
         const proceedToReceipt = this.state.hasReceipt;
         // const proceedToItemSelection = this.state.verifyReceipt;
 
        return (
             <div>
-                <Receipt receipt={this.state.receipt} pickMeUp={this.pickMeUp} updateReceipt={this.updateHandler}/>
+                <Receipt receipt={this.state.receipt}
+                  pickMeUp={this.pickMeUp}
+                  updateReceipt={this.updateHandler}
+                  serviceChargeBooleanHandler={this.serviceChargeBooleanHandler}
+                  gstBooleanHandler={this.gstBooleanHandler}
+                  />
             </div>
-    );
+          );
+     }
    }
 }
 
