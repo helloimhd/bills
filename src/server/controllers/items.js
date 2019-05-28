@@ -24,14 +24,6 @@ module.exports = (db) => {
 
         let input = req.body.obj;
 
-        // db.items.updateItems(input[0], (err,data)=>{
-        //     if(err){
-        //             console.error('error updating items ', err);
-        //             res.status(500).send("Error updating items!");
-        //         } else {
-        //             res.send('hello');
-        //         }
-        // })
         input.forEach((item)=>{
 
             db.items.updateItems(item, (err,data)=>{
@@ -39,7 +31,7 @@ module.exports = (db) => {
                     console.error('error updating items ', err);
                     res.status(500).send("Error updating items!");
                 } else {
-                    console.log('okay')
+                    console.log('okay', data);
                 }
             })
         })

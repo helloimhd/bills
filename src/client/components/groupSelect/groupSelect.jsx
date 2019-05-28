@@ -1,4 +1,5 @@
 import React from 'react';
+import Cookies from 'js-cookie';
 
 import styles from './style.scss';
 
@@ -62,7 +63,9 @@ class GroupSelect extends React.Component {
         idInGroup.push(r.id);
       })
 
-      let input = { obj : idInGroup};
+      let input = { obj : idInGroup,
+                    receipt_id : Cookies.get('receiptId'),
+                   };
 
       fetch(`/selected/group`,{
         method: 'POST',
@@ -131,12 +134,7 @@ class GroupSelect extends React.Component {
                 {userList}
               </ul>
 
-
-              <button
-                onClick={(e)=>{this.updateGroupHandler(e)}}
-                > connect this button to next page </button>
-                <br />
-                <button type="button"><a href="/receipt">View Receipt</a></button>
+                <button onClick={(e)=>{this.updateGroupHandler(e)}} type="button"><a href="/receipt">View Receipt</a></button>
             </div>
         );
     }

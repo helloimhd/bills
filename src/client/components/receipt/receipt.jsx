@@ -1,4 +1,5 @@
 import React from 'react';
+import Cookies from 'js-cookie';
 
 import PropTypes from 'prop-types';
 // import WholeSummary from '../wholeSummary/wholeSummary';
@@ -193,7 +194,7 @@ class MainReceipt extends React.Component {
         super();
 
         this.state = {
-            receipt: [],
+            receipt: null,
             // groupMembers: [],
             hasReceipt: false,
 
@@ -214,7 +215,7 @@ class MainReceipt extends React.Component {
                 'Accept': 'application/json',
             },
             body: JSON.stringify(input),
-        }).then(res=>console.log('hello'));
+        }).then(res=>console.log('updated receipts'));
         // console.log(res.json())
     }
 
@@ -231,7 +232,7 @@ class MainReceipt extends React.Component {
                 'Accept': 'application/json',
             },
             body: JSON.stringify(input),
-        }).then(res=>console.log('Updated receipts and items'));
+        }).then(res=>console.log('Updated items'));
     }
 
     updateHandler=()=>{
@@ -239,7 +240,7 @@ class MainReceipt extends React.Component {
         this.updateReceiptRequest();
         this.updateItemsRequest();
 
-        window.location.href = '/splitTesting'
+        // window.location.href = '/splitTesting'
     }
 
     componentDidMount=()=>{
@@ -257,9 +258,9 @@ class MainReceipt extends React.Component {
         // ws06oyvmcgCsdsNL
         // guQnFRzRY4MXMm6F
 
-        async function getReceipt(token){ // async request to backend
+        async function getReceipt(id){ // async request to backend
 
-            let response = await fetch(`/receipt/${img_token}`);
+            let response = await fetch(`/receipt/${id}`);
             let data = await response.json();
             return data;
         }
@@ -270,11 +271,9 @@ class MainReceipt extends React.Component {
             let data = await response.json();
             return data;
         }
-
-        getReceipt(img_token).then(receiptOutput=> { //sending request to get receipt
-
-            receipt_id = receiptOutput[0].id;
-            getItems(receipt_id).then(itemOutput=>{ // sending request to get items
+//Cookies.get('receiptId')
+        getReceipt(Cookies.get('receiptId')).then(receiptOutput=> { //sending request to get receipt
+            getItems(Cookies.get('receiptId')).then(itemOutput=>{ // sending request to get items
 
                 obj =  { // arranging response jsons. Saving obj to this.state.receipt
                     receipt_id: receiptOutput[0].id,
@@ -355,6 +354,9 @@ class MainReceipt extends React.Component {
     }
 
     render() {
+        if(this.state.receipt === null){
+            return <p>loading</p>
+        } else {
         const proceedToReceipt = this.state.hasReceipt;
         // const proceedToItemSelection = this.state.verifyReceipt;
 
@@ -363,6 +365,7 @@ class MainReceipt extends React.Component {
                 <Receipt receipt={this.state.receipt} pickMeUp={this.pickMeUp} updateReceipt={this.updateHandler}/>
             </div>
     );
+   }
    }
 }
 

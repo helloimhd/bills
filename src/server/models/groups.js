@@ -18,21 +18,21 @@ module.exports = (dbPI) => {
         })
     }
 
-    let updateGroupData = (data, callback) => {
+    let updateGroupData = (data, receiptId, callback) => {
 
         console.log('INSIDE MODELS', data)
 
-        let query = `INSERT INTO groups (friend_id, amount) VALUES `;
+        let query = `INSERT INTO groups (receipt_id, friend_id, amount) VALUES `;
         //////NEED RECEIPT INFO SOMEHWERWE
         ////GIVING DEFAULT VALUE FIRST
         let values="";
 
         for (i=0; i<data.length; i++) {
-          values = values + `( ${data[i]}, null),` // can add more column variables here
+          values = values + `(${receiptId}, ${data[i]}, 0),` // can add more column variables here
         }
 
         query = query + values.slice(0,values.length-1);
-
+        console.log('QUERYYYYY', query);
         dbPI.query(query,(err, r) => {
             if(err){
                 callback( err, null)

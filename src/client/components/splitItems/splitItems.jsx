@@ -11,6 +11,7 @@ class SplitItems extends React.Component{
         this.onNextClick = this.onNextClick.bind(this)
         this.onPreviousClick = this.onPreviousClick.bind(this)
         this.selectChangeHandler = this.selectChangeHandler.bind(this)
+        this.updateItems = this.updateItems.bind(this);
 
         this.state = {
           items: [],
@@ -21,7 +22,6 @@ class SplitItems extends React.Component{
 
     getAllItems(){
       let receiptId = Cookies.get('receiptId')
-      console.log('hello')
       fetch(`/items/${receiptId}`)
         .then(response=>response.json())
         .then(response=>this.setState({items: response}))
@@ -85,6 +85,22 @@ class SplitItems extends React.Component{
     selectChangeHandler(event){
       let value = parseInt(event.target.value)
       this.setState({activeIndex: value})
+    }
+
+    updateItems(){
+
+        let items = this.state.items;
+        let input = {obj : items};
+        console.log(input);
+        fetch(`/update/items`,{
+            method:'POST',
+            headers:{
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify(input),
+        }).then(res=>console.log('Updated items'));
+
     }
 
     render(){
@@ -153,7 +169,8 @@ class SplitItems extends React.Component{
                     </select>
                   </li>
                   {itemList}
-                  <li><a href="/wholeSummary">Whole Summary</a></li>
+                  <li><button ><a href="/wholeSummary">Whole Summary</a></button>
+                  <button onClick={this.updateItems}>save EVERYTHING PLS</button></li>
                 </ul>
         );
     }
