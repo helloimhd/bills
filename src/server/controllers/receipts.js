@@ -216,11 +216,27 @@ module.exports = (db) => {
         })
     }
 
+    let getUserReceipts = (request, response) =>{
+        const userId = parseInt(request.cookies.userId);
+        console.log(userId)
+
+        // get
+        db.receipts.getUserReceipts(userId, (err, results) => {
+            if (err) {
+                console.error(err);
+                response.status(500).send("Query ERROR for getting user's receipts.");
+            } else {
+                response.send(results.rows)
+            }
+        })
+    }
+
 
   return {
     giveMeReceipt,
     uploadPhoto,
     summaryReceipt,
-    testItemName
+    testItemName,
+    getUserReceipts
   };
 };

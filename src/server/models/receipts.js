@@ -76,10 +76,19 @@ module.exports = (dbPI) => {
 
   // destroy
 
+  let getUserReceipts = (userId, callback) => {
+    let receiptQuery = `SELECT * FROM receipts WHERE user_id = '${userId}'`;
+
+    dbPI.query(receiptQuery, (err, results) => {
+        callback(err, results)
+    })
+  }
+
 
   return {
     createReceipt,
     getReceipt,
-    yo
+    yo,
+    getUserReceipts
   };
 };
