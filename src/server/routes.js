@@ -17,8 +17,6 @@ module.exports = (app, db) => {
     const items = require('./controllers/items')(db);
     const groups = require('./controllers/groups')(db);
 
-    app.get('/checkCookie', users.checkCookie);
-
 
     ////////  USERS  /////////
    // app.post('/login', users.login);
@@ -36,18 +34,15 @@ module.exports = (app, db) => {
     app.get('/items/:id', items.getItems);
     // app.get('/group/:id', groups.giveMeGroupMembers);
 
-    app.post('receipt/update', receipts.updateReceipt);
-
     // Splitting items path
     app.get('/group/:id', groups.involvedInReceipt)
 
     // Id is the receipt id
     app.get('/summary/:id', receipts.summaryReceipt);
 
-    app.get('/summary/user/:id', receipts.usersSummaryReceipt);
-
     app.get('/receipt/:id/items', receipts.giveMeReceipt);
 
-    app.get('/search/group', groups.getUsersData); // gets all users
-    app.post('/selected/group', groups.updateGroupData); // add new group & create new receipt
+
+    app.get('/search/group', groups.getUsersData);
+    app.post('/selected/group', groups.updateGroupData);
 };
