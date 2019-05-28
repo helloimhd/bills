@@ -2,6 +2,9 @@ import React from 'react';
 import moment from 'moment';
 import Cookies from 'js-cookie';
 
+import Login from '../user/login';
+import pic from './a.jpg';
+
 class Home extends React.Component {
     constructor() {
         super();
@@ -14,7 +17,6 @@ class Home extends React.Component {
     componentDidMount() {
         this.getUserReceipts();
     }
-
 
     // fetch the data
     getUserReceipts = () => {
@@ -61,6 +63,7 @@ class Home extends React.Component {
             }
 
         })
+
         return(
             <React.Fragment>
                 <div>
@@ -68,6 +71,8 @@ class Home extends React.Component {
                     <button type="button"><a href='/takePhoto'>Split a Bill</a></button>
                     {allReceipts}
                 </div>
+
+                <img src={pic}/>
             </React.Fragment>
         )
     }}

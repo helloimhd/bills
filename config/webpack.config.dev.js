@@ -1,4 +1,4 @@
-const {resolve} = require('path');
+  const {resolve} = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -12,6 +12,16 @@ module.exports = merge(commonConfig, {
   output: {
     hotUpdateMainFilename: 'hot-update.[hash:6].json',
     hotUpdateChunkFilename: 'hot-update.[hash:6].js'
+  },
+  module: {
+    rules:  [
+              {
+                test: /\.(png|svg|jpg|gif)$/,
+                use: [
+                  'file-loader'
+                ]
+              }
+            ]
   },
   devtool: 'cheap-module-eval-source-map',
   plugins: [

@@ -1,4 +1,5 @@
 import React from 'react';
+import Cookies from 'js-cookie';
 
 import PropTypes from 'prop-types';
 // import WholeSummary from '../wholeSummary/wholeSummary';
@@ -17,7 +18,6 @@ class ItemElement extends React.Component{
         // console.log('HELLO EDITTING');
         // console.log(this.props);
         this.setState( {isEditMode: !this.state.isEditMode} );
-
     }
 
     updateItemHandler = (e) =>{
@@ -136,10 +136,12 @@ class PaymentSummary extends React.Component{
                     <tr>
                         <td>Service Charge (10%): </td>
                         <td>$ {this.props.payment.serviceCharge}</td>
+                        <td><button onClick={this.props.serviceChargeBooleanHandler}>click</button></td>
                     </tr>
                     <tr>
                         <td>GST (7%): </td>
                         <td>$ {this.props.payment.gst}</td>
+                        <td><button  onClick={this.props.gstBooleanHandler}>click</button></td>
                     </tr>
                     <tr>
                         <td>Total: </td>
@@ -159,7 +161,7 @@ class ButtonProceedTab extends React.Component{
         return(
             <div>
                 <p>Proceed?</p>
-                <button onClick={()=>{this.props.updateReceipt()}}>Yes</button>
+                <button onClick={()=>{this.props.updateReceipt()}}><a href="/splitTesting">Yes</a></button>
             </div>
         );
     }
@@ -180,7 +182,9 @@ class Receipt extends React.Component{
             return(
                 <div>
                     <ItemTable items={this.props.receipt.items} pickMeUp={this.props.pickMeUp}/>
-                    <PaymentSummary payment={this.props.receipt}/>
+                    <PaymentSummary payment={this.props.receipt}
+                      serviceChargeBooleanHandler={this.props.serviceChargeBooleanHandler}
+                      gstBooleanHandler={this.props.gstBooleanHandler}/>
                     <ButtonProceedTab updateReceipt={this.props.updateReceipt}/>
                 </div>
             )
@@ -193,11 +197,14 @@ class MainReceipt extends React.Component {
         super();
 
         this.state = {
-            receipt: [],
+            receipt: null,
             // groupMembers: [],
             hasReceipt: false,
 
             isLoggedIn: false,
+
+            serviceChargeBoolean: true,
+            gstBoolean: true,
         }
     }
 
@@ -214,7 +221,7 @@ class MainReceipt extends React.Component {
                 'Accept': 'application/json',
             },
             body: JSON.stringify(input),
-        }).then(res=>console.log('hello'));
+        }).then(res=>console.log('updated receipts'));
         // console.log(res.json())
     }
 
@@ -231,7 +238,7 @@ class MainReceipt extends React.Component {
                 'Accept': 'application/json',
             },
             body: JSON.stringify(input),
-        }).then(res=>console.log('Updated receipts and items'));
+        }).then(res=>console.log('Updated items'));
     }
 
     updateHandler=()=>{
@@ -239,7 +246,7 @@ class MainReceipt extends React.Component {
         this.updateReceiptRequest();
         this.updateItemsRequest();
 
-        window.location.href = '/splitTesting'
+        // window.location.href = '/splitTesting'
     }
 
     componentDidMount=()=>{
@@ -251,15 +258,15 @@ class MainReceipt extends React.Component {
         //retrieves receipt and item info
         console.log('SEND AND GET SOMETHING')
         var reactThis = this;
-        var img_token = 'mt8NZBA4CPJ6rpGO'; // need to find a way to retrieve img token..... !!!!!!!*(****!!!)
+        // var img_token = '280gTIQNwoTQeInc'; // need to find a way to retrieve img token..... !!!!!!!*(****!!!)
         var receipt_id;
         var obj = {};
         // ws06oyvmcgCsdsNL
         // guQnFRzRY4MXMm6F
 
-        async function getReceipt(token){ // async request to backend
+        async function getReceipt(id){ // async request to backend
 
-            let response = await fetch(`/receipt/${img_token}`);
+            let response = await fetch(`/receipt/${id}`);
             let data = await response.json();
             return data;
         }
@@ -270,11 +277,9 @@ class MainReceipt extends React.Component {
             let data = await response.json();
             return data;
         }
-
-        getReceipt(img_token).then(receiptOutput=> { //sending request to get receipt
-
-            receipt_id = receiptOutput[0].id;
-            getItems(receipt_id).then(itemOutput=>{ // sending request to get items
+//Cookies.get('receiptId')
+        getReceipt(Cookies.get('receiptId')).then(receiptOutput=> { //sending request to get receipt
+            getItems(Cookies.get('receiptId')).then(itemOutput=>{ // sending request to get items
 
                 obj =  { // arranging response jsons. Saving obj to this.state.receipt
                     receipt_id: receiptOutput[0].id,
@@ -325,11 +330,11 @@ class MainReceipt extends React.Component {
 
         console.log(receipt);
 
-        this.quickMath();
+        this.quickMath(this.state.serviceChargeBoolean, this.state.gstBoolean);
     }
 
 
-    quickMath = () =>{ // when user edits receipt, function checks prices and updates state
+    quickMath = (serviceChargeBoolean,gstBoolean) =>{ // when user edits receipt, function checks prices and updates state
         let updatedReceiptItems = this.state.receipt;
         let prices = [];
 
@@ -341,8 +346,22 @@ class MainReceipt extends React.Component {
         }
 
         let newSubtotal = prices.reduce(reducer);
-        let newSc = newSubtotal * 0.1;
-        let newGst = (newSubtotal + newSc) * 0.07;
+
+        let newSc;
+        let newGst;
+
+        if (serviceChargeBoolean === true) {
+          newSc = newSubtotal * 0.1;
+        } else {
+          newSc = 0;
+        }
+
+        if (gstBoolean === true) {
+          newGst = (newSubtotal + newSc) * 0.07;
+        } else {
+          newGst = 0;
+        }
+
         let newTotal = newSubtotal + newSc + newGst;
 
         let receipt = Object.assign({},this.state.receipt);
@@ -354,45 +373,46 @@ class MainReceipt extends React.Component {
         this.setState({receipt});
     }
 
+    serviceChargeBooleanHandler = (event) => {
+      if (this.state.serviceChargeBoolean === true) {
+        this.setState({serviceChargeBoolean: false})
+        this.quickMath(false,this.state.gstBoolean)
+      } else {
+        this.setState({serviceChargeBoolean: true})
+        this.quickMath(true,this.state.gstBoolean)
+      }
+    }
+
+    gstBooleanHandler = (event) => {
+      if (this.state.gstBoolean === true) {
+        this.setState({gstBoolean: false})
+        this.quickMath(this.state.serviceChargeBoolean, false)
+      } else {
+        this.setState({gstBoolean: true})
+        this.quickMath(this.state.serviceChargeBoolean, true)
+      }
+      // this.quickMath()
+    }
+
     render() {
+      if (this.state.receipt === null){
+        return <p>loading</p>
+      } else {
         const proceedToReceipt = this.state.hasReceipt;
         // const proceedToItemSelection = this.state.verifyReceipt;
 
        return (
             <div>
-                <Receipt receipt={this.state.receipt} pickMeUp={this.pickMeUp} updateReceipt={this.updateHandler}/>
+                <Receipt receipt={this.state.receipt}
+                  pickMeUp={this.pickMeUp}
+                  updateReceipt={this.updateHandler}
+                  serviceChargeBooleanHandler={this.serviceChargeBooleanHandler}
+                  gstBooleanHandler={this.gstBooleanHandler}
+                  />
             </div>
-    );
+          );
+      }
    }
-}
-
-Receipt.propTypes = {
-    receipt: PropTypes.object,
-    pickMeUp: PropTypes.func,
-};
-
-ItemTable.propTypes = {
-    pickMeUp: PropTypes.func,
-    items: PropTypes.array,
-}
-
-ItemRow.propTypes = {
-    item: PropTypes.object,
-    pickMeUp: PropTypes.func,
-    type: PropTypes.string,
-    id: PropTypes.number,
-};
-
-ItemElement.propType = {
-    item: PropTypes.any,
-    pickMeUp: PropTypes.func,
-    type: PropTypes.string,
-    id: PropTypes.number,
-}
-
-PaymentSummary.propTypes ={
-
-    payment: PropTypes.object,
 }
 
 export default MainReceipt;

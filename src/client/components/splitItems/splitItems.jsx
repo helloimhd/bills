@@ -11,17 +11,17 @@ class SplitItems extends React.Component{
         this.onNextClick = this.onNextClick.bind(this)
         this.onPreviousClick = this.onPreviousClick.bind(this)
         this.selectChangeHandler = this.selectChangeHandler.bind(this)
+        this.updateItems = this.updateItems.bind(this);
 
         this.state = {
-          items: [],
-          users: [],
+          items: null,
+          users: null,
           activeIndex: 0,
         }
     }
 
     getAllItems(){
       let receiptId = Cookies.get('receiptId')
-      console.log('hello')
       fetch(`/items/${receiptId}`)
         .then(response=>response.json())
         .then(response=>this.setState({items: response}))
@@ -87,57 +87,71 @@ class SplitItems extends React.Component{
       this.setState({activeIndex: value})
     }
 
+    updateItems(){
+
+        let items = this.state.items;
+        let input = {obj : items};
+        console.log(input);
+        fetch(`/update/items`,{
+            method:'POST',
+            headers:{
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify(input),
+        }).then(res=>console.log('Updated items'));
+
+    }
+
     render(){
 
+      if (this.state.users === null) {
+        return <p>loading</p>
+      } else {
 
-      // let sliderStyle = {
-      //   transform: `translateX(${this.state.activeIndex * -100}%)`,
-      //   transition: `0.2s`
-      // }
-
-      let usersList = this.state.users.map((user, index) => {
-        return(
-            <li key={user.friend_id}>
-              <input
-                type="checkbox"
-                value={user.friend_id}
-                onChange={this.checkerHandler}
-              /> {user.friend_id}
-            </li>
-          )
-      })
-
-      let itemList = this.state.items.map((item, index) => {
-
-        if (index === this.state.activeIndex) {
-          return (
-              <li key={index} id={index}
-                  style={{display: "block"}}
-              >
-                <h1>{item.item_name}</h1>
-                <h1>${item.price}</h1>
-                <ul id={index}>
-                  {usersList}
-                </ul>
-                <button onClick={this.onPreviousClick}>Previous</button>
-                <button onClick={this.onNextClick}>Next</button>
+        let usersList = this.state.users.map((user, index) => {
+          return(
+              <li key={user.friend_id}>
+                <input
+                  type="checkbox"
+                  value={user.friend_id}
+                  onChange={this.checkerHandler}
+                /> {user.friend_id}
               </li>
             )
-        } else {
-          return (
-              <li key={index} id={index}
-                  style={{display: "none"}}
-              >
-                <h1>{item.item_name}</h1>
-                <h1>${item.price}</h1>
-                <ul id={index}>
-                  {usersList}
-                </ul>
-                <button onClick={this.onNextClick}>Next</button>
-              </li>
-            )
-        }
-      })
+        })
+
+        let itemList = this.state.items.map((item, index) => {
+
+          if (index === this.state.activeIndex) {
+            return (
+                <li key={index} id={index}
+                    style={{display: "block"}}
+                >
+                  <h1>{item.item_name}</h1>
+                  <h1>${item.price}</h1>
+                  <ul id={index}>
+                    {usersList}
+                  </ul>
+                  <button onClick={this.onPreviousClick}>Previous</button>
+                  <button onClick={this.onNextClick}>Next</button>
+                </li>
+              )
+          } else {
+            return (
+                <li key={index} id={index}
+                    style={{display: "none"}}
+                >
+                  <h1>{item.item_name}</h1>
+                  <h1>${item.price}</h1>
+                  <ul id={index}>
+                    {usersList}
+                  </ul>
+                  <button onClick={this.onNextClick}>Next</button>
+                </li>
+              )
+          }
+        })
 
       let options = this.state.items.map((item, index) => {
         return (
@@ -153,10 +167,12 @@ class SplitItems extends React.Component{
                     </select>
                   </li>
                   {itemList}
-                  <li><a href="/wholeSummary">Whole Summary</a></li>
+                  <li><button ><a href="/wholeSummary">Whole Summary</a></button>
+                  <button onClick={this.updateItems}>save EVERYTHING PLS</button></li>
                 </ul>
         );
     }
+  }
 }
 
 export default SplitItems;

@@ -30,7 +30,7 @@ module.exports = (dbPI) => {
     let getReceipt = (dataIn, callback) =>{
 
         // console.log( 'INSIDE MODELS', dataIn );
-        let query = `SELECT * FROM receipts WHERE img_token = '${dataIn}'`;
+        let query = `SELECT * FROM receipts WHERE id = ${dataIn}`;
 
         dbPI.query( query, (err,r)=>{
             if(err){
@@ -47,7 +47,7 @@ module.exports = (dbPI) => {
     };
 
     let getAllItems = (dataIn, callback) => {
-        console.log ("HELLO in the model");
+        console.log ("HELLO in the supermodel");
 
         let query = `SELECT receipts.id, items. *
                     from receipts inner join items
@@ -84,6 +84,22 @@ module.exports = (dbPI) => {
         })
     }
 
+    // let getUsername = (dataIn, callback) => {
+    //     console.log ("HELLO in the model");
+
+    //     let query = `select username from users where id = ${dataIn};`
+
+    //     dbPI.query(query, (err, r) => {
+    //         if(err){
+    //             console.log('Error here?')
+    //             callback( err, null)
+    //         } else {
+    //             console.log(r);
+    //             callback(null, r);
+    //         }
+    //     })
+    // }
+
     let updateReceipt = ( dataIn, callback)=>{
 
         let query = `UPDATE receipts
@@ -114,12 +130,33 @@ module.exports = (dbPI) => {
         })
     }
 
+    let getReceiptByToken = (dataIn, callback) =>{
+
+        // console.log( 'INSIDE MODELS', dataIn );
+        let query = `SELECT * FROM receipts WHERE img_token = '${dataIn}'`;
+
+        dbPI.query( query, (err,r)=>{
+            if(err){
+                // console.log('Error here?');
+                callback( err, null)
+            }else{
+                // console.log('Something here?');
+                const result = {
+                                receipt : r.rows,
+                                };
+                callback( null, result );
+            }
+        })
+    };
+
   return {
     createReceipt,
     getReceipt,
     getAllItems,
     getIndvUserItems,
+    // getUsername,
     updateReceipt,
     getReceiptById
+    getReceiptByToken,
   };
 };
