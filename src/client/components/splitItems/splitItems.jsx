@@ -1,4 +1,5 @@
 import React from 'react';
+import Cookies from 'js-cookie';
 
 import styles from './style.scss';
 
@@ -19,7 +20,7 @@ class SplitItems extends React.Component{
     }
 
     getAllItems(){
-      let receiptId = 1;
+      let receiptId = Cookies.get('receiptId')
       console.log('hello')
       fetch(`/items/${receiptId}`)
         .then(response=>response.json())
@@ -27,7 +28,7 @@ class SplitItems extends React.Component{
     }
 
     getAllUsers(){
-      let receiptId = 1;
+      let receiptId = Cookies.get('receiptId')
       fetch(`/group/${receiptId}`)
         .then(response=>response.json())
         .then(response=>this.setState({users: response}))
@@ -152,6 +153,7 @@ class SplitItems extends React.Component{
                     </select>
                   </li>
                   {itemList}
+                  <li><a href="/wholeSummary">Whole Summary</a></li>
                 </ul>
         );
     }

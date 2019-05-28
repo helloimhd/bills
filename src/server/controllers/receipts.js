@@ -43,7 +43,6 @@ module.exports = (db) => {
         })
     };
 
-    // upload photo to cloudinary > send to tabscanner > get token > send to get data
     let uploadPhoto = (request, response) => {
         console.log("Uploading up to cloudinary")
         let file = request.file.path;
@@ -136,7 +135,7 @@ module.exports = (db) => {
                                                         item_name: lineItems[i].descClean,
                                                         price: parseFloat(lineItems[i].lineTotal),
                                                         quantity: lineItems[i].qty,
-                                                        users_id: null
+                                                        users_id: []
                                                     }
                                                     // now add items into table
                                                     db.items.createItems(itemData, (err, createItemResults) => {
@@ -148,7 +147,8 @@ module.exports = (db) => {
                                                             lineItemsCounter++
                                                             if (lineItemsCounter === lineItems.length) {
                                                                 console.log(lineItemsCounter);
-                                                                response.send("Databases are updated");
+                                                                //response.send("Databases are updated");
+                                                                response.redirect('/group');
                                                             } else {
                                                                 console.log("not yet")
                                                             }
