@@ -181,7 +181,28 @@ module.exports = (db) => {
         console.log("HELLO in controller");
         var dataIn = req.params.id;
 
-        db.receipts.yo( dataIn, (err, receipts) =>{
+        db.receipts.getAllItems( dataIn, (err, receipts) =>{
+            if(err){
+                console.log('in here?');
+                console.error('error getting receipt(s)', err);
+                res.status(500).send("Error getting receipt");
+            } else {
+                console.log('am i here????');
+                console.log( 'AT CONTROLLER RESULTS', receipts );
+                if(receipts.rows.length === 0){
+                    res.send('No entry');
+                }else{
+                    res.send( receipts.rows );
+                }
+            }
+        })
+    }
+
+    let usersSummaryReceipt = (req, res) => {
+        console.log("HELLO in controller");
+        var dataIn = req.params.id;
+
+        db.receipts.getIndvUserItems( dataIn, (err, receipts) =>{
             if(err){
                 console.log('in here?');
                 console.error('error getting receipt(s)', err);
@@ -217,6 +238,21 @@ module.exports = (db) => {
         })
     }
 
+    let getUserReceipts = (request, response) =>{
+        const userId = parseInt(request.cookies.userId);
+        console.log(userId)
+
+        // get
+        db.receipts.getUserReceipts(userId, (err, results) => {
+            if (err) {
+                console.error(err);
+                response.status(500).send("Query ERROR for getting user's receipts.");
+            } else {
+                response.send(results.rows)
+            }
+        })
+    }
+
     let updateReceipt = ( req, res)=>{ // update receipt and items;
         console.log('helo in update receipt controller');
 
@@ -247,7 +283,9 @@ module.exports = (db) => {
     giveMeReceipt,
     uploadPhoto,
     summaryReceipt,
-    testItemName,
+    usersSummaryReceipt,
+    getUserReceipts,
     updateReceipt,
+    testItemName,
   };
 };
