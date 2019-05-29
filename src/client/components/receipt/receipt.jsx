@@ -14,7 +14,7 @@ class ItemElement extends React.Component{
         }
     }
 
-    editItemHandler=(e)=>{
+    editItemHandler=()=>{
         // console.log('HELLO EDITTING');
         // console.log(this.props);
         this.setState( {isEditMode: !this.state.isEditMode} );
@@ -278,8 +278,8 @@ class MainReceipt extends React.Component {
             return data;
         }
 //Cookies.get('receiptId')
-        getReceipt(Cookies.get('receiptId')).then(receiptOutput=> { //sending request to get receipt
-            getItems(Cookies.get('receiptId')).then(itemOutput=>{ // sending request to get items
+        getReceipt(1).then(receiptOutput=> { //sending request to get receipt
+            getItems(1).then(itemOutput=>{ // sending request to get items
 
                 obj =  { // arranging response jsons. Saving obj to this.state.receipt
                     receipt_id: receiptOutput[0].id,
@@ -414,5 +414,13 @@ class MainReceipt extends React.Component {
       }
    }
 }
+
+
+
+ItemElement.propTypes = {
+  id: PropTypes.integer,
+  type: PropTypes.string,
+  pickMeUp: PropTypes.func,
+};
 
 export default MainReceipt;
