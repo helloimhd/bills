@@ -91,7 +91,7 @@ class IndividualSummary extends React.Component {
             let priceToSave = totalPrice.reduce(reducer) + otherChargesSplit;
             let plsSave = {
                 userId: user.friend_id,
-                amount: priceToSave,
+                amount: parseInt((priceToSave).toFixed(2)),
                 receiptId : user.receipt_id,
             }
 
