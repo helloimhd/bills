@@ -18,7 +18,7 @@ import WholeSummary from './components/wholeSummary/wholeSummary';
 import IndividualSummary from './components/individualSummary/individualSummary';
 import Username from './components/individualSummary/usernameSummary';
 
-
+import Guides from './components/pictureGuides/guides'
 import SplitItems from './components/splitItems/splitItems'
 
 class Main extends React.Component{
@@ -36,6 +36,12 @@ class Main extends React.Component{
         return(
             <Router>
 
+
+
+                <Route path="/guides" exact render={() => (
+                    <Guides />
+                )} />
+
                 <Route path="/" exact render={() => (
 
                   isLoggedIn ? (
@@ -45,7 +51,13 @@ class Main extends React.Component{
                   )
                 )} />
 
-                <Route path="/register" component={Register} />
+                <Route path="/register" render={() => (
+                  isLoggedIn ? (
+                    <Home />
+                  ) : (
+                    <Register />
+                  )
+                )} />
 
                 <Route path="/login" render={() => (
                   isLoggedIn ? (

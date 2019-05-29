@@ -84,6 +84,25 @@ class GroupSelect extends React.Component {
               }).then(res=>console.log(res.json()));
               window.location.href = "/receipt";
         }
+      }
+      console.log(ticked)
+      let idInGroup = [];
+      ticked.forEach((r)=>{
+        idInGroup.push(r.id);
+      })
+      let receiptId = Cookies.get('receiptId')
+      let input = { obj : idInGroup,
+                    receipt_id : receiptId,
+                   };
+
+      fetch(`/selected/group`,{
+        method: 'POST',
+        headers:{
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify(input),
+      }).then(res=>console.log(res.json()));
     }
 
 

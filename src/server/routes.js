@@ -38,6 +38,7 @@ module.exports = (app, db) => {
 
     // Splitting items path
     app.get('/group/:id', groups.involvedInReceipt)
+    app.get('/groupSummary/:id', groups.userIdSummaryReceipt)
 
     // Id is the receipt id
     app.get('/summary/:id', receipts.summaryReceipt);
@@ -47,5 +48,8 @@ module.exports = (app, db) => {
     app.get('/receipt/:id/items', receipts.giveMeReceipt);
     app.get('/search/group', groups.getUsersData);
     app.post('/selected/group', groups.updateGroupData);
+
+    ////SAVE AMOUNT FOR EACH PERSON
+    app.post(`/save/group`, groups.updateIndvPay);
 
 };

@@ -7,18 +7,33 @@ class WholeSummary extends React.Component {
     constructor() {
         super();
         this.state = {
-            receiptItems: {},
-            change: false,
-            getTotal: 0,
+            receiptItems: null,
+            receipt: null,
+            total:0,
         }
     }
 
-    receiptHandler() {
+    componentDidMount(){
+
+        this.getAllItemsHandler();
+        this.getReceiptHandler();
+    }
+
+    getReceiptHandler(){
+
+        let receiptId = Cookies.get('receiptId');
+        fetch(`/receipt/${receiptId}`)
+          .then(response=>response.json())
+          .then(response=>this.setState({receipt: response}))
+    }
+
+
+    getAllItemsHandler() {
 
         var reactThis = this;
-        console.log("clicking");
-        var id = 1;
-        // var id = Cookies.get('receiptId');
+//         console.log("clicking");
+
+        var id = Cookies.get('receiptId');
         fetch(`/summary/${id}`, {
 
         }).then(res => {
@@ -46,20 +61,9 @@ class WholeSummary extends React.Component {
     }
 
     render() {
-        console.log('check state', this.state.receiptItems);
-        const receiptItems = this.state.change;
-
-        if(!receiptItems){
-        return (
-            <div className={styles.absoluteCenterBigBoss}>
-                <div className={styles.containerSmallBoss}>
-                    <h1>Bill Summary</h1>
-                    <button className={styles.driver} onClick={()=>{this.receiptHandler()}}>Show items</button>
-                    <a className={styles.BusDriver} href="/summaryReceipt">Individual</a>
-                </div>
-            </div>
-        );
-    } else {
+       if(this.state.receiptItems === null || this.state.receipt ==null){
+            return <p>LOADING</p>
+        } else {
         return (
             <div className={styles.absoluteCenterBigBoss}>
                 <div className={styles.containerSmallBoss}>
@@ -89,16 +93,22 @@ class WholeSummary extends React.Component {
                                     )}
                                 )}
                           <tr>
-                              <td className={styles.intern}>Total</td>
+                              <td className={styles.intern}>Sub Total $ </td>
                               <td></td>
                               <td className={styles.intern}>{(this.state.getTotal).toFixed(2)}</td>
+                          </tr>
+                          <br/>
+                          <br/>
+                          <tr>
+                              <td className={styles.intern}><Grand Total $</td>
+                              <td></td>
+                              <td className={styles.intern}><{this.state.receipt[0].total}</td>
                           </tr>
                       </tbody>
                     </table>
                     <br />
-                    <a className={styles.cleaner} href="/summaryReceipt">Individual</a>
-                </div>
-            </div>
+                    <a className={styles.cleaner} href="/summaryReceipt">Next Page (Individual)</a>
+               </div>
             )
         }
     }
