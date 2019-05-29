@@ -10,12 +10,13 @@ class IndividualSummary extends React.Component {
             users: null,
             userDetails :null,
             receipt:null,
+            saveAmount: [],
             total:0,
         }
     }
 
     componentDidMount(){
- 
+
         this.getAllItems();
         this.getAllUsers();
         this.getUsersHandler();
@@ -38,7 +39,7 @@ class IndividualSummary extends React.Component {
 
     getAllUsers=()=>{
       let receiptId = Cookies.get('receiptId');
-      fetch(`/group/${receiptId}`)
+      fetch(`/groupSummary/${receiptId}`)
         .then(response=>response.json())
         .then(response=>this.setState({users: response}))
     }
@@ -49,13 +50,53 @@ class IndividualSummary extends React.Component {
         .then(response=>this.setState({userDetails: response.users}))
     }
 
+    updateIndvAmount(){
+
+        let items = this.state.items;
+        let input = {obj : items};
+        console.log(input);
+        fetch(`/update/items`,{
+            method:'POST',
+            headers:{
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify(input),
+        }).then(res=>console.log('Updated items'));
+
+    }
+
+    ownerOfReceipt(){
+        return 1;
+        // let ownerId = this.state.receipt[0].users_id;
+        // let owner;
+        // this.state.userDetail.forEach((i)=>{
+        //     if(i.id === ownerId){
+        //         owner = i.username;
+        //     }
+        // })
+        // console.log(owner);
+        // return owner;
+    }
+
+    saveAmount(userId,splitPrice){
+        let saveAmountState = this.state.saveAmount;
+        let obj = {
+                user_id: userId,
+                amount: splitPrice,
+            }
+        saveAmountState.push(obj);
+        this.setState({saveAmount: saveAmountState});
+    }
     render() {
 
         if (this.state.items === null || this.state.users === null || this.state.userDetails === null ||this.state.receipt === null) {
             return <p>LOADING</p>
         } else {
-
+                let owner = this.ownerOfReceipt();
+                console.log('asdfas',owner)
             let userSummary = this.state.users.map((user,indexUser)=>{
+
                 let otherChargesTotal = this.state.receipt[0].total - this.state.receipt[0].subtotal;
                 let peopleInGroup = this.state.users.length;
                 let otherChargesSplit = otherChargesTotal/peopleInGroup;
@@ -79,16 +120,19 @@ class IndividualSummary extends React.Component {
                 let itemList = itemArr.map((item,index)=>{
                     // console.log(item.users_id.length);
                     let price = item.price/item.users_id.length;
+
                     totalPrice.push(price);
+                    price = price.toFixed(2);
                     return(
                         <p key={index}>{item.item_name}   ${price}</p>
                     );
                 })
 
-                let userForCurrent;
+                let userForCurrent, userIdCurrent;
                 let userName = this.state.userDetails.map((userDetail,index)=>{
                     if(userDetail.id === user.friend_id){
                        userForCurrent = userDetail.username;
+                       userIdCurrent = userDetail.id;
                     }
                 });
                 const reducer = (accumulator, currentValue) => accumulator + currentValue;
@@ -96,7 +140,7 @@ class IndividualSummary extends React.Component {
                 splitPrice = splitPrice.toFixed(2);
                 return(
                     <div key={indexUser}>
-                        <p>---{userForCurrent}---</p>
+                        <p>{userForCurrent}</p>
                            <div>
                            {itemList}
                            </div>
@@ -107,7 +151,9 @@ class IndividualSummary extends React.Component {
 
             return(
                 <div>
+                    <p>Pay It</p>
                     {userSummary}
+                    <a href='/'>Back to Home</a>
                 </div>
             );
         }

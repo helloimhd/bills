@@ -48,7 +48,7 @@ class Login extends React.Component {
         .then(response => {
             //console.log(response.data)
             if (response.data === null) {
-                reactThis.setState({prompt: "Username is invalid. Click here to Sign Up"})
+                reactThis.setState({prompt: "Username is invalid. Please try again or sign up."})
 
             } else if (response.data === false) {
                 reactThis.setState({prompt: "Password is WRONG!"})
@@ -61,7 +61,7 @@ class Login extends React.Component {
 
             }
         })
-        //.catch(error => console.error('Error:', error));
+        .catch(error => console.error('Error:', error));
 
     }  // end handle of login submit
 
