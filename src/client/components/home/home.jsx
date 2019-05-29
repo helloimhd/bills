@@ -99,7 +99,7 @@ class Home extends React.Component {
                 allReceipts = receipts.map(obj => {
                   let ownBy = null;
                   if (parseInt(obj.ownBy) === parseInt(currentUserId)) {
-                      ownBy = "YOU";
+                      ownBy = "You";
                   } else {
                       ownBy = obj.username;
                   }
@@ -108,17 +108,29 @@ class Home extends React.Component {
                   if (obj.sum !== 0) {
                       return (
                           <div key={obj.receiptId} className={styles.container}>
-                              <p>{moment(obj.date).format('D MMMM YYYY')}</p>
-                              <p>Amount: {obj.sum}</p>
-                              <p>Own By: {ownBy}</p>
+                            <div className={styles.flexContainer}>
+                                <div className={styles.dateHeader}>
+                                    <p>{moment(obj.date).format('D MMMM YYYY')}</p>
+                                </div>
+                                <div className={styles.infoContainer}>
+                                    <p style={{textTransform: "capitalize"}}>By {ownBy}</p>
+                                    <p>${(obj.sum).toFixed(2)}</p>
+                                </div>
+                            </div>
                           </div>
                       )
                   } else {
                     return (
-                          <div key={obj.receiptId} className={styles.container} onClick={this.toReceipt} id={obj.receiptId} >
-                              <p>{moment(obj.date).format('D MMMM YYYY')}</p>
-                              <p>Amount: -</p>
-                              <p>Own By: {ownBy}</p>
+                          <div key={obj.receiptId} className={styles.container} onClick={this.toReceipt}>
+                            <div className={styles.flexContainer}>
+                                <div className={styles.dateHeader}>
+                                    <p>{moment(obj.date).format('D MMMM YYYY')}</p>
+                                </div>
+                                <div className={styles.infoContainer}>
+                                    <p style={{textTransform: "capitalize"}}>By {ownBy}</p>
+                                    <p>-</p>
+                                </div>
+                            </div>
                           </div>
                       )
                   }

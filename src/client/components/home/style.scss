@@ -199,3 +199,15 @@ button#sortPrice {
 a {
 	color: black;
 }
+
+.flexContainer {
+	display: flex;
+	flex-direction: column;
+}
+
+.infoContainer {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin-top: -30px;
+}
