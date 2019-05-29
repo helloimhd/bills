@@ -2,6 +2,8 @@ import React from 'react';
 // import {Username} from './usernameSummary';
 import Cookies from 'js-cookie';
 
+import styles from './style.scss';
+
 class IndividualSummary extends React.Component {
     constructor() {
         super();
@@ -111,7 +113,9 @@ class IndividualSummary extends React.Component {
                 let price = item.price/item.users_id.length;
                 totalPrice.push(price);
                 return(
-                    <li>{item.item_name}   ${price}</li>
+                    <div>
+                        <li className={styles.grabDriver} >{item.item_name}: ${price}</li>
+                    </div>
                 );
             })
             // console.log(itemArr);
@@ -124,19 +128,20 @@ class IndividualSummary extends React.Component {
             const reducer = (accumulator, currentValue) => accumulator + currentValue;
             let splitPrice = totalPrice.reduce(reducer);
             return(
-                <div>
-                    <p>---{userForCurrent}---</p>
+                <div className={styles.containerSmallBoss}>
+                    <h1 className={styles.banana}>{userForCurrent}</h1>
+                        <div className={styles.lineManager}></div>
                        <ul>
-                       {itemList}
+                        {itemList}
                        </ul>
-                    <p>${splitPrice}</p>
+                    <h3 className={styles.intern}>Total: ${splitPrice}</h3>
                 </div>
             );
         });
 
 
         return(
-            <div>
+            <div className={styles.absoluteCenterBigBoss}>
                 {userSummary}
             </div>
         );

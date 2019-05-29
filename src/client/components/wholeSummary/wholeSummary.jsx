@@ -1,6 +1,8 @@
 import React from 'react';
 import Cookies from 'js-cookie';
 
+import styles from './style.scss';
+
 class WholeSummary extends React.Component {
     constructor() {
         super();
@@ -49,53 +51,53 @@ class WholeSummary extends React.Component {
 
         if(!receiptItems){
         return (
-            <div>
-                <h1>Bill Summary</h1>
-                <button onClick={()=>{this.receiptHandler()}}>Show items</button>
-                <br />
-                <a href="/summaryReceipt">Individual</a>
+            <div className={styles.absoluteCenterBigBoss}>
+                <div className={styles.containerSmallBoss}>
+                    <h1>Bill Summary</h1>
+                    <button className={styles.driver} onClick={()=>{this.receiptHandler()}}>Show items</button>
+                    <a className={styles.BusDriver} href="/summaryReceipt">Individual</a>
+                </div>
             </div>
         );
     } else {
         return (
-            <div>
-                <h1>Bill Summary</h1>
-                <table>
-                  <tbody>
-                      <tr>
-                          <td><strong>Receipt ID</strong></td>
-                          <td><strong>Item Name</strong></td>
-                          <td><strong>Price</strong></td>
-                          <td><strong>Quantity</strong></td>
-                      </tr>
-                          {this.state.receiptItems.map((allItems, i) => {
-                            let price = (allItems.price).toFixed(2)
-                                return (
-                                  <tr key={i}>
-                                      <td>
-                                      {allItems.receipt_id}
-                                      </td>
-                                      <td>
-                                      {allItems.item_name}
-                                      </td>
-                                      <td>
-                                      {price}
-                                      </td>
-                                      <td>
-                                      {allItems.quantity}
-                                      </td>
-                                  </tr>
+            <div className={styles.absoluteCenterBigBoss}>
+                <div className={styles.containerSmallBoss}>
+                    <h1>Bill Summary</h1>
+                    <div className={styles.lineManager}></div>
+                    <table>
+                      <tbody>
+                          <tr>
+                              <td className={styles.intern}>Receipt ID</td>
+                              <td className={styles.intern}>Item Name</td>
+                              <td className={styles.intern}>Price</td>
+                          </tr>
+                              {this.state.receiptItems.map((allItems, i) => {
+                                let price = (allItems.price).toFixed(2)
+                                    return (
+                                      <tr className={styles.associate} key={i}>
+                                          <td className={styles.trainee}>
+                                          {allItems.receipt_id}
+                                          </td>
+                                          <td className={styles.trainee}>
+                                          {allItems.item_name}
+                                          </td>
+                                          <td className={styles.trainee}>
+                                          {price}
+                                          </td>
+                                      </tr>
+                                    )}
                                 )}
-                            )}
-                      <tr>
-                          <td><strong>Total $</strong></td>
-                          <td></td>
-                          <td><strong>{(this.state.getTotal).toFixed(2)}</strong></td>
-                      </tr>
-                  </tbody>
-                </table>
-                <br />
-                <a href="/summaryReceipt">Individual</a>
+                          <tr>
+                              <td className={styles.intern}>Total</td>
+                              <td></td>
+                              <td className={styles.intern}>{(this.state.getTotal).toFixed(2)}</td>
+                          </tr>
+                      </tbody>
+                    </table>
+                    <br />
+                    <a className={styles.cleaner} href="/summaryReceipt">Individual</a>
+                </div>
             </div>
             )
         }
