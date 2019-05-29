@@ -74,8 +74,11 @@ class Home extends React.Component {
       document.getElementById("form").submit();
     }
 
-    toReceipt = () => {
-        document.getElementById("")
+    toReceipt = (e) => {
+        console.log(e.target.parentNode.id)
+        let receiptId = e.target.parentNode.id;
+        Cookies.set('receiptId', receiptId, { path: '' });
+        window.location.href = `/summaryReceipt`;
     }
 
 
@@ -107,8 +110,8 @@ class Home extends React.Component {
             // if null means user is involved in the receipt but not paying (for now)
                   if (obj.sum !== 0) {
                       return (
-                          <div key={obj.receiptId} className={styles.container}>
-                            <div className={styles.flexContainer}>
+                          <div key={obj.receiptId} className={styles.container} onClick={this.toReceipt} id={obj.receiptId}>
+                            <div className={styles.flexContainer} id={obj.receiptId}>
                                 <div className={styles.dateHeader}>
                                     <p>{moment(obj.date).format('D MMMM YYYY')}</p>
                                 </div>
@@ -121,7 +124,7 @@ class Home extends React.Component {
                       )
                   } else {
                     return (
-                          <div key={obj.receiptId} className={styles.container} onClick={this.toReceipt}>
+                          <div key={obj.receiptId} className={styles.container}>
                             <div className={styles.flexContainer}>
                                 <div className={styles.dateHeader}>
                                     <p>{moment(obj.date).format('D MMMM YYYY')}</p>
