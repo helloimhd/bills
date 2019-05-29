@@ -72,7 +72,7 @@ class Login extends React.Component {
             <React.Fragment>
                 <LoginForm username={this.state.username} password={this.state.password} usernameChange={this.usernameChange} passwordChange={this.passwordChange} handleLoginSubmit={this.handleLoginSubmit} />
 
-                <p>{this.state.prompt}</p>
+                <p style={{textAlign: "center"}}>{this.state.prompt}</p>
               </React.Fragment>
 
         )
