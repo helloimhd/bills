@@ -2,8 +2,8 @@ import React from 'react';
 import moment from 'moment';
 import Cookies from 'js-cookie';
 
-import Login from '../user/login';
-import pic from './a.jpg';
+//import Login from '../user/login';
+//import pic from './a.jpg';
 
 class Home extends React.Component {
     constructor() {
@@ -30,6 +30,26 @@ class Home extends React.Component {
             console.log(response)
             this.setState({receipts: response});
         })
+    }
+
+    sortByPrice = () => {
+        let receipts = this.state.receipts;
+
+        receipts.sort(function(a, b) {
+            return parseFloat(a.sum) - parseFloat(b.sum);
+        });
+
+        this.setState({receipts: receipts})
+    }
+
+    sortByDate = () => {
+        let receipts = this.state.receipts;
+
+        receipts.sort(function(a, b) {
+            return Date.parse(a.date) - Date.parse(b.date);
+        });
+
+        this.setState({receipts: receipts})
     }
 
 
@@ -69,10 +89,11 @@ class Home extends React.Component {
                 <div>
                     <h1>HOME</h1>
                     <button type="button"><a href='/takePhoto'>Split a Bill</a></button>
+                    <button type="button" onClick={this.sortByPrice}>Sort By Price</button>
+                    <button type="button" onClick={this.sortByDate}>Sort By Date</button>
                     {allReceipts}
                 </div>
 
-                <img src={pic}/>
             </React.Fragment>
         )
     }}
