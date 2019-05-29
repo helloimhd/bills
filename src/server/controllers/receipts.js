@@ -121,12 +121,13 @@ module.exports = (db) => {
                                                 let lineItems = dataResult.lineItems;
                                                 let noOfLineItems = lineItems.length;
                                                 let lineItemsCounter = 0;
+                                                let receiptId = getReceiptResults.receipt[0].id;
+                                                response.cookie("receiptId", getReceiptResults.receipt[0].id)
 
                                                 for (i=0; i<noOfLineItems; i++) {
                                                     console.log("entered for loop")
 
-                                                    let receiptId = getReceiptResults.receipt[0].id;
-                                                    response.cookie("receiptId", getReceiptResults.receipt[0].id)
+
                                                     // items
                                                     let itemData = {
                                                         receipt_id: receiptId,
