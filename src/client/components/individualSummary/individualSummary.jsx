@@ -6,11 +6,43 @@ class IndividualSummary extends React.Component {
     constructor() {
         super();
         this.state = {
-            receiptItems: null,
+            // receiptItems: null,
             // change: false,
-            getTotal: 0,
+            items: null,
+            users: null,
+            userDetails :null,
+            // getTotal: 0,
         }
     }
+
+    componentDidMount(){
+        // this.receiptHandler();
+        this.getAllItems();
+        this.getAllUsers();
+        this.getUsersHandler();
+    }
+
+    getAllItems=()=>{
+      let receiptId = 1
+      fetch(`/items/${receiptId}`)
+        .then(response=>response.json())
+        .then(response=>this.setState({items: response}))
+    }
+
+    getAllUsers=()=>{
+      let receiptId = 1
+      fetch(`/group/${receiptId}`)
+        .then(response=>response.json())
+        .then(response=>this.setState({users: response}))
+    }
+
+    getUsersHandler(){
+      fetch(`/search/group`)
+        .then(response=>response.json())
+        .then(response=>this.setState({userDetails: response.users}))
+    }
+
+    /*
 
     receiptHandler() {
 
@@ -49,9 +81,73 @@ class IndividualSummary extends React.Component {
 
         })
     }
+    */
 
     render() {
         // console.log('check state', this.state.receiptItems);
+        if (this.state.items === null || this.state.users === null || this.state.userDetails === null) {
+        return <p>loading</p>
+      } else {
+
+
+        let userSummary = this.state.users.map((user)=>{
+            let itemArr=[];
+            let totalPrice = [];
+            let putItemsInArr = this.state.items.map((item)=>{
+                for(let i = 0; i < item.users_id.length; i++){
+                    if(item.users_id[i] === user.friend_id){
+                        // console.log(`${item.item_name} belongs to ${user.friend_id}`);
+                        let obj = {
+                                item_name: item.item_name,
+                                price: item.price,
+                                users_id :item.users_id,
+                        }
+                        itemArr.push(obj);
+                    }
+                }
+            });
+            let itemList = itemArr.map((item)=>{
+                // console.log(item.users_id.length);
+                let price = item.price/item.users_id.length;
+                totalPrice.push(price);
+                return(
+                    <li>{item.item_name}   ${price}</li>
+                );
+            })
+            // console.log(itemArr);
+            let userForCurrent;
+            let userName = this.state.userDetails.map((userDetail)=>{
+                if(userDetail.id === user.friend_id){
+                   userForCurrent = userDetail.username;
+                }
+            });
+            const reducer = (accumulator, currentValue) => accumulator + currentValue;
+            let splitPrice = totalPrice.reduce(reducer);
+            return(
+                <div>
+                    <p>---{userForCurrent}---</p>
+                       <ul>
+                       {itemList}
+                       </ul>
+                    <p>${splitPrice}</p>
+                </div>
+            );
+        });
+
+
+        return(
+            <div>
+                {userSummary}
+            </div>
+        );
+      }
+   }
+}
+
+export default IndividualSummary;
+
+        /*
+        console.log('check state', this.state.receiptItems);
         const receiptItems = this.state.change;
 
         if(this.state.receiptItems === null){
@@ -103,7 +199,4 @@ class IndividualSummary extends React.Component {
                 </div>
                 )
         }
-    }
-}
-
-export default IndividualSummary;
+        */

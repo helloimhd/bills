@@ -1,6 +1,7 @@
 import React from 'react';
+import Cookies from 'js-cookie';
 
-import styles from './style.scss';
+//import styles from './style.scss';
 
 class GroupSelect extends React.Component {
     constructor(){
@@ -61,8 +62,10 @@ class GroupSelect extends React.Component {
       ticked.forEach((r)=>{
         idInGroup.push(r.id);
       })
-
-      let input = { obj : idInGroup};
+       // Cookies.get('receiptId')
+      let input = { obj : idInGroup,
+                    receipt_id : 1,
+                   };
 
       fetch(`/selected/group`,{
         method: 'POST',
@@ -131,12 +134,7 @@ class GroupSelect extends React.Component {
                 {userList}
               </ul>
 
-
-              <button
-                onClick={(e)=>{this.updateGroupHandler(e)}}
-                > connect this button to next page </button>
-                <br />
-                <button type="button"><a href="/receipt">View Receipt</a></button>
+                <button onClick={(e)=>{this.updateGroupHandler(e)}} type="button"><a href="/receipt">View Receipt</a></button>
             </div>
         );
     }

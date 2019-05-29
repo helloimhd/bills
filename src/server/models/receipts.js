@@ -30,7 +30,7 @@ module.exports = (dbPI) => {
     let getReceipt = (dataIn, callback) =>{
 
         // console.log( 'INSIDE MODELS', dataIn );
-        let query = `SELECT * FROM receipts WHERE img_token = '${dataIn}'`;
+        let query = `SELECT * FROM receipts WHERE id = ${dataIn}`;
 
         dbPI.query( query, (err,r)=>{
             if(err){
@@ -47,7 +47,7 @@ module.exports = (dbPI) => {
     };
 
     let getAllItems = (dataIn, callback) => {
-        console.log ("HELLO in the model");
+        console.log ("HELLO in the supermodel");
 
         let query = `SELECT receipts.id, items. *
                     from receipts inner join items
@@ -121,25 +121,42 @@ module.exports = (dbPI) => {
         // THIS RETURNS ITEMS TABLE WITH RESPECTIVE RECEIPT ID
         // CHANGE "where items.receipt.id" to be dynamic
 
-  // update
 
-  // destroy
+    let getReceiptById = (receiptId, callback) => {
+        let getQuery = `SELECT * FROM receipts WHERE id ='${receiptId}'`;
 
-    let getUserReceipts = (userId, callback) => {
-        let receiptQuery = `SELECT * FROM receipts WHERE user_id = '${userId}'`;
-
-        dbPI.query(receiptQuery, (err, results) => {
-            callback(err, results)
+        dbPI.query(getQuery, (err, results) => {
+            callback(err, results);
         })
     }
 
+    let getReceiptByToken = (dataIn, callback) =>{
+
+        // console.log( 'INSIDE MODELS', dataIn );
+        let query = `SELECT * FROM receipts WHERE img_token = '${dataIn}'`;
+
+        dbPI.query( query, (err,r)=>{
+            if(err){
+                // console.log('Error here?');
+                callback( err, null)
+            }else{
+                // console.log('Something here?');
+                const result = {
+                                receipt : r.rows,
+                                };
+                callback( null, result );
+            }
+        })
+    };
+
   return {
     createReceipt,
-    getUserReceipts,
     getReceipt,
     getAllItems,
     getIndvUserItems,
     // getUsername,
     updateReceipt,
+    getReceiptById,
+    getReceiptByToken,
   };
 };
