@@ -1,9 +1,9 @@
-html, body
-{
-    margin: 0px;
-    padding: 0px;
-    overflow-x: hidden;
-    border: red 1px solid;
+html,body {
+  margin: 0px;
+  padding: 0px 0px 150px 0px;
+  overflow-x: hidden;
+  border: red 1px solid;
+  background-color: lightgrey !important;
 }
 
 h1 {
@@ -86,9 +86,21 @@ a {
   @extend .shadow;
 }
 
-button {
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  border-top: 4px black solid;
+  height: 100px;
+  width: 100%;
+  opacity: 0;
+  @extend .bgWhite;
+}
+
+button, input {
   cursor: pointer;
   padding: 5px 20px;
+  border-radius: 0px;
   @extend .borderBlack;
   @extend .bgWhite;
   @extend .shadow;

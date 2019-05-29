@@ -90,7 +90,7 @@ class Home extends React.Component {
                       <li className={styles.bodyTextBold}>Close</li>
                     </ul>
                     <br/>
-                    <h1>scan accuracy</h1>
+                    <h1>Scan Accuracy</h1>
                     <div className={styles.line}></div>
                     <p>There are many factors that will affect how accurate the results you get from the scan are. The following guidelines will help you get the most out of it.</p>
                     <img src={pic}/>
@@ -102,6 +102,7 @@ class Home extends React.Component {
                     </ul>
                   </div>
                 </div>
+                <div className={styles.footer}></div>
             </React.Fragment>
         )
     }}
