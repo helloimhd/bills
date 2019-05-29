@@ -79,7 +79,7 @@ class Register extends React.Component {
                 emailChange={this.emailChange}
                 handleRegisterSubmit={this.handleRegisterSubmit} />
 
-                <p>{this.state.prompt}</p>
+                <p style={{textAlign: "center"}}>{this.state.prompt}</p>
 
             </React.Fragment>
 

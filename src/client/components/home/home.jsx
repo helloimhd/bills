@@ -74,6 +74,13 @@ class Home extends React.Component {
       document.getElementById("form").submit();
     }
 
+    toReceipt = (e) => {
+        console.log(e.target.parentNode.id)
+        let receiptId = e.target.parentNode.id;
+        Cookies.set('receiptId', receiptId, { path: '' });
+        window.location.href = `/summaryReceipt`;
+    }
+
 
     render() {
             let allReceipts = null;
@@ -95,18 +102,38 @@ class Home extends React.Component {
                 allReceipts = receipts.map(obj => {
                   let ownBy = null;
                   if (parseInt(obj.ownBy) === parseInt(currentUserId)) {
-                      ownBy = "YOU";
+                      ownBy = "You";
                   } else {
                       ownBy = obj.username;
                   }
 
             // if null means user is involved in the receipt but not paying (for now)
-                  if (obj.sum !== null) {
+                  if (obj.sum !== 0) {
                       return (
+                          <div key={obj.receiptId} className={styles.container} onClick={this.toReceipt} id={obj.receiptId}>
+                            <div className={styles.flexContainer} id={obj.receiptId}>
+                                <div className={styles.dateHeader}>
+                                    <p>{moment(obj.date).format('D MMMM YYYY')}</p>
+                                </div>
+                                <div className={styles.infoContainer}>
+                                    <p style={{textTransform: "capitalize"}}>By {ownBy}</p>
+                                    <p>${(obj.sum).toFixed(2)}</p>
+                                </div>
+                            </div>
+                          </div>
+                      )
+                  } else {
+                    return (
                           <div key={obj.receiptId} className={styles.container}>
-                              <p>{moment(obj.date).format('D MMMM YYYY')}</p>
-                              <p>Amount: {(obj.sum).toFixed(2)}</p>
-                              <p>Own By: {ownBy}</p>
+                            <div className={styles.flexContainer}>
+                                <div className={styles.dateHeader}>
+                                    <p>{moment(obj.date).format('D MMMM YYYY')}</p>
+                                </div>
+                                <div className={styles.infoContainer}>
+                                    <p style={{textTransform: "capitalize"}}>By {ownBy}</p>
+                                    <p>-</p>
+                                </div>
+                            </div>
                           </div>
                       )
                   }
@@ -128,7 +155,7 @@ class Home extends React.Component {
                     <div className={styles.spreadContainer}>
                       <button className={styles.button} onClick={this.sortByPrice}><h2>Sort By Price</h2></button>
                       <button className={styles.button} onClick={this.sortByDate}><h2>Sort By Date</h2></button>
-                      <button type="button" onClick={this.logout}>Log Out</button>
+                      <button className={styles.button} onClick={this.logout}><h2>Log Out</h2></button>
                     </div>
                   </div>
 
@@ -139,8 +166,12 @@ class Home extends React.Component {
                 </div>
 
                 <div className={styles.cameraButton}>
-                  <button className={styles.roundedButton} onClick={this.testFunction}>
-                      <img src={Camera} width="30"/>
+                  <button className={styles.homeRoundedButton} onClick={this.testFunction}>
+                        <div className={styles.icon}>
+                            <div className={styles.camera2}>
+                                <span></span>
+                            </div>
+                        </div>
                   </button>
                 </div>
 
@@ -151,7 +182,7 @@ class Home extends React.Component {
                             accept="image/*"
                             capture="camera"
                             onChange={this.submitHandler}/><br/>
-                    <label for="file">oi</label><br/>
+                    <label for="file">Photo</label><br/>
                     <button type="submit">Upload</button>
                 </form>
 
