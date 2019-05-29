@@ -74,7 +74,7 @@ class Home extends React.Component {
             // if null means user is involved in the receipt but not paying (for now)
             if (obj.sum !== null) {
                 return (
-                    <div style={{borderBottom: 2+"px solid grey"}}>
+                    <div key={obj.receiptId} style={{borderBottom: 2+"px solid grey"}}>
                         <p>{moment(obj.date).format('D MMMM YYYY')}</p>
                         <p>Amount: {obj.sum}</p>
                         <p>Own By: {ownBy}</p>
