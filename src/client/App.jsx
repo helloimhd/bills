@@ -35,9 +35,6 @@ class Main extends React.Component{
 
         return(
             <Router>
-
-
-
                 <Route path="/guides" exact render={() => (
                     <Guides />
                 )} />
