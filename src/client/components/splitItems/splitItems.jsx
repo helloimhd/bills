@@ -109,42 +109,50 @@ class SplitItems extends React.Component{
         return <p>loading</p>
       } else {
 
-        let usersList = this.state.users.map((user, index) => {
-          return(
-              <li key={user.id}>
-                <input
-                  type="checkbox"
-                  value={user.id}
-                  onChange={this.checkerHandler}
-                /> {user.username}
-              </li>
-            )
-        })
+        let itemList = this.state.items.map((item, itemIndex) => {
 
-        let itemList = this.state.items.map((item, index) => {
+          let usersList = this.state.users.map((user, userIndex) => {
+            return(
+                <li key={user.id}>
+                  <input
+                    className={styles.cssCheckbox}
+                    type="checkbox"
+                    value={user.id}
+                    onChange={this.checkerHandler}
+                    id={user.id + "-" + item.id}
+                  />
+                  <label
+                    htmlFor={user.id + "-" + item.id}
+                    className={styles.cssLabel}
+                  >
+                    {user.username}
+                  </label>
+                </li>
+              )
+          })
 
-          if (index === this.state.activeIndex) {
+          if (itemIndex === this.state.activeIndex) {
             return (
-                <li key={index} id={index}
+                <li key={itemIndex} id={itemIndex}
                     style={{display: "block"}}
                 >
-                  <h1>{item.item_name}</h1>
-                  <h1>${item.price}</h1>
-                  <ul id={index}>
+                  <h2>{item.item_name}</h2>
+                  <h2>${item.price}</h2>
+                  <ul id={itemIndex}>
                     {usersList}
-                  </ul>
+                  </ul><br/><br/>
                   <button onClick={this.onPreviousClick}>Previous</button>
                   <button onClick={this.onNextClick}>Next</button>
                 </li>
               )
           } else {
             return (
-                <li key={index} id={index}
+                <li key={itemIndex} id={itemIndex}
                     style={{display: "none"}}
                 >
                   <h1>{item.item_name}</h1>
                   <h1>${item.price}</h1>
-                  <ul id={index}>
+                  <ul id={itemIndex}>
                     {usersList}
                   </ul>
                   <button onClick={this.onNextClick}>Next</button>
@@ -160,17 +168,24 @@ class SplitItems extends React.Component{
       })
 
         return(
+          <React.Fragment>
                 <ul>
                   <li>
                     <select onChange={this.selectChangeHandler} value={this.state.activeIndex}>
                       {options}
                     </select>
                   </li>
-                  {itemList}
+
                   <li>
                     <button onClick={this.updateItems}><a href="/wholeSummary">Done Splitting</a></button>
-                    </li>
+                  </li>
                 </ul>
+
+
+                <ul>
+                  {itemList}
+                </ul>
+                </React.Fragment>
         );
     }
   }

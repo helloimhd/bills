@@ -17,12 +17,9 @@ class LoginForm extends React.Component {
 
                     <div class={styles.container}>
                         <form onSubmit={this.props.handleLoginSubmit} style={{textAlign: "center"}} autocomplete="off">
-                            <label htmlFor="username">Username</label>
-                            <input type="text" name="username" value={this.props.username} onChange={this.props.usernameChange} style={{marginBottom: 30 + "px"}} required />
+                            <input type="text" name="username" placeholder="Username" value={this.props.username} onChange={this.props.usernameChange} style={{marginBottom: 30 + "px"}} required />
 
-
-                            <label htmlFor="password">Password</label>
-                            <input type="password" name="password" value={this.props.password} onChange={this.props.passwordChange} style={{marginBottom: 40 + "px"}} required />
+                            <input type="password" placeholder="Password" name="password" value={this.props.password} onChange={this.props.passwordChange} style={{marginBottom: 40 + "px"}} required />
 
 
                             <button type="submit" className={styles.button} style={{marginRight: 20 + "px"}}><h2>Log In</h2></button>

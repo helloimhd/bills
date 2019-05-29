@@ -146,7 +146,15 @@ class GroupSelect extends React.Component {
                     name="group"
                     value={user.id}
                     checked={!user.checked}
-                    /> {user.username}
+                    className={styles.cssCheckbox}
+                    id={user.id}
+                  />
+                  <label
+                    htmlFor={user.id}
+                    className={styles.cssLabel}
+                  >
+                    {user.username}
+                  </label>
                 </li>
                 )
             } else {
@@ -158,7 +166,16 @@ class GroupSelect extends React.Component {
                         value={user.id}
                         onChange={this.checkerHandler}
                         checked={user.checked}
-                        /> {user.username}
+                        className={styles.cssCheckbox}
+                        id={user.id}
+                      />
+
+                      <label
+                        htmlFor={user.id}
+                        className={styles.cssLabel}
+                      >
+                        {user.username}
+                      </label>
                     </li>
                 )
             }
@@ -170,6 +187,7 @@ class GroupSelect extends React.Component {
             <div>
 
               <input
+                type="text"
                 placeholder="Search for users.."
                 onChange={this.changeHandler}
                 onKeyDown={this.enterHandler}
