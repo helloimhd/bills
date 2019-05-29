@@ -126,7 +126,7 @@ class GroupSelect extends React.Component {
             return <p>LOADING</p>
         } else {
         let search = this.state.search.toLowerCase()
-        let receiptId = this.state.receipt[0].id;
+        let receiptId = this.state.receipt[0].user_id;
         let userList = this.state.users.filter(user => user.username.includes(search)).map((user, index) => {
             if(receiptId === user.id){
 
