@@ -7,7 +7,7 @@ class WholeSummary extends React.Component {
         this.state = {
             receiptItems: {},
             change: false,
-            total:0,
+            getTotal: 0,
         }
     }
 
@@ -69,6 +69,7 @@ class WholeSummary extends React.Component {
                           <td><strong>Quantity</strong></td>
                       </tr>
                           {this.state.receiptItems.map((allItems, i) => {
+                            let price = (allItems.price).toFixed(2)
                                 return (
                                   <tr key={i}>
                                       <td>
@@ -78,7 +79,7 @@ class WholeSummary extends React.Component {
                                       {allItems.item_name}
                                       </td>
                                       <td>
-                                      {allItems.price}
+                                      {price}
                                       </td>
                                       <td>
                                       {allItems.quantity}
@@ -89,7 +90,7 @@ class WholeSummary extends React.Component {
                       <tr>
                           <td><strong>Total $</strong></td>
                           <td></td>
-                          <td><strong>{this.state.getTotal}</strong></td>
+                          <td><strong>{(this.state.getTotal).toFixed(2)}</strong></td>
                       </tr>
                   </tbody>
                 </table>

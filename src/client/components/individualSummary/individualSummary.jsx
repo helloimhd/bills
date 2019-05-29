@@ -6,12 +6,12 @@ class IndividualSummary extends React.Component {
     constructor() {
         super();
         this.state = {
-            // receiptItems: {},
+            // receiptItems: null,
             // change: false,
             items: null,
             users: null,
             userDetails :null,
-            total:0,
+            // getTotal: 0,
         }
     }
 
@@ -41,13 +41,15 @@ class IndividualSummary extends React.Component {
         .then(response=>response.json())
         .then(response=>this.setState({userDetails: response.users}))
     }
+
     /*
+
     receiptHandler() {
 
         var reactThis = this;
-        console.log("clicking");
-        //var id = 1;
-        var id = Cookies.get('receiptId');
+        // console.log("clicking");
+        var id = 1;
+        // var id = Cookies.get('receiptId');
         fetch(`/summary/user/${id}`, {
 
         }).then(res => {
@@ -56,26 +58,33 @@ class IndividualSummary extends React.Component {
             // console.log('in the jsx summary', json);
             let obj = json;
             this.setState({receiptItems: obj});
+            // console.log(this.state.receiptItems[1].users_id);
             this.setState({change: true});
 
-            // Add the price of items together to get the total amount
+            // Add the price of items together after splitting items
             let getTotal = 0;
+            let priceArr =[];
 
             for (let allPrices in obj) {
-                const addAllPrices = obj[allPrices].price
-                console.log(addAllPrices)
-                getTotal += addAllPrices;
+                let itemPrice = obj[allPrices].price
+                let splitSize = obj[allPrices].users_id.length
+
+                let splitPrice = itemPrice/splitSize;
+                priceArr.push(splitPrice);
+                // const addAllPrices = obj[allPrices].price
+                // console.log(addAllPrices)
+                getTotal += splitPrice;
+                console.log(getTotal);
             }
 
             this.setState({getTotal: getTotal})
 
-            // console.log(this.state.receiptItems);
-            // console.log(this.state.change);
         })
     }
     */
 
     render() {
+        // console.log('check state', this.state.receiptItems);
         if (this.state.items === null || this.state.users === null || this.state.userDetails === null) {
         return <p>loading</p>
       } else {
@@ -137,14 +146,11 @@ class IndividualSummary extends React.Component {
 
 export default IndividualSummary;
 
-/* <Username/> */
-
-
         /*
         console.log('check state', this.state.receiptItems);
         const receiptItems = this.state.change;
 
-        if(!receiptItems){
+        if(this.state.receiptItems === null){
         return (
             <div>
                 <h1>Your Bill Summary</h1>
@@ -164,6 +170,8 @@ export default IndividualSummary;
                               <td><strong>Quantity</strong></td>
                           </tr>
                               {this.state.receiptItems.map((allItems, i) => {
+                                let price = (allItems.price / allItems.users_id.length).toFixed(2)
+                                let quantity = allItems.quantity / allItems.users_id.length
                                     return (
                                       <tr key={i}>
                                           <td>
@@ -173,10 +181,10 @@ export default IndividualSummary;
                                           {allItems.item_name}
                                           </td>
                                           <td>
-                                          {allItems.price}
+                                          {price}
                                           </td>
                                           <td>
-                                          {allItems.quantity}
+                                          {quantity}
                                           </td>
                                       </tr>
                                     )}
@@ -184,7 +192,7 @@ export default IndividualSummary;
                           <tr>
                               <td><strong>Total $</strong></td>
                               <td></td>
-                              <td><strong>{this.state.getTotal}</strong></td>
+                              <td><strong>{(this.state.getTotal).toFixed(2)}</strong></td>
                           </tr>
                       </tbody>
                     </table>
