@@ -17,6 +17,7 @@ class GroupSelect extends React.Component {
           search: "",
           tickedUsers: [],
           checked: false,
+          receipt:null,
         }
 
     }
@@ -25,6 +26,13 @@ class GroupSelect extends React.Component {
       fetch(`/search/group`)
         .then(response=>response.json())
         .then(response=>this.setState({users: response.users}))
+    }
+
+    getReceiptHandler(){
+        let id = Cookies.get('receiptId');
+        fetch(`/receipt/${id}`)
+        .then(response=>response.json())
+        .then(response=>this.setState({receipt: response}))
     }
 
     changeHandler(event){
@@ -46,86 +54,109 @@ class GroupSelect extends React.Component {
             // console.log(this.state.tickedUsers);
             // console.log(this.state.users)
 
-          const checked = event.target.checked
-          const users = this.state.users
-          const ticked = []
+            const checked = event.target.checked
+            const users = this.state.users
+            const ticked = []
 
-          for  (let index in users) {
-            let user = users[index]
-
-            if(user.checked === true) {
-              // console.log(user.id)
-              // console.log(user.checked)
-              // console.log(user)
-              ticked.push(user)
-              this.setState({tickedUsers: ticked})
+            for (let index in users) {
+                let user = users[index]
+                if(user.checked === true) {
+                  // console.log(user.id)
+                  // console.log(user.checked)
+                  // console.log(user)
+                    ticked.push(user)
+                    this.setState({tickedUsers: ticked})
+                }
             }
-          }
-          console.log(ticked)
-          let idInGroup = [];
-          ticked.forEach((r)=>{
-            idInGroup.push(r.id);
-          })
+            console.log(ticked)
+
+            let idInGroup = [];
+            ticked.forEach((r)=>{
+                idInGroup.push(r.id);
+            })
            // Cookies.get('receiptId')
 
+            let receiptId = Cookies.get('receiptId');
 
+            let input = {
+                        obj : idInGroup,
+                        receipt_id : receiptId,
+                        };
 
-              let input = { obj : idInGroup,
-                            receipt_id : 1,
-                           };
-
-              fetch(`/selected/group`,{
+            fetch(`/selected/group`,{
                 method: 'POST',
                 headers:{
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                 },
                 body: JSON.stringify(input),
-              }).then(res=>console.log(res.json()));
-              window.location.href = "/receipt";
+            }).then(res=>console.log(res.json()));
+
+            window.location.href = "/receipt";
         }
       }
 
     checkerHandler(event){
 
-         this.setState({checked: true });
-      const userId = event.target.value
-      const checked = event.target.checked
-      const users = this.state.users
+        // let stateCheck = !this.state.checked;
+        this.setState({checked: true});
+        const userId = event.target.value
+        const checked = event.target.checked
+        const users = this.state.users
 
+        for (let index in users){
+            let user = users[index]
 
-      for (let index in users){
-        let user = users[index]
-
-        if(user.id==userId){
-          user["checked"] = checked;
+            if(user.id==userId){
+                user["checked"] = checked;
+            }
         }
 
-      }
-
-      this.setState({users:users})
+        this.setState({users:users})
     }
 
     componentDidMount(){
         console.log('helo');
-      this.getUsersHandler()
+      this.getUsersHandler();
+      this.getReceiptHandler();
     }
 
     render(){
-      let search = this.state.search.toLowerCase()
-      let userList = this.state.users.filter(user => user.username.includes(search)).map((user, index) => {
-          return (
-            <li key={user.id}>
-              <input
-                type="checkbox"
-                name="group"
-                value={user.id}
-                onChange={this.checkerHandler}
-                checked={user.checked}
-                /> {user.username}
-            </li>
-            )
-      })
+        if(this.state.receipt === null){
+            return <p>LOADING</p>
+        } else {
+        let search = this.state.search.toLowerCase()
+        let receiptId = this.state.receipt[0].id;
+        let userList = this.state.users.filter(user => user.username.includes(search)).map((user, index) => {
+            if(receiptId === user.id){
+
+                return (
+                <li key={user.id}>
+                  <input
+                    type="checkbox"
+                    name="group"
+                    value={user.id}
+                    onChange={this.checkerHandler}
+                    defaultChecked={!user.checked}
+                    checked={user.checked}
+                    /> {user.username}
+                </li>
+                )
+            } else {
+                return (
+                    <li key={user.id}>
+                      <input
+                        type="checkbox"
+                        name="group"
+                        value={user.id}
+                        onChange={this.checkerHandler}
+                        checked={user.checked}
+                        /> {user.username}
+                    </li>
+                )
+            }
+        })
+
 
         return(
 
@@ -145,7 +176,8 @@ class GroupSelect extends React.Component {
 
                 <button onClick={(e)=>{this.updateGroupHandler(e)}} type="button">View receipt</button>
             </div>
-        );
+          );
+        }
     }
 }
 
