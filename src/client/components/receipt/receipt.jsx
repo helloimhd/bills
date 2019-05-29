@@ -254,8 +254,12 @@ class MainReceipt extends React.Component {
 
     componentDidMount=()=>{
         this.getReceiptHandler();
-
     }
+
+    // componentWillUnmount = () => {
+    // this.mounted = false;
+    // clearTimeout(this.timer);
+    // };
 
     getReceiptHandler=()=>{ //clunky way to retrieve backend data on RECEIPT, ITEMS and GroupMembers
         //retrieves receipt and item info
@@ -285,10 +289,8 @@ class MainReceipt extends React.Component {
         getReceipt(Cookies.get('receiptId')).then(receiptOutput=> { //sending request to get receipt
             getItems(Cookies.get('receiptId')).then(itemOutput=>{ // sending request to get items
 
-                // itemOutput.item_name = (itemOutput.item_name).replace(/[^a-zA-Z ]/g, "")
-                // console.log("sdfdsfDS", itemOutput)
                 for(let i=0;i<itemOutput.length;i++){
-                    // console.log(itemOutput[i])
+
                     itemOutput[i].item_name =  (itemOutput[i].item_name).replace(/[^a-zA-Z ]/g, "")
                 }
                 console.log(itemOutput)
@@ -311,11 +313,13 @@ class MainReceipt extends React.Component {
 
             })
         })
+
     }
 
     viewReceiptHandler =()=>{
 
         this.setState( {hasReceipt: true} );
+        this.quickMath(this.state.serviceChargeBoolean,this.state.gstBoolean)
     }
 
     doneViewingReceiptHandler = () =>{
