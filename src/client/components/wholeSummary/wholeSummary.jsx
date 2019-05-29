@@ -72,7 +72,7 @@ class WholeSummary extends React.Component {
                     <table>
                       <tbody>
                           <tr>
-                              <td className={styles.intern}>Receipt ID</td>
+                              <td className={styles.intern}></td>
                               <td className={styles.intern}>Item Name</td>
                               <td className={styles.intern}>Price</td>
                           </tr>
@@ -81,7 +81,7 @@ class WholeSummary extends React.Component {
                                     return (
                                       <tr className={styles.associate} key={i}>
                                           <td className={styles.trainee}>
-                                          {allItems.receipt_id}
+
                                           </td>
                                           <td className={styles.trainee}>
                                           {allItems.item_name}
