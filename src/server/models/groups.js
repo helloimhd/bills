@@ -73,12 +73,22 @@ module.exports = (dbPI) => {
         })
     }
 
+    let updateGroupAmount = (data, friend_id, receipt_id, callback) => {
+
+        console.log('INSIDE MODELS', data)
+
+        let query = `UPDATE groups set amount = ${data} where friend_id = ${friend_id} AND receipt_id = ${receipt_id} `;
+        dbPI.query(query,(err, r) => {
+            callback(err, r);
+        })
+    }
+
   return {
     getUsersData,
     updateGroupData,
     getGroupMembers,
     indvGroupInfo,
-    getUserGroups
-
+    getUserGroups,
+    updateGroupAmount,
   };
 };
