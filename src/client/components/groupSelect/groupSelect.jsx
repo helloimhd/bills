@@ -1,7 +1,7 @@
 import React from 'react';
 import Cookies from 'js-cookie';
 
-//import styles from './style.scss';
+import styles from './style.scss';
 
 class GroupSelect extends React.Component {
     constructor(){
@@ -18,6 +18,7 @@ class GroupSelect extends React.Component {
           tickedUsers: [],
           checked: false,
           receipt:null,
+          searchToggle: false,
         }
 
     }
@@ -40,9 +41,12 @@ class GroupSelect extends React.Component {
     }
 
     enterHandler(event){
-      if (event.keyCode === 13) {
 
-      }
+        let searchToggle = true;
+        this.setState({searchToggle : searchToggle})
+        if (event.keyCode === 8) {
+            this.setState({searchToggle : !searchToggle})
+        }
     }
 
     updateGroupHandler(event){
@@ -125,13 +129,14 @@ class GroupSelect extends React.Component {
         if(this.state.receipt === null){
             return <p>LOADING</p>
         } else {
+        let searchToggle = this.state.searchToggle;
         let search = this.state.search.toLowerCase()
         let receiptId = this.state.receipt[0].user_id;
         let userList = this.state.users.filter(user => user.username.includes(search)).map((user, index) => {
             if(receiptId === user.id){
 
                 return (
-                <li key={user.id}>
+                <li key={user.id} className={styles.wholeSummaryDefaultCheckBox}>
                   <input
                     type="checkbox"
                     name="group"
@@ -169,10 +174,7 @@ class GroupSelect extends React.Component {
                 value={this.state.search}
               />
 
-
-              <ul>
-                {userList}
-              </ul>
+                {searchToggle ?   (<ul>{userList}</ul> ): (<p></p>)}
 
                 <button onClick={(e)=>{this.updateGroupHandler(e)}} type="button">View receipt</button>
             </div>
