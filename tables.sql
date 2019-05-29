@@ -27,7 +27,6 @@ CREATE TABLE IF NOT EXISTS items (
 	receipt_id INTEGER,
 	item_name TEXT,
 	price FLOAT,
-	quantity INTEGER,
 	users_id INTEGER ARRAY
 );
 

@@ -1,12 +1,51 @@
-html, body {
-  background-color: white;
-  min-width: 700px;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-body{
-  padding:20px;
-}
-
 .desc{
 	background-color:pink;
 }
+
+html, body {
+  margin: 0px;
+  padding: 0px 0px 150px 0px;
+  overflow-x: hidden;
+  border: red 1px solid;
+  background-color: lightgrey !important;
+}
+
+body {
+  border: blue 1px solid;
+}
+
+h1 {
+  font-family: montserrat, sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 16px;
+  color: black;
+  text-transform: uppercase;
+}
+
+h2 {
+  font-family: montserrat, sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 12px;
+  color: black;
+  text-transform: uppercase;
+}
+
+a {
+  text-decoration: none;
+}
+
+/*img {
+  width: 40%;
+  margin: 40px 50% 70px 50%;
+  transform: translateX(-50%);
+}*/
+
+/*ul {
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}*/

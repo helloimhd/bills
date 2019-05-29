@@ -48,39 +48,34 @@ class Login extends React.Component {
         .then(response => {
             //console.log(response.data)
             if (response.data === null) {
-                reactThis.setState({prompt: "Username is invalid. Click here to Sign Up"})
+                reactThis.setState({prompt: "Username is invalid. Please try again or sign up."})
 
             } else if (response.data === false) {
                 reactThis.setState({prompt: "Password is WRONG!"})
 
             } else if (response.data === true) {
                 // redirect
-                //reactThis.setState({prompt: "Valid"})
                 // set logged in to true
                 reactThis.setState({isLoggedIn: true})
-                //window.location = '/'
-                //console.log("aldalsda")
-                //this.props.history.push('/home')
                 window.location.href = '/';
 
             }
         })
-        //.catch(error => console.error('Error:', error));
+        .catch(error => console.error('Error:', error));
 
     }  // end handle of login submit
 
 
     render() {
 
-            return (
-                <React.Fragment>
-                    <LoginForm username={this.state.username} password={this.state.password} usernameChange={this.usernameChange} passwordChange={this.passwordChange} handleLoginSubmit={this.handleLoginSubmit} />
+        return (
+            <React.Fragment>
+                <LoginForm username={this.state.username} password={this.state.password} usernameChange={this.usernameChange} passwordChange={this.passwordChange} handleLoginSubmit={this.handleLoginSubmit} />
 
-                    <p>{this.state.prompt}</p>
-                  </React.Fragment>
+                <p>{this.state.prompt}</p>
+              </React.Fragment>
 
-            )
-
+        )
     }
 }
 

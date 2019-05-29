@@ -21,14 +21,14 @@ class SplitItems extends React.Component{
     }
     // Cookies.get('receiptId')
     getAllItems(){
-      let receiptId = 1
+      let receiptId = Cookies.get('receiptId')
       fetch(`/items/${receiptId}`)
         .then(response=>response.json())
         .then(response=>this.setState({items: response}))
     }
 
     getAllUsers(){
-      let receiptId = 1
+      let receiptId = Cookies.get('receiptId')
       fetch(`/group/${receiptId}`)
         .then(response=>response.json())
         .then(response=>this.setState({users: response}))
@@ -111,12 +111,12 @@ class SplitItems extends React.Component{
 
         let usersList = this.state.users.map((user, index) => {
           return(
-              <li key={user.friend_id}>
+              <li key={user.id}>
                 <input
                   type="checkbox"
-                  value={user.friend_id}
+                  value={user.id}
                   onChange={this.checkerHandler}
-                /> {user.friend_id}
+                /> {user.username}
               </li>
             )
         })
@@ -167,8 +167,9 @@ class SplitItems extends React.Component{
                     </select>
                   </li>
                   {itemList}
-                  <li><button ><a href="/wholeSummary">Whole Summary</a></button>
-                  <button onClick={this.updateItems}>save EVERYTHING PLS</button></li>
+                  <li>
+                    <button onClick={this.updateItems}><a href="/wholeSummary">Done Splitting</a></button>
+                    </li>
                 </ul>
         );
     }
