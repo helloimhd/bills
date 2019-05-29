@@ -101,8 +101,21 @@ class Main extends React.Component{
                   )
                 )} />
 
-                <Route path="/wholeSummary" component={WholeSummary} />
-                <Route path="/summaryReceipt" component={IndividualSummary} />
+                <Route path="/wholeSummary" ender={() => (
+                  isLoggedIn ? (
+                    <WholeSummary />
+                  ) : (
+                    <Login />
+                  )
+                )} />
+
+                <Route path="/summaryReceipt" ender={() => (
+                  isLoggedIn ? (
+                    <IndividualSummary />
+                  ) : (
+                    <Login />
+                  )
+                )} />
 
             </Router>
         );
