@@ -19,16 +19,16 @@ class SplitItems extends React.Component{
           activeIndex: 0,
         }
     }
-
+    // Cookies.get('receiptId')
     getAllItems(){
-      let receiptId = Cookies.get('receiptId')
+      let receiptId = 1
       fetch(`/items/${receiptId}`)
         .then(response=>response.json())
         .then(response=>this.setState({items: response}))
     }
 
     getAllUsers(){
-      let receiptId = Cookies.get('receiptId')
+      let receiptId = 1
       fetch(`/group/${receiptId}`)
         .then(response=>response.json())
         .then(response=>this.setState({users: response}))
