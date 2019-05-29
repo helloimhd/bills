@@ -10,7 +10,7 @@ class IndividualSummary extends React.Component {
             users: null,
             userDetails :null,
             receipt:null,
-            saveAmount: [],
+            saveAmount: null,
             total:0,
         }
     }
@@ -21,6 +21,8 @@ class IndividualSummary extends React.Component {
         this.getAllUsers();
         this.getUsersHandler();
         this.getReceipt();
+
+        setTimeout(() =>{this.calcAmount()}, 1000);
     }
 
     getReceipt=()=>{
@@ -50,51 +52,77 @@ class IndividualSummary extends React.Component {
         .then(response=>this.setState({userDetails: response.users}))
     }
 
-    updateIndvAmount(){
+    calcAmount=()=>{
 
-        let items = this.state.items;
+        let usersGroupsArr = this.state.users;
+        let itemsList = this.state.items;
+        let otherChargesTotal =  this.state.receipt[0].total - this.state.receipt[0].subtotal;
+        let otherChargesSplit = otherChargesTotal/usersGroupsArr.length;
+        let objToSave = [];
+
+        usersGroupsArr.forEach(user=>{
+            let itemArr=[];
+            let totalPrice = [];
+            itemsList.forEach(item=>{
+                for(let i = 0; i < item.users_id.length; i++){
+                    if(item.users_id[i] === user.friend_id){
+                        // console.log(`${item.item_name} belongs to ${user.friend_id}`);
+                        let obj = {
+                                item_name: item.item_name,
+                                price: item.price,
+                                users_id :item.users_id,
+                        }
+                    itemArr.push(obj);
+                    }
+                }
+            })
+
+            itemArr.forEach(item=>{
+                // console.log(item.users_id.length);
+                let price = item.price/item.users_id.length;
+
+                totalPrice.push(price);
+            })
+            const reducer = (accumulator, currentValue) => accumulator + currentValue;
+            let priceToSave = totalPrice.reduce(reducer) + otherChargesSplit;
+
+            let plsSave = {
+                userId: user.friend_id,
+                amount: priceToSave,
+                receiptId : user.receipt_id,
+            }
+            objToSave.push(plsSave);
+        })
+
+        console.log(objToSave);
+
+        this.setState({saveAmount:objToSave});
+
+        // this.updateIndvAmount(this.state.saveAmount);
+    }
+
+    updateIndvAmount=()=>{
+        // this.state.saveAmount
+        let items = this.state.saveAmount;
         let input = {obj : items};
         console.log(input);
-        fetch(`/update/items`,{
+        fetch(`/save/group`,{
             method:'POST',
             headers:{
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
             },
             body: JSON.stringify(input),
-        }).then(res=>console.log('Updated items'));
+        }).then(res=>console.log('Updated group amount!'));
 
     }
 
-    ownerOfReceipt(){
-        return 1;
-        // let ownerId = this.state.receipt[0].users_id;
-        // let owner;
-        // this.state.userDetail.forEach((i)=>{
-        //     if(i.id === ownerId){
-        //         owner = i.username;
-        //     }
-        // })
-        // console.log(owner);
-        // return owner;
-    }
-
-    saveAmount(userId,splitPrice){
-        let saveAmountState = this.state.saveAmount;
-        let obj = {
-                user_id: userId,
-                amount: splitPrice,
-            }
-        saveAmountState.push(obj);
-        this.setState({saveAmount: saveAmountState});
-    }
     render() {
 
         if (this.state.items === null || this.state.users === null || this.state.userDetails === null ||this.state.receipt === null) {
             return <p>LOADING</p>
         } else {
-                let owner = this.ownerOfReceipt();
-                console.log('asdfas',owner)
+
             let userSummary = this.state.users.map((user,indexUser)=>{
 
                 let otherChargesTotal = this.state.receipt[0].total - this.state.receipt[0].subtotal;
@@ -135,9 +163,11 @@ class IndividualSummary extends React.Component {
                        userIdCurrent = userDetail.id;
                     }
                 });
+
                 const reducer = (accumulator, currentValue) => accumulator + currentValue;
                 let splitPrice = totalPrice.reduce(reducer) + otherChargesSplit;
                 splitPrice = splitPrice.toFixed(2);
+
                 return(
                     <div key={indexUser}>
                         <p>{userForCurrent}</p>
@@ -153,7 +183,7 @@ class IndividualSummary extends React.Component {
                 <div>
                     <p>Pay It</p>
                     {userSummary}
-                    <a href='/'>Back to Home</a>
+                    <button onClick={()=>{this.updateIndvAmount()}}><a href='/'>Back to Home</a></button>
                 </div>
             );
         }

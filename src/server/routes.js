@@ -49,4 +49,7 @@ module.exports = (app, db) => {
     app.get('/search/group', groups.getUsersData);
     app.post('/selected/group', groups.updateGroupData);
 
+    ////SAVE AMOUNT FOR EACH PERSON
+    app.post(`/save/group`, groups.updateIndvPay);
+
 };
