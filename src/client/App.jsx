@@ -45,7 +45,13 @@ class Main extends React.Component{
                   )
                 )} />
 
-                <Route path="/register" component={Register} />
+                <Route path="/register" render={() => (
+                  isLoggedIn ? (
+                    <Home />
+                  ) : (
+                    <Register />
+                  )
+                )} />
 
                 <Route path="/login" render={() => (
                   isLoggedIn ? (

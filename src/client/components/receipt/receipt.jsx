@@ -14,7 +14,7 @@ class ItemElement extends React.Component{
         }
     }
 
-    editItemHandler=(e)=>{
+    editItemHandler=()=>{
         // console.log('HELLO EDITTING');
         // console.log(this.props);
         this.setState( {isEditMode: !this.state.isEditMode} );
@@ -417,5 +417,13 @@ class MainReceipt extends React.Component {
       }
    }
 }
+
+
+
+ItemElement.propTypes = {
+  id: PropTypes.integer,
+  type: PropTypes.string,
+  pickMeUp: PropTypes.func,
+};
 
 export default MainReceipt;

@@ -2,8 +2,6 @@ import React from 'react';
 import moment from 'moment';
 import Cookies from 'js-cookie';
 
-import Login from '../user/login';
-
 // Ok so some weird shit here, we have to this for every image we want to place in our app. So in the image tag, just apply it like a variable. For example, <img src={pic}/>. What a day to be alive.
 import pic from './a.jpg';
 
@@ -37,9 +35,31 @@ class Home extends React.Component {
         })
     }
 
+
+    sortByPrice = () => {
+        let receipts = this.state.receipts;
+
+        receipts.sort(function(a, b) {
+            return parseFloat(a.sum) - parseFloat(b.sum);
+        });
+
+        this.setState({receipts: receipts})
+    }
+
+    sortByDate = () => {
+        let receipts = this.state.receipts;
+
+        receipts.sort(function(a, b) {
+            return Date.parse(a.date) - Date.parse(b.date);
+        });
+
+        this.setState({receipts: receipts})
+    }
+
     testFunction = () => {
       window.location.href = "/takePhoto"
     }
+
 
     render() {
         if (!this.state.receipts){
@@ -62,7 +82,7 @@ class Home extends React.Component {
             // if null means user is involved in the receipt but not paying (for now)
             if (obj.sum !== null) {
                 return (
-                    <div style={{borderBottom: 2+"px solid grey"}}>
+                    <div key={obj.receiptId} style={{borderBottom: 2+"px solid grey"}}>
                         <p>{moment(obj.date).format('D MMMM YYYY')}</p>
                         <p>Amount: {obj.sum}</p>
                         <p>Own By: {ownBy}</p>
@@ -76,11 +96,17 @@ class Home extends React.Component {
             <React.Fragment>
                 <div>
                     <h1>HOME</h1>
+                    <button type="button"><a href='/takePhoto'>Split a Bill</a></button>
+                    <button type="button" onClick={this.sortByPrice}>Sort By Price</button>
+                    <button type="button" onClick={this.sortByDate}>Sort By Date</button>
+
                     <button type="button" onClick={this.testFunction}><h2>Split a Bill</h2></button>
+
                     {allReceipts}
                 </div>
                 <br/> <br/> <br/>
                 <span className={styles.bodyTextBold}>This is for testing styles, chill bruh</span>
+
 
                 <div className={styles.absoluteCenter}>
                   <div className={styles.container}>
@@ -102,6 +128,7 @@ class Home extends React.Component {
                     </ul>
                   </div>
                 </div>
+
             </React.Fragment>
         )
     }}

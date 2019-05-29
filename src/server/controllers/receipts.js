@@ -1,7 +1,6 @@
 const cloudinary = require('cloudinary').v2;
 
 const fetch = require('node-fetch');
-//const fs = require('fs');
 const FormData = require('form-data');
 const requestPackage = require('request');
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
@@ -12,8 +11,6 @@ cloudinary.config({
   api_secret: 'UQBGNsgKzLZDlijgj-t1Tx6Sm84'
 });
 
-//let token = "";
-
 
 const tabUrl = 'https://api.tabscanner.com/pcVKfMzzwCYEkSUKcXvBWfb3ywzPg46WtUoTs6UsCduGfbYNToC0z6BmK0bvRLnB';
 // pcVKfMzzwCYEkSUKcXvBWfb3ywzPg46WtUoTs6UsCduGfbYNToC0z6BmK0bvRLnB
@@ -21,7 +18,6 @@ const tabUrl = 'https://api.tabscanner.com/pcVKfMzzwCYEkSUKcXvBWfb3ywzPg46WtUoTs
 
 
 module.exports = (db) => {
-
 
     let giveMeReceipt = ( req, res ) =>{
 

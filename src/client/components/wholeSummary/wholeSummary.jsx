@@ -20,7 +20,7 @@ class WholeSummary extends React.Component {
 
     getReceiptHandler(){
 
-        let receiptId = 1;
+        let receiptId = Cookies.get('receiptId');
         fetch(`/receipt/${receiptId}`)
           .then(response=>response.json())
           .then(response=>this.setState({receipt: response}))
@@ -31,8 +31,8 @@ class WholeSummary extends React.Component {
 
         var reactThis = this;
         console.log("clicking");
-        var id = 1;
-        // var id = Cookies.get('receiptId');
+//         var id = 1;
+        var id = Cookies.get('receiptId');
         fetch(`/summary/${id}`, {
 
         }).then(res => {
@@ -61,7 +61,6 @@ class WholeSummary extends React.Component {
 
     render() {
         console.log('check state', this.state.receiptItems);
-        // const receiptItems = this.state.change;
 
         if(this.state.receiptItems === null || this.state.receipt ==null){
             return <p>LOADING</p>
