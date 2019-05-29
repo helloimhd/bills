@@ -75,7 +75,6 @@ class WholeSummary extends React.Component {
                               <td><strong>Receipt ID</strong></td>
                               <td><strong>Item Name</strong></td>
                               <td><strong>Price</strong></td>
-                              <td><strong>Quantity</strong></td>
                           </tr>
                               {this.state.receiptItems.map((allItems, i) => {
                                     return (
@@ -88,9 +87,6 @@ class WholeSummary extends React.Component {
                                           </td>
                                           <td>
                                           {allItems.price}
-                                          </td>
-                                          <td>
-                                          {allItems.quantity}
                                           </td>
                                       </tr>
 
