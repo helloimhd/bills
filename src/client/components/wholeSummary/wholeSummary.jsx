@@ -1,13 +1,14 @@
 import React from 'react';
 import Cookies from 'js-cookie';
 
+import styles from './style.scss';
+
 class WholeSummary extends React.Component {
     constructor() {
         super();
         this.state = {
             receiptItems: null,
             receipt: null,
-            // change: false,
             total:0,
         }
     }
@@ -30,8 +31,8 @@ class WholeSummary extends React.Component {
     getAllItemsHandler() {
 
         var reactThis = this;
-        console.log("clicking");
-//         var id = 1;
+//         console.log("clicking");
+
         var id = Cookies.get('receiptId');
         fetch(`/summary/${id}`, {
 
@@ -60,55 +61,54 @@ class WholeSummary extends React.Component {
     }
 
     render() {
-        console.log('check state', this.state.receiptItems);
-
-        if(this.state.receiptItems === null || this.state.receipt ==null){
+       if(this.state.receiptItems === null || this.state.receipt ==null){
             return <p>LOADING</p>
         } else {
-            return (
-                <div>
+        return (
+            <div className={styles.absoluteCenterBigBoss}>
+                <div className={styles.containerSmallBoss}>
                     <h1>Bill Summary</h1>
+                    <div className={styles.lineManager}></div>
                     <table>
                       <tbody>
                           <tr>
-                              <td><strong>Receipt ID</strong></td>
-                              <td><strong>Item Name</strong></td>
-                              <td><strong>Price</strong></td>
+                              <td className={styles.intern}>Receipt ID</td>
+                              <td className={styles.intern}>Item Name</td>
+                              <td className={styles.intern}>Price</td>
                           </tr>
                               {this.state.receiptItems.map((allItems, i) => {
+                                let price = (allItems.price).toFixed(2)
                                     return (
-                                      <tr key={i}>
-                                          <td>
+                                      <tr className={styles.associate} key={i}>
+                                          <td className={styles.trainee}>
                                           {allItems.receipt_id}
                                           </td>
-                                          <td>
+                                          <td className={styles.trainee}>
                                           {allItems.item_name}
                                           </td>
-                                          <td>
-                                          {allItems.price}
+                                          <td className={styles.trainee}>
+                                          {price}
                                           </td>
                                       </tr>
-
                                     )}
                                 )}
-                              <br/>
                           <tr>
-                              <td><strong>Sub Total $</strong></td>
+                              <td className={styles.intern}>Sub Total $ </td>
                               <td></td>
-                              <td><strong> {this.state.getTotal}</strong></td>
+                              <td className={styles.intern}>{(this.state.getTotal).toFixed(2)}</td>
                           </tr>
                           <br/>
                           <br/>
                           <tr>
-                              <td><strong>Grand Total $</strong></td>
+                              <td className={styles.intern}><Grand Total $</td>
                               <td></td>
-                              <td><strong>{this.state.receipt[0].total}</strong></td>
+                              <td className={styles.intern}><{this.state.receipt[0].total}</td>
                           </tr>
                       </tbody>
                     </table>
                     <br />
-                    <a href="/summaryReceipt">Next Page (Individual)</a>
-                </div>
+                    <a className={styles.cleaner} href="/summaryReceipt">Next Page (Individual)</a>
+               </div>
             )
         }
     }

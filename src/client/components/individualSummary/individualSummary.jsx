@@ -2,6 +2,8 @@ import React from 'react';
 // import {Username} from './usernameSummary';
 import Cookies from 'js-cookie';
 
+import styles from './style.scss';
+
 class IndividualSummary extends React.Component {
     constructor() {
         super();
@@ -82,9 +84,30 @@ class IndividualSummary extends React.Component {
                 let price = item.price/item.users_id.length;
 
                 totalPrice.push(price);
+
+                return(
+                    <div>
+                        <li className={styles.grabDriver} >{item.item_name}: ${price}</li>
+                    </div>
+                );
             })
             const reducer = (accumulator, currentValue) => accumulator + currentValue;
+
+            let splitPrice = totalPrice.reduce(reducer);
+            return(
+                <div className={styles.containerSmallBoss}>
+                    <h1 className={styles.banana}>{userForCurrent}</h1>
+                        <div className={styles.lineManager}></div>
+                       <ul>
+                        {itemList}
+                       </ul>
+                    <h3 className={styles.intern}>Total: ${splitPrice}</h3>
+                </div>
+            );
+        });
+
             let priceToSave = totalPrice.reduce(reducer) + otherChargesSplit;
+
 
             let plsSave = {
                 userId: user.friend_id,
@@ -94,6 +117,14 @@ class IndividualSummary extends React.Component {
             objToSave.push(plsSave);
         })
 
+        return(
+            <div className={styles.absoluteCenterBigBoss}>
+                {userSummary}
+            </div>
+        );
+      }
+   }
+}
         console.log(objToSave);
 
         this.setState({saveAmount:objToSave});
@@ -114,7 +145,6 @@ class IndividualSummary extends React.Component {
             },
             body: JSON.stringify(input),
         }).then(res=>console.log('Updated group amount!'));
-
     }
 
     render() {
