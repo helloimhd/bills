@@ -5,18 +5,34 @@ class WholeSummary extends React.Component {
     constructor() {
         super();
         this.state = {
-            receiptItems: {},
-            change: false,
-            getTotal: 0,
+            receiptItems: null,
+            receipt: null,
+            // change: false,
+            total:0,
         }
     }
 
-    receiptHandler() {
+    componentDidMount(){
+
+        this.getAllItemsHandler();
+        this.getReceiptHandler();
+    }
+
+    getReceiptHandler(){
+
+        let receiptId = Cookies.get('receiptId');
+        fetch(`/receipt/${receiptId}`)
+          .then(response=>response.json())
+          .then(response=>this.setState({receipt: response}))
+    }
+
+
+    getAllItemsHandler() {
 
         var reactThis = this;
         console.log("clicking");
-        var id = 1;
-        // var id = Cookies.get('receiptId');
+//         var id = 1;
+        var id = Cookies.get('receiptId');
         fetch(`/summary/${id}`, {
 
         }).then(res => {
@@ -45,58 +61,54 @@ class WholeSummary extends React.Component {
 
     render() {
         console.log('check state', this.state.receiptItems);
-        const receiptItems = this.state.change;
 
-        if(!receiptItems){
-        return (
-            <div>
-                <h1>Bill Summary</h1>
-                <button onClick={()=>{this.receiptHandler()}}>Show items</button>
-                <br />
-                <a href="/summaryReceipt">Individual</a>
-            </div>
-        );
-    } else {
-        return (
-            <div>
-                <h1>Bill Summary</h1>
-                <table>
-                  <tbody>
-                      <tr>
-                          <td><strong>Receipt ID</strong></td>
-                          <td><strong>Item Name</strong></td>
-                          <td><strong>Price</strong></td>
-                          <td><strong>Quantity</strong></td>
-                      </tr>
-                          {this.state.receiptItems.map((allItems, i) => {
-                            let price = (allItems.price).toFixed(2)
-                                return (
-                                  <tr key={i}>
-                                      <td>
-                                      {allItems.receipt_id}
-                                      </td>
-                                      <td>
-                                      {allItems.item_name}
-                                      </td>
-                                      <td>
-                                      {price}
-                                      </td>
-                                      <td>
-                                      {allItems.quantity}
-                                      </td>
-                                  </tr>
+        if(this.state.receiptItems === null || this.state.receipt ==null){
+            return <p>LOADING</p>
+        } else {
+            return (
+                <div>
+                    <h1>Bill Summary</h1>
+                    <table>
+                      <tbody>
+                          <tr>
+                              <td><strong>Receipt ID</strong></td>
+                              <td><strong>Item Name</strong></td>
+                              <td><strong>Price</strong></td>
+                          </tr>
+                              {this.state.receiptItems.map((allItems, i) => {
+                                    return (
+                                      <tr key={i}>
+                                          <td>
+                                          {allItems.receipt_id}
+                                          </td>
+                                          <td>
+                                          {allItems.item_name}
+                                          </td>
+                                          <td>
+                                          {allItems.price}
+                                          </td>
+                                      </tr>
+
+                                    )}
                                 )}
-                            )}
-                      <tr>
-                          <td><strong>Total $</strong></td>
-                          <td></td>
-                          <td><strong>{(this.state.getTotal).toFixed(2)}</strong></td>
-                      </tr>
-                  </tbody>
-                </table>
-                <br />
-                <a href="/summaryReceipt">Individual</a>
-            </div>
+                              <br/>
+                          <tr>
+                              <td><strong>Sub Total $</strong></td>
+                              <td></td>
+                              <td><strong> {this.state.getTotal}</strong></td>
+                          </tr>
+                          <br/>
+                          <br/>
+                          <tr>
+                              <td><strong>Grand Total $</strong></td>
+                              <td></td>
+                              <td><strong>{this.state.receipt[0].total}</strong></td>
+                          </tr>
+                      </tbody>
+                    </table>
+                    <br />
+                    <a href="/summaryReceipt">Next Page (Individual)</a>
+                </div>
             )
         }
     }
