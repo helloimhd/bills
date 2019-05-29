@@ -10,11 +10,12 @@ class WholeSummary extends React.Component {
             receiptItems: null,
             receipt: null,
             total:0,
+            getTotal: null,
         }
     }
 
     componentDidMount(){
-
+        console.log('HELLO MOUNT WHOLE SUMMARY')
         this.getAllItemsHandler();
         this.getReceiptHandler();
     }
@@ -31,8 +32,7 @@ class WholeSummary extends React.Component {
     getAllItemsHandler() {
 
         var reactThis = this;
-//         console.log("clicking");
-
+        console.log("clicking");
         var id = Cookies.get('receiptId');
         fetch(`/summary/${id}`, {
 
@@ -61,7 +61,7 @@ class WholeSummary extends React.Component {
     }
 
     render() {
-       if(this.state.receiptItems === null || this.state.receipt ==null){
+       if( this.state.receiptItems === null || this.state.receipt === null || this.state.getTotal === null ){
             return <p>LOADING</p>
         } else {
         return (

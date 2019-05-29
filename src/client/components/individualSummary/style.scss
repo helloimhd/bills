@@ -112,6 +112,11 @@ tr, td {
   width: 100%;
 }
 
+.textCenterSummary {
+  text-align: center;
+  width: 100%;
+}
+
 .shadow {
   -webkit-box-shadow: 6px 6px 0px 0px rgba(0,0,0,1);
   -moz-box-shadow: 6px 6px 0px 0px rgba(0,0,0,1);
@@ -166,4 +171,15 @@ ul {
 	font-weight: 200;
 	font-style: normal;
 	font-size: 20px;
+}
+
+.headerSummary {
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-bottom: 3px black solid;
+  height: 50px;
+  width: 100%;
+  @extend .bgWhite;
+  z-index: 20;
 }

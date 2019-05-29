@@ -98,7 +98,7 @@ class Main extends React.Component{
                   )
                 )} />
 
-                <Route path="/wholeSummary" ender={() => (
+                <Route path="/wholeSummary" render={() => (
                   isLoggedIn ? (
                     <WholeSummary />
                   ) : (
@@ -106,7 +106,7 @@ class Main extends React.Component{
                   )
                 )} />
 
-                <Route path="/summaryReceipt" ender={() => (
+                <Route path="/summaryReceipt" render={() => (
                   isLoggedIn ? (
                     <IndividualSummary />
                   ) : (
