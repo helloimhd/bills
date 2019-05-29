@@ -85,46 +85,19 @@ class IndividualSummary extends React.Component {
 
                 totalPrice.push(price);
 
-                return(
-                    <div>
-                        <li className={styles.grabDriver} >{item.item_name}: ${price}</li>
-                    </div>
-                );
             })
             const reducer = (accumulator, currentValue) => accumulator + currentValue;
 
-            let splitPrice = totalPrice.reduce(reducer);
-            return(
-                <div className={styles.containerSmallBoss}>
-                    <h1 className={styles.banana}>{userForCurrent}</h1>
-                        <div className={styles.lineManager}></div>
-                       <ul>
-                        {itemList}
-                       </ul>
-                    <h3 className={styles.intern}>Total: ${splitPrice}</h3>
-                </div>
-            );
-        });
-
             let priceToSave = totalPrice.reduce(reducer) + otherChargesSplit;
-
-
             let plsSave = {
                 userId: user.friend_id,
                 amount: priceToSave,
                 receiptId : user.receipt_id,
             }
+
             objToSave.push(plsSave);
         })
 
-        return(
-            <div className={styles.absoluteCenterBigBoss}>
-                {userSummary}
-            </div>
-        );
-      }
-   }
-}
         console.log(objToSave);
 
         this.setState({saveAmount:objToSave});

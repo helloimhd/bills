@@ -100,15 +100,16 @@ class WholeSummary extends React.Component {
                           <br/>
                           <br/>
                           <tr>
-                              <td className={styles.intern}><Grand Total $</td>
+                              <td className={styles.intern}>Grand Total $</td>
                               <td></td>
-                              <td className={styles.intern}><{this.state.receipt[0].total}</td>
+                              <td className={styles.intern}>{this.state.receipt[0].total}</td>
                           </tr>
                       </tbody>
                     </table>
                     <br />
                     <a className={styles.cleaner} href="/summaryReceipt">Next Page (Individual)</a>
                </div>
+            </div>
             )
         }
     }
