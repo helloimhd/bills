@@ -18,7 +18,7 @@ import WholeSummary from './components/wholeSummary/wholeSummary';
 import IndividualSummary from './components/individualSummary/individualSummary';
 import Username from './components/individualSummary/usernameSummary';
 
-
+import Guides from './components/pictureGuides/guides'
 import SplitItems from './components/splitItems/splitItems'
 
 class Main extends React.Component{
@@ -35,6 +35,12 @@ class Main extends React.Component{
 
         return(
             <Router>
+
+
+
+                <Route path="/guides" exact render={() => (
+                    <Guides />
+                )} />
 
                 <Route path="/" exact render={() => (
 
