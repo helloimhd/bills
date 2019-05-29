@@ -11,6 +11,7 @@ class IndividualSummary extends React.Component {
             items: null,
             users: null,
             userDetails :null,
+            receipt:null,
             total:0,
         }
     }
@@ -20,6 +21,14 @@ class IndividualSummary extends React.Component {
         this.getAllItems();
         this.getAllUsers();
         this.getUsersHandler();
+        this.getReceipt();
+    }
+
+    getReceipt=()=>{
+        let receiptId = 1;
+        fetch(`/receipt/${receiptId}`)
+          .then(response=>response.json())
+          .then(response=>this.setState({receipt: response}))
     }
 
     getAllItems=()=>{
@@ -41,98 +50,70 @@ class IndividualSummary extends React.Component {
         .then(response=>response.json())
         .then(response=>this.setState({userDetails: response.users}))
     }
-    /*
-    receiptHandler() {
-
-        var reactThis = this;
-        console.log("clicking");
-        //var id = 1;
-        var id = Cookies.get('receiptId');
-        fetch(`/summary/user/${id}`, {
-
-        }).then(res => {
-            return res.json()
-        }).then(json =>{
-            // console.log('in the jsx summary', json);
-            let obj = json;
-            this.setState({receiptItems: obj});
-            this.setState({change: true});
-
-            // Add the price of items together to get the total amount
-            let getTotal = 0;
-
-            for (let allPrices in obj) {
-                const addAllPrices = obj[allPrices].price
-                console.log(addAllPrices)
-                getTotal += addAllPrices;
-            }
-
-            this.setState({getTotal: getTotal})
-
-            // console.log(this.state.receiptItems);
-            // console.log(this.state.change);
-        })
-    }
-    */
 
     render() {
-        if (this.state.items === null || this.state.users === null || this.state.userDetails === null) {
-        return <p>loading</p>
-      } else {
 
+        if (this.state.items === null || this.state.users === null || this.state.userDetails === null ||this.state.receipt === null) {
+            return <p>LOADING</p>
+        } else {
 
-        let userSummary = this.state.users.map((user)=>{
-            let itemArr=[];
-            let totalPrice = [];
-            let putItemsInArr = this.state.items.map((item)=>{
-                for(let i = 0; i < item.users_id.length; i++){
-                    if(item.users_id[i] === user.friend_id){
-                        // console.log(`${item.item_name} belongs to ${user.friend_id}`);
-                        let obj = {
-                                item_name: item.item_name,
-                                price: item.price,
-                                users_id :item.users_id,
+            let userSummary = this.state.users.map((user,indexUser)=>{
+                let otherChargesTotal = this.state.receipt[0].total - this.state.receipt[0].subtotal;
+                let peopleInGroup = this.state.users.length;
+                let otherChargesSplit = otherChargesTotal/peopleInGroup;
+
+                let itemArr=[];
+                let totalPrice = [];
+                let putItemsInArr = this.state.items.map((item)=>{
+                    for(let i = 0; i < item.users_id.length; i++){
+                        if(item.users_id[i] === user.friend_id){
+                            // console.log(`${item.item_name} belongs to ${user.friend_id}`);
+                            let obj = {
+                                    item_name: item.item_name,
+                                    price: item.price,
+                                    users_id :item.users_id,
+                            }
+                            itemArr.push(obj);
                         }
-                        itemArr.push(obj);
                     }
-                }
-            });
-            let itemList = itemArr.map((item)=>{
-                // console.log(item.users_id.length);
-                let price = item.price/item.users_id.length;
-                totalPrice.push(price);
+                });
+
+                let itemList = itemArr.map((item,index)=>{
+                    // console.log(item.users_id.length);
+                    let price = item.price/item.users_id.length;
+                    totalPrice.push(price);
+                    return(
+                        <p key={index}>{item.item_name}   ${price}</p>
+                    );
+                })
+
+                let userForCurrent;
+                let userName = this.state.userDetails.map((userDetail,index)=>{
+                    if(userDetail.id === user.friend_id){
+                       userForCurrent = userDetail.username;
+                    }
+                });
+                const reducer = (accumulator, currentValue) => accumulator + currentValue;
+                let splitPrice = totalPrice.reduce(reducer) + otherChargesSplit;
+                splitPrice = splitPrice.toFixed(2);
                 return(
-                    <li>{item.item_name}   ${price}</li>
+                    <div key={indexUser}>
+                        <p>---{userForCurrent}---</p>
+                           <div>
+                           {itemList}
+                           </div>
+                        <p>${splitPrice}</p>
+                    </div>
                 );
-            })
-            // console.log(itemArr);
-            let userForCurrent;
-            let userName = this.state.userDetails.map((userDetail)=>{
-                if(userDetail.id === user.friend_id){
-                   userForCurrent = userDetail.username;
-                }
             });
-            const reducer = (accumulator, currentValue) => accumulator + currentValue;
-            let splitPrice = totalPrice.reduce(reducer);
+
             return(
                 <div>
-                    <p>---{userForCurrent}---</p>
-                       <ul>
-                       {itemList}
-                       </ul>
-                    <p>${splitPrice}</p>
+                    {userSummary}
                 </div>
             );
-        });
-
-
-        return(
-            <div>
-                {userSummary}
-            </div>
-        );
-      }
-   }
+        }
+    }
 }
 
 export default IndividualSummary;

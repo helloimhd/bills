@@ -223,6 +223,7 @@ class MainReceipt extends React.Component {
             body: JSON.stringify(input),
         }).then(res=>console.log('updated receipts'));
         // console.log(res.json())
+
     }
 
     updateItemsRequest=()=>{
@@ -242,6 +243,7 @@ class MainReceipt extends React.Component {
     }
 
     updateHandler=()=>{
+
         console.log('updates receipt and items');
         this.updateReceiptRequest();
         this.updateItemsRequest();
@@ -277,7 +279,7 @@ class MainReceipt extends React.Component {
             let data = await response.json();
             return data;
         }
-//Cookies.get('receiptId')
+// Cookies.get('receiptId')
         getReceipt(1).then(receiptOutput=> { //sending request to get receipt
             getItems(1).then(itemOutput=>{ // sending request to get items
 
@@ -335,6 +337,7 @@ class MainReceipt extends React.Component {
 
 
     quickMath = (serviceChargeBoolean,gstBoolean) =>{ // when user edits receipt, function checks prices and updates state
+
         let updatedReceiptItems = this.state.receipt;
         let prices = [];
 
@@ -371,6 +374,7 @@ class MainReceipt extends React.Component {
         receipt.total = (newTotal).toFixed(2);
 
         this.setState({receipt});
+
     }
 
     serviceChargeBooleanHandler = (event) => {
@@ -391,7 +395,6 @@ class MainReceipt extends React.Component {
         this.setState({gstBoolean: true})
         this.quickMath(this.state.serviceChargeBoolean, true)
       }
-      // this.quickMath()
     }
 
     render() {
