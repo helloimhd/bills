@@ -55,12 +55,8 @@ class Login extends React.Component {
 
             } else if (response.data === true) {
                 // redirect
-                //reactThis.setState({prompt: "Valid"})
                 // set logged in to true
                 reactThis.setState({isLoggedIn: true})
-                //window.location = '/'
-                //console.log("aldalsda")
-                //this.props.history.push('/home')
                 window.location.href = '/';
 
             }
@@ -72,15 +68,14 @@ class Login extends React.Component {
 
     render() {
 
-            return (
-                <React.Fragment>
-                    <LoginForm username={this.state.username} password={this.state.password} usernameChange={this.usernameChange} passwordChange={this.passwordChange} handleLoginSubmit={this.handleLoginSubmit} />
+        return (
+            <React.Fragment>
+                <LoginForm username={this.state.username} password={this.state.password} usernameChange={this.usernameChange} passwordChange={this.passwordChange} handleLoginSubmit={this.handleLoginSubmit} />
 
-                    <p>{this.state.prompt}</p>
-                  </React.Fragment>
+                <p>{this.state.prompt}</p>
+              </React.Fragment>
 
-            )
-
+        )
     }
 }
 
