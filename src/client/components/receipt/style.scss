@@ -1,0 +1,185 @@
+html, body {
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden;
+    border: red 1px solid;
+}
+
+h1 {
+  font-family: montserrat, sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 30px;
+  color: black;
+  text-transform: uppercase;
+}
+
+h2 {
+  font-family: montserrat, sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 24px;
+  color: black;
+  text-transform: uppercase;
+}
+
+a {
+  text-decoration: none;
+}
+
+td {
+	text-align: center;
+	width: 500px;
+}
+
+tr, td {
+	padding: 10px;
+}
+
+.intern {
+  font-family: courier-std, monospace;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 24px;
+}
+
+.cleaner {
+	font-family: montserrat, sans-serif;
+  cursor: pointer;
+  padding: 5px 20px;
+  margin: 25px;
+  @extend .borderBlack;
+  @extend .bgWhite;
+  @extend .shadow;
+}
+
+.driver {
+	font-family: montserrat, sans-serif;
+  cursor: pointer;
+  padding: 5px 20px;
+  @extend .borderBlack;
+  @extend .bgWhite;
+  @extend .shadow;
+}
+
+.BusDriver {
+	font-family: montserrat, sans-serif;
+  cursor: pointer;
+  padding: 5px 20px;
+  margin-left: 30px;
+  @extend .borderBlack;
+  @extend .bgWhite;
+  @extend .shadow;
+}
+
+.associate {
+  font-family: courier-std, monospace;
+  font-weight: 100;
+  font-style: normal;
+  font-size: 24px;
+  margin: 2px;
+  padding: 2px;
+}
+
+.bodyTextMedium {
+  font-family: courier-std, monospace;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.bodyTextGreen {
+  color: #7ac943;
+}
+
+.bodyTextOrange {
+  color: #efaa20;
+}
+
+.borderBlack {
+  border: 4px solid black;
+}
+
+.bgWhite {
+  background: white;
+}
+
+.bgGrey {
+  background: grey;
+}
+
+.lineManagerReceipt {
+  border-bottom: 4px solid black;
+  width: auto
+}
+
+.textCenterReceipt {
+  text-align: center;
+  width: 100%;
+}
+
+.shadow {
+  -webkit-box-shadow: 6px 6px 0px 0px rgba(0,0,0,1);
+  -moz-box-shadow: 6px 6px 0px 0px rgba(0,0,0,1);
+  box-shadow: 6px 6px 0px 0px rgba(0,0,0,1);
+}
+
+.absoluteCenterBigBoss {
+  margin: auto;
+  width: 100%;
+}
+
+.containerSmallBoss {
+  margin: auto;
+  width: 90%;
+  padding: 20px 40px;
+  padding-bottom: 40px;
+  margin-top: 30px;
+  @extend .borderBlack;
+  @extend .bgWhite;
+  @extend .shadow;
+}
+
+button {
+  cursor: pointer;
+  padding: 5px 20px;
+  @extend .borderBlack;
+  @extend .bgWhite;
+  @extend .shadow;
+}
+
+img {
+  width: 40%;
+  margin: 40px 50% 70px 50%;
+  transform: translateX(-50%);
+}
+
+ul {
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.banana {
+	font-size: 30px;
+	text-transform: uppercase;
+}
+
+.grabDriver {
+	font-family: courier-std, monospace;
+	font-weight: 200;
+	font-style: normal;
+	font-size: 20px;
+}
+
+.headerReceipt {
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-bottom: 3px black solid;
+  height: 50px;
+  width: 100%;
+  @extend .bgWhite;
+  z-index: 20;
+}
