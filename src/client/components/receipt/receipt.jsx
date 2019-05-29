@@ -81,6 +81,7 @@ class ItemRow extends React.Component{
         let quantity = "quantity";
         let item_name = "item_name";
         let price = "price";
+        console.log(this.props.item.item_name)
         return(
             <tr>
                 <ItemElement id={this.props.id} type={quantity} item={this.props.item.quantity} pickMeUp={this.props.pickMeUp} status={this.state.status}/>
@@ -107,7 +108,7 @@ class ItemTable extends React.Component{
             <table>
                 <thead>
                     <tr>
-                        <th>Qty</th>
+                        <th></th>
                         <th>Item</th>
                         <th>Price</th>
                     </tr>
@@ -223,6 +224,7 @@ class MainReceipt extends React.Component {
             body: JSON.stringify(input),
         }).then(res=>console.log('updated receipts'));
         // console.log(res.json())
+
     }
 
     updateItemsRequest=()=>{
@@ -242,6 +244,7 @@ class MainReceipt extends React.Component {
     }
 
     updateHandler=()=>{
+
         console.log('updates receipt and items');
         this.updateReceiptRequest();
         this.updateItemsRequest();
@@ -275,12 +278,20 @@ class MainReceipt extends React.Component {
 
             let response = await fetch(`/items/${id}`);
             let data = await response.json();
+            console.log(data)
             return data;
         }
-//Cookies.get('receiptId')
-        getReceipt(1).then(receiptOutput=> { //sending request to get receipt
-            getItems(1).then(itemOutput=>{ // sending request to get items
+// Cookies.get('receiptId')
+        getReceipt(Cookies.get('receiptId')).then(receiptOutput=> { //sending request to get receipt
+            getItems(Cookies.get('receiptId')).then(itemOutput=>{ // sending request to get items
 
+                // itemOutput.item_name = (itemOutput.item_name).replace(/[^a-zA-Z ]/g, "")
+                // console.log("sdfdsfDS", itemOutput)
+                for(let i=0;i<itemOutput.length;i++){
+                    // console.log(itemOutput[i])
+                    itemOutput[i].item_name =  (itemOutput[i].item_name).replace(/[^a-zA-Z ]/g, "")
+                }
+                console.log(itemOutput)
                 obj =  { // arranging response jsons. Saving obj to this.state.receipt
                     receipt_id: receiptOutput[0].id,
                     user_id: receiptOutput[0].user_id,
@@ -335,6 +346,7 @@ class MainReceipt extends React.Component {
 
 
     quickMath = (serviceChargeBoolean,gstBoolean) =>{ // when user edits receipt, function checks prices and updates state
+
         let updatedReceiptItems = this.state.receipt;
         let prices = [];
 
@@ -371,6 +383,7 @@ class MainReceipt extends React.Component {
         receipt.total = (newTotal).toFixed(2);
 
         this.setState({receipt});
+
     }
 
     serviceChargeBooleanHandler = (event) => {
@@ -391,7 +404,6 @@ class MainReceipt extends React.Component {
         this.setState({gstBoolean: true})
         this.quickMath(this.state.serviceChargeBoolean, true)
       }
-      // this.quickMath()
     }
 
     render() {

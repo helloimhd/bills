@@ -58,51 +58,66 @@ class Home extends React.Component {
     }
 
     testFunction = () => {
-      window.location.href = "/takePhoto"
+      // window.location.href = "/takePhoto"
+      document.getElementById('file').click()
+    }
+
+
+    logout = () => {
+        Cookies.remove('userId', { path: '' }); // removed!
+        Cookies.remove('username', { path: '' }); // removed!
+        Cookies.remove('receiptId', { path: '' }); // removed!
+        window.location.href = "/login"
+    }
+
+    submitHandler = () => {
+      document.getElementById("form").submit();
     }
 
 
     render() {
-        if (!this.state.receipts){
-            return <div></div>
+            let allReceipts = null;
 
-        } else {
-
-        let receipts = this.state.receipts;
-        const currentUserId = Cookies.get('userId');
-        let allReceipts = null;
-
-        if (receipts.length === 0) {
-          allReceipts = (
-              <div className={styles.container}>
-                <h2>No receipts yet :(</h2>
-              </div>
-            )
-        } else {
-          allReceipts = receipts.map(obj => {
-            let ownBy = null;
-            if (parseInt(obj.ownBy) === parseInt(currentUserId)) {
-                ownBy = "YOU";
+            if (!this.state.receipts){
+                return <div></div>
             } else {
-                ownBy = obj.username;
-            }
+
+              let receipts = this.state.receipts;
+              const currentUserId = Cookies.get('userId');
+
+              if (receipts.length === 0) {
+                allReceipts = (
+                    <div className={styles.container}>
+                      <h2>No receipts yet :(</h2>
+                    </div>
+                  )
+              } else {
+                allReceipts = receipts.map(obj => {
+                  let ownBy = null;
+                  if (parseInt(obj.ownBy) === parseInt(currentUserId)) {
+                      ownBy = "YOU";
+                  } else {
+                      ownBy = obj.username;
+                  }
 
             // if null means user is involved in the receipt but not paying (for now)
-              if (obj.sum !== null) {
-                  return (
-                      <div key={obj.receiptId} style={{borderBottom: 2+"px solid grey"}}>
-                          <p>{moment(obj.date).format('D MMMM YYYY')}</p>
-                          <p>Amount: {obj.sum}</p>
-                          <p>Own By: {ownBy}</p>
-                      </div>
-                  )
+                  if (obj.sum !== null) {
+                      return (
+                          <div key={obj.receiptId} className={styles.container}>
+                              <p>{moment(obj.date).format('D MMMM YYYY')}</p>
+                              <p>Amount: {obj.sum}</p>
+                              <p>Own By: {ownBy}</p>
+                          </div>
+                      )
+                  }
+
+                })
               }
-          })
-        }
+            }
+
 
         return(
             <React.Fragment>
-
                 <div className={styles.header}>
                   <h1 className={styles.textCenter}>HOME</h1><br/>
                 </div>
@@ -113,6 +128,7 @@ class Home extends React.Component {
                     <div className={styles.spreadContainer}>
                       <button className={styles.button} onClick={this.sortByPrice}><h2>Sort By Price</h2></button>
                       <button className={styles.button} onClick={this.sortByDate}><h2>Sort By Date</h2></button>
+                      <button type="button" onClick={this.logout}>Log Out</button>
                     </div>
                   </div>
 
@@ -128,9 +144,20 @@ class Home extends React.Component {
                   </button>
                 </div>
 
+                <form id="form" className={styles.inputfile} encType="multipart/form-data" method="post" action="/uploadPhoto">
+                    <input  id="file"
+                            type="file"
+                            name="img"
+                            accept="image/*"
+                            capture="camera"
+                            onChange={this.submitHandler}/><br/>
+                    <label for="file">oi</label><br/>
+                    <button type="submit">Upload</button>
+                </form>
+
             </React.Fragment>
         )
-    }}
+  }
 }
 
 export default Home;
