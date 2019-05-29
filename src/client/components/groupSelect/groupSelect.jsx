@@ -16,6 +16,7 @@ class GroupSelect extends React.Component {
           users: [],
           search: "",
           tickedUsers: [],
+          checked: false,
         }
 
     }
@@ -37,49 +38,58 @@ class GroupSelect extends React.Component {
     }
 
     updateGroupHandler(event){
-        console.log('helloo SEND TO BACK END');
-        // console.log(this.state.users);
-        // console.log(this.state.tickedUsers);
-        // console.log(this.state.users)
+        if (this.state.checked === false) {
+            return
+        } else  {
+            console.log('helloo SEND TO BACK END');
+            // console.log(this.state.users);
+            // console.log(this.state.tickedUsers);
+            // console.log(this.state.users)
 
-      const checked = event.target.checked
-      const users = this.state.users
-      const ticked = []
+          const checked = event.target.checked
+          const users = this.state.users
+          const ticked = []
 
-      for  (let index in users) {
-        let user = users[index]
+          for  (let index in users) {
+            let user = users[index]
 
-        if(user.checked === true) {
-          // console.log(user.id)
-          // console.log(user.checked)
-          // console.log(user)
-          ticked.push(user)
-          this.setState({tickedUsers: ticked})
+            if(user.checked === true) {
+              // console.log(user.id)
+              // console.log(user.checked)
+              // console.log(user)
+              ticked.push(user)
+              this.setState({tickedUsers: ticked})
+            }
+          }
+          console.log(ticked)
+          let idInGroup = [];
+          ticked.forEach((r)=>{
+            idInGroup.push(r.id);
+          })
+           // Cookies.get('receiptId')
+
+
+
+              let input = { obj : idInGroup,
+                            receipt_id : 1,
+                           };
+
+              fetch(`/selected/group`,{
+                method: 'POST',
+                headers:{
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify(input),
+              }).then(res=>console.log(res.json()));
+              window.location.href = "/receipt";
         }
-      }
-      console.log(ticked)
-      let idInGroup = [];
-      ticked.forEach((r)=>{
-        idInGroup.push(r.id);
-      })
-       // Cookies.get('receiptId')
-      let input = { obj : idInGroup,
-                    receipt_id : 1,
-                   };
-
-      fetch(`/selected/group`,{
-        method: 'POST',
-        headers:{
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-        },
-        body: JSON.stringify(input),
-      }).then(res=>console.log(res.json()));
     }
 
 
     checkerHandler(event){
 
+         this.setState({checked: true });
       const userId = event.target.value
       const checked = event.target.checked
       const users = this.state.users
@@ -134,7 +144,7 @@ class GroupSelect extends React.Component {
                 {userList}
               </ul>
 
-                <button onClick={(e)=>{this.updateGroupHandler(e)}} type="button"><a href="/receipt">View Receipt</a></button>
+                <button onClick={(e)=>{this.updateGroupHandler(e)}} type="button">View receipt</button>
             </div>
         );
     }
