@@ -105,7 +105,7 @@ class Home extends React.Component {
                       return (
                           <div key={obj.receiptId} className={styles.container}>
                               <p>{moment(obj.date).format('D MMMM YYYY')}</p>
-                              <p>Amount: {obj.sum}</p>
+                              <p>Amount: {(obj.sum).toFixed(2)}</p>
                               <p>Own By: {ownBy}</p>
                           </div>
                       )

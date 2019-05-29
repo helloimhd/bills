@@ -91,7 +91,8 @@ class IndividualSummary extends React.Component {
             let priceToSave = totalPrice.reduce(reducer) + otherChargesSplit;
             let plsSave = {
                 userId: user.friend_id,
-                amount: parseInt((priceToSave).toFixed(2)),
+                // Math.round((priceToSave + 0.00001) * 100) / 100
+                amount: Math.round((priceToSave + 0.001) * 100) / 100,
                 receiptId : user.receipt_id,
             }
 
@@ -130,10 +131,10 @@ class IndividualSummary extends React.Component {
 
                 let otherChargesTotal = this.state.receipt[0].total - this.state.receipt[0].subtotal;
                 let peopleInGroup = this.state.users.length;
-                let otherChargesSplit = otherChargesTotal/peopleInGroup;
+                let otherChargesSplit = (otherChargesTotal/peopleInGroup);
 
-                let itemArr=[];
-                let totalPrice = [];
+                let itemArr=[]; //items belonging to user[index]
+                let totalPrice = []; //all prices of itemArr
                 let putItemsInArr = this.state.items.map((item)=>{
                     for(let i = 0; i < item.users_id.length; i++){
                         if(item.users_id[i] === user.friend_id){
@@ -155,7 +156,7 @@ class IndividualSummary extends React.Component {
                     totalPrice.push(price);
                     price = price.toFixed(2);
                     return(
-                        <p key={index}>{item.item_name}   ${price}</p>
+                        <h2 key={index}>{item.item_name}   ${price}</h2>
                     );
                 })
 
@@ -172,22 +173,29 @@ class IndividualSummary extends React.Component {
                 splitPrice = splitPrice.toFixed(2);
 
                 return(
-                    <div key={indexUser}>
-                        <p>{userForCurrent}</p>
+                    <div key={indexUser} className={styles.cleaner}>
+                        <h1 className={styles.lineManager}>{userForCurrent}</h1>
                            <div>
                            {itemList}
                            </div>
-                        <p>${splitPrice}</p>
+                           <h2>Service & GST: ${otherChargesSplit.toFixed(2)}</h2>
+                        <h1 className={styles.cleaner}>${splitPrice}</h1>
                     </div>
                 );
             });
 
             return(
-                <div>
-                    <p>Pay It</p>
-                    {userSummary}
-                    <button onClick={()=>{this.updateIndvAmount()}}><a href='/'>Back to Home</a></button>
-                </div>
+                <React.Fragment>
+                    <div className={styles.headerSummary}>
+                      <h1 className={styles.textCenterSummary}>Individual Payment Summary</h1><br/>
+                    </div>
+                    <div style={{marginTop: 80 + "px"}}>
+                        <div>
+                            {userSummary}
+                        </div>
+                    </div>
+                        <button className={styles.button} onClick={()=>{this.updateIndvAmount()}}><a href='/'>Back to Home</a></button>
+                </React.Fragment>
             );
         }
     }
