@@ -33,7 +33,7 @@ class GroupSelect extends React.Component {
         let id = Cookies.get('receiptId');
         fetch(`/receipt/${id}`)
         .then(response=>response.json())
-        .then(response=>this.setState({receipt: response}))
+        .then(response=>this.setState({receipt: response}));
     }
 
     changeHandler(event){
@@ -57,7 +57,7 @@ class GroupSelect extends React.Component {
             // console.log(this.state.users);
             // console.log(this.state.tickedUsers);
             // console.log(this.state.users)
-
+            let receiptIdCreator = this.state.receipt[0].user_id;
             const checked = event.target.checked
             const users = this.state.users
             const ticked = []
@@ -68,6 +68,10 @@ class GroupSelect extends React.Component {
                   // console.log(user.id)
                   // console.log(user.checked)
                   // console.log(user)
+                    ticked.push(user)
+                    this.setState({tickedUsers: ticked})
+                }
+                if(receiptIdCreator === user.id){//creator of receipt
                     ticked.push(user)
                     this.setState({tickedUsers: ticked})
                 }
@@ -131,19 +135,17 @@ class GroupSelect extends React.Component {
         } else {
         let searchToggle = this.state.searchToggle;
         let search = this.state.search.toLowerCase()
-        let receiptId = this.state.receipt[0].user_id;
+        let receiptIdCreator = this.state.receipt[0].user_id;
         let userList = this.state.users.filter(user => user.username.includes(search)).map((user, index) => {
-            if(receiptId === user.id){
+            if(receiptIdCreator === user.id){
 
                 return (
-                <li key={user.id} className={styles.wholeSummaryDefaultCheckBox}>
+                <li key={user.id}>
                   <input
                     type="checkbox"
                     name="group"
                     value={user.id}
-                    onChange={this.checkerHandler}
-                    defaultChecked={!user.checked}
-                    checked={user.checked}
+                    checked={!user.checked}
                     /> {user.username}
                 </li>
                 )
