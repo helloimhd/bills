@@ -10,10 +10,10 @@ module.exports = (dbPI) => {
     let createItems = ( dataIn, callback ) => {
 
         let queryInsert =   `INSERT INTO items
-                            (receipt_id, item_name, price, quantity, users_id)
-                            VALUES ($1, $2, $3, $4, $5)
+                            (receipt_id, item_name, price, users_id)
+                            VALUES ($1, $2, $3, $4)
                             RETURNING *`;
-        let valuesInsert = [ dataIn.receipt_id, dataIn.item_name, dataIn.price, dataIn.quantity, dataIn.users_id ];
+        let valuesInsert = [ dataIn.receipt_id, dataIn.item_name, dataIn.price, dataIn.users_id ];
 
         dbPI.query( queryInsert, valuesInsert, (err,r) =>{
             callback( err, r );

@@ -132,7 +132,6 @@ module.exports = (db) => {
                                                         receipt_id: receiptId,
                                                         item_name: lineItems[i].descClean,
                                                         price: parseFloat(lineItems[i].lineTotal),
-                                                        quantity: lineItems[i].qty,
                                                         users_id: []
                                                     }
                                                     // now add items into table

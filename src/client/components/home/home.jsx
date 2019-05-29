@@ -82,7 +82,7 @@ class Home extends React.Component {
             // if null means user is involved in the receipt but not paying (for now)
             if (obj.sum !== null) {
                 return (
-                    <div key={obj.receiptId} style={{borderBottom: 2+"px solid grey"}}>
+                    <div key={obj.receiptId} className={styles.container}>
                         <p>{moment(obj.date).format('D MMMM YYYY')}</p>
                         <p>Amount: {obj.sum}</p>
                         <p>Own By: {ownBy}</p>
@@ -96,11 +96,14 @@ class Home extends React.Component {
             <React.Fragment>
                 <div>
                     <h1>HOME</h1>
-                    <button type="button"><a href='/takePhoto'>Split a Bill</a></button>
-                    <button type="button" onClick={this.sortByPrice}>Sort By Price</button>
-                    <button type="button" onClick={this.sortByDate}>Sort By Date</button>
+                    <button type="button" onClick={this.testFunction}><h2><a href="/takePhoto">Split a Bill</a></h2></button>
+                    <br />
+                    <br />
+                    <br />
+                    <button type="button" onClick={this.sortByPrice} id={styles.sortPrice}><h3>Sort By Price</h3></button>
+                    <button type="button" onClick={this.sortByDate}><h3>Sort By Date</h3></button>
 
-                    <button type="button" onClick={this.testFunction}><h2>Split a Bill</h2></button>
+
 
                     {allReceipts}
                 </div>
