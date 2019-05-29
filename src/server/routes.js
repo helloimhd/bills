@@ -38,6 +38,7 @@ module.exports = (app, db) => {
 
     // Splitting items path
     app.get('/group/:id', groups.involvedInReceipt)
+    app.get('/groupSummary/:id', groups.userIdSummaryReceipt)
 
     // Id is the receipt id
     app.get('/summary/:id', receipts.summaryReceipt);

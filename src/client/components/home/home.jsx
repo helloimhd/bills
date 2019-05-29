@@ -61,6 +61,14 @@ class Home extends React.Component {
     }
 
 
+    logout = () => {
+        Cookies.remove('userId', { path: '' }); // removed!
+        Cookies.remove('username', { path: '' }); // removed!
+        Cookies.remove('receiptId', { path: '' }); // removed!
+        window.location.href = "/login"
+    }
+
+
     render() {
         if (!this.state.receipts){
             return <div></div>
@@ -102,6 +110,7 @@ class Home extends React.Component {
                     <br />
                     <button type="button" onClick={this.sortByPrice} id={styles.sortPrice}><h3>Sort By Price</h3></button>
                     <button type="button" onClick={this.sortByDate}><h3>Sort By Date</h3></button>
+                    <button type="button" onClick={this.logout}>Log Out</button>
 
 
 

@@ -40,9 +40,10 @@ module.exports = (dbPI) => {
 
      let updateItems = (dataIn, callback)=>{
 
-        let query = `UPDATE items set item_name = ($1), price = ($2), quantity = ($3), users_id = ($4) where id = ${dataIn.id}`
+        let query = `UPDATE items set item_name = ($1), price = ($2), users_id = ($3) where id = ${dataIn.id}`
 
-        let valuesUpdate = [ dataIn.item_name, dataIn.price, dataIn.quantity, dataIn.users_id]
+        //let valuesUpdate = [ dataIn.item_name, dataIn.price, dataIn.quantity, dataIn.users_id]
+        let valuesUpdate = [ dataIn.item_name, dataIn.price, dataIn.users_id]
 
         dbPI.query( query, valuesUpdate, (err,r)=>{
             if(err){
