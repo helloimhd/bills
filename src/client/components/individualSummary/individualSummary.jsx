@@ -155,7 +155,7 @@ class IndividualSummary extends React.Component {
                     totalPrice.push(price);
                     price = price.toFixed(2);
                     return(
-                        <p key={index}>{item.item_name}   ${price}</p>
+                        <h3 className={styles.indvSumItemName} key={index}>{item.item_name}   ${price}</h3>
                     );
                 })
 
@@ -173,20 +173,24 @@ class IndividualSummary extends React.Component {
 
                 return(
                     <div key={indexUser}>
-                        <p>{userForCurrent}</p>
+                        <h2 className={styles.userNameSum} >{userForCurrent}</h2>
                            <div>
                            {itemList}
                            </div>
-                        <p>${splitPrice}</p>
+                        <h3 className={styles.indvSumOwed}>Total: ${splitPrice}</h3>
+                        <div className={styles.lineManager}></div>
                     </div>
                 );
             });
 
             return(
-                <div>
-                    <p>Pay It</p>
-                    {userSummary}
-                    <button onClick={()=>{this.updateIndvAmount()}}><a href='/'>Back to Home</a></button>
+                <div className={styles.absoluteCenterBigBoss}>
+                    <div className={styles.containerSmallBoss}>
+                        <h1 className= {styles.billSum}>Pay It</h1>
+                        <div className={styles.lineManager}></div>
+                        {userSummary}
+                        <button className={styles.indvSumButton} onClick={()=>{this.updateIndvAmount()}}><a href='/'>Back to Home</a></button>
+                    </div>
                 </div>
             );
         }

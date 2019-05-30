@@ -67,13 +67,13 @@ class WholeSummary extends React.Component {
         return (
             <div className={styles.absoluteCenterBigBoss}>
                 <div className={styles.containerSmallBoss}>
-                    <h1>Bill Summary</h1>
+                    <h1 className= {styles.billSum}>Bill Summary</h1>
                     <div className={styles.lineManager}></div>
                     <table>
                       <tbody>
                           <tr>
-                              <td className={styles.intern}></td>
                               <td className={styles.intern}>Item Name</td>
+                              <td></td>
                               <td className={styles.intern}>Price</td>
                           </tr>
                               {this.state.receiptItems.map((allItems, i) => {
@@ -81,11 +81,9 @@ class WholeSummary extends React.Component {
                                     return (
                                       <tr className={styles.associate} key={i}>
                                           <td className={styles.trainee}>
-
-                                          </td>
-                                          <td className={styles.trainee}>
                                           {allItems.item_name}
                                           </td>
+                                          <td className={styles.intern}></td>
                                           <td className={styles.trainee}>
                                           {price}
                                           </td>
