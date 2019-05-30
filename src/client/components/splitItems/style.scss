@@ -37,3 +37,36 @@ label.cssLabel {
     -ms-user-select: none;
     user-select: none;
 }
+
+.textCenter {
+  text-align: center;
+  width: 100%;
+}
+
+.bgWhite {
+  background: white;
+}
+
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-bottom: 3px black solid;
+  height: 50px;
+  width: 100%;
+  @extend .bgWhite;
+  z-index: 20;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  border-top: 3px black solid;
+  height: 50px;
+  width: 100%;
+  opacity: 1;
+  @extend .bgWhite;
+  z-index: 20;
+}
