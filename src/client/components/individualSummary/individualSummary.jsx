@@ -156,7 +156,7 @@ class IndividualSummary extends React.Component {
                     totalPrice.push(price);
                     price = price.toFixed(2);
                     return(
-                        <h2 key={index}>{item.item_name}   ${price}</h2>
+                        <h3 className={styles.indvSumItemName} key={index}>{item.item_name}   ${price}</h3>
                     );
                 })
 
@@ -173,13 +173,14 @@ class IndividualSummary extends React.Component {
                 splitPrice = splitPrice.toFixed(2);
 
                 return(
-                    <div key={indexUser} className={styles.cleaner}>
-                        <h1 className={styles.lineManager}>{userForCurrent}</h1>
+                    <div key={indexUser}>
+                        <h2 className={styles.userNameSum}>{userForCurrent}</h2>
                            <div>
                            {itemList}
                            </div>
-                           <h2>Service & GST: ${otherChargesSplit.toFixed(2)}</h2>
-                        <h1 className={styles.cleaner}>${splitPrice}</h1>
+                           <h3 className={styles.indvSumOwed}>Service & GST: ${otherChargesSplit.toFixed(2)}</h3>
+                        <h3 className={styles.indvSumOwed}>${splitPrice}</h3>
+                        <div className={styles.lineManager}></div>
                     </div>
                 );
             });
@@ -194,7 +195,7 @@ class IndividualSummary extends React.Component {
                             {userSummary}
                         </div>
                     </div>
-                        <button className={styles.button} onClick={()=>{this.updateIndvAmount()}}><a href='/'>Back to Home</a></button>
+                        <button className={styles.indvSumButton} onClick={()=>{this.updateIndvAmount()}}><a href='/'>Back to Home</a></button>
                 </React.Fragment>
             );
         }
@@ -202,3 +203,14 @@ class IndividualSummary extends React.Component {
 }
 
 export default IndividualSummary;
+                
+                /*
+                <div className={styles.absoluteCenterBigBoss}>
+                    <div className={styles.containerSmallBoss}>
+                        <h1 className= {styles.billSum}>Pay It</h1>
+                        <div className={styles.lineManager}></div>
+                        {userSummary}
+                        <button className={styles.indvSumButton} onClick={()=>{this.updateIndvAmount()}}><a href='/'>Back to Home</a></button>
+                    </div>
+                </div>
+                */

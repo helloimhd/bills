@@ -5,11 +5,11 @@ html, body {
     border: red 1px solid;
 }
 
-h1 {
+.billSum {
   font-family: montserrat, sans-serif;
   font-weight: 700;
   font-style: normal;
-  font-size: 30px;
+  font-size: 20px;
   color: black;
   text-transform: uppercase;
 }
@@ -27,27 +27,18 @@ a {
   text-decoration: none;
 }
 
-td {
-	text-align: center;
-	width: 500px;
-}
-
-tr, td {
-	padding: 10px;
-}
-
 .intern {
   font-family: courier-std, monospace;
-  font-weight: 700;
+  font-weight: 600;
   font-style: normal;
-  font-size: 24px;
+  font-size: 20px;
+  word-break: normal;
 }
 
 .cleaner {
 	font-family: montserrat, sans-serif;
   cursor: pointer;
   padding: 5px 20px;
-  margin: 25px;
   @extend .borderBlack;
   @extend .bgWhite;
   @extend .shadow;
@@ -76,9 +67,8 @@ tr, td {
   font-family: courier-std, monospace;
   font-weight: 100;
   font-style: normal;
-  font-size: 24px;
-  margin: 2px;
-  padding: 2px;
+  font-size: 20px;
+  word-break: normal;
 }
 
 .bodyTextMedium {

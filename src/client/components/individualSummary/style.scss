@@ -1,24 +1,58 @@
-td {
-	text-align: center;
-	width: 500px;
+html, body {
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden;
+    border: red 1px solid;
 }
 
-tr, td {
-	padding: 10px;
+.billSum {
+  font-family: montserrat, sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 20px;
+  color: black;
+  text-transform: uppercase;
+}
+
+.userNameSum {
+	font-family: montserrat, sans-serif;
+  font-weight: 100;
+  font-style: normal;
+  font-size: 20px;
+  color: black;
+  text-transform: uppercase;
+}
+
+a {
+  text-decoration: none;
+}
+
+.indvSumItemName {
+	font-family: courier-std, monospace;
+	font-weight: 100;
+	font-size: 20px;
+	word-break: normal;
+}
+
+.indvSumOwed {
+	font-family: courier-std, monospace;
+	font-weight: 800;
+	font-size: 24px;
+	word-break: normal;
 }
 
 .intern {
   font-family: courier-std, monospace;
-  font-weight: 700;
+  font-weight: 600;
   font-style: normal;
-  font-size: 24px;
+  font-size: 20px;
+  word-break: normal;
 }
 
 .cleaner {
 	font-family: montserrat, sans-serif;
   cursor: pointer;
   padding: 5px 20px;
-  margin: 25px;
   @extend .borderBlack;
   @extend .bgWhite;
   @extend .shadow;
@@ -47,9 +81,8 @@ tr, td {
   font-family: courier-std, monospace;
   font-weight: 100;
   font-style: normal;
-  font-size: 24px;
-  margin: 2px;
-  padding: 2px;
+  font-size: 20px;
+  word-break: normal;
 }
 
 .bodyTextMedium {
@@ -104,15 +137,15 @@ tr, td {
   width: 90%;
   padding: 20px 40px;
   padding-bottom: 40px;
-  margin-top: 30px;
   @extend .borderBlack;
   @extend .bgWhite;
   @extend .shadow;
 }
 
-button {
+.indvSumButton {
   cursor: pointer;
   padding: 5px 20px;
+  margin-top: 30px;
   @extend .borderBlack;
   @extend .bgWhite;
   @extend .shadow;
