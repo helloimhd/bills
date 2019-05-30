@@ -24,7 +24,7 @@ if (process.env.DATABASE_URL) {
   };
 } else {
   configs = {
-    user: 'Chris',
+    user: 'herda',
     host: '127.0.0.1',
     database: 'bills',
     port: 5432

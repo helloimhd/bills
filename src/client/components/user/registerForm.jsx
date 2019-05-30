@@ -16,14 +16,11 @@ class RegisterForm extends React.Component {
                 <div style={{marginTop: 150 + "px"}}>
                     <div className={styles.container}>
                         <form onSubmit={this.props.handleRegisterSubmit}  style={{textAlign: "center"}} autocomplete="off">
-                            <label htmlFor="username">Username</label>
-                            <input type="text" name="username" value={this.props.username} onChange={this.props.usernameChange} style={{marginBottom: 30 + "px"}} required />
+                            <input type="text" name="username" placeholder="Username" value={this.props.username} onChange={this.props.usernameChange} style={{marginBottom: 30 + "px"}} required />
 
-                            <label htmlFor="email">Email</label>
-                            <input type="email" name="email" defaultValue={this.props.email} onChange={this.props.emailChange} style={{marginBottom: 30 + "px"}} required />
+                            <input type="email" name="email" placeholder="Email" defaultValue={this.props.email} onChange={this.props.emailChange} style={{marginBottom: 30 + "px"}} required />
 
-                            <label htmlFor="password">Password</label>
-                            <input type="password" name="password" value={this.props.password} onChange={this.props.passwordChange} style={{marginBottom: 40 + "px"}} required />
+                            <input type="password" name="password" placeholder="Password" value={this.props.password} onChange={this.props.passwordChange} style={{marginBottom: 40 + "px"}} required />
 
                             <button type="submit" className={styles.button} style={{marginRight: 20 + "px"}}><h2>Register</h2></button>
                         </form>
