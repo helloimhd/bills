@@ -2,9 +2,8 @@ import React from 'react';
 import Cookies from 'js-cookie';
 
 import PropTypes from 'prop-types';
-// import WholeSummary from '../wholeSummary/wholeSummary';
 
-// import styles from './style.scss';
+import styles from './style.scss';
 
 class ItemElement extends React.Component{
     constructor(){
@@ -49,7 +48,7 @@ class ItemElement extends React.Component{
             item = item.toFixed(2);
         };
         return  <td>
-                    <input id={this.props.id} type={this.props.type} defaultValue={item} ref="input" onKeyDown={(e)=>{this.updateItemHandler(e)}} onBlur={()=>{this.test()}}/>
+                    <input id={this.props.id} type={this.props.type} defaultValue={item} ref="input" onKeyDown={(e)=>{this.updateItemHandler(e)}} onBlur={()=>{this.test()}} onTouchEnd={(e)=>{this.updateItemHandler(e)}} style = {{width: 150}}/>
                 </td>
     }
 
@@ -57,7 +56,7 @@ class ItemElement extends React.Component{
         if (typeof item == 'number' && this.props.type == 'price'){
             item = item.toFixed(2);
         };
-        return <td onClick={(e)=>{this.editItemHandler(e)}}>{item}</td>
+        return <td onClick={(e)=>{this.editItemHandler(e)}} onTouchEnd={(e)=>{this.editItemHandler(e)}}><h2>{item}</h2></td>
     }
 
     render(){
@@ -84,7 +83,6 @@ class ItemRow extends React.Component{
         console.log(this.props.item.item_name)
         return(
             <tr>
-                <ItemElement id={this.props.id} type={quantity} item={this.props.item.quantity} pickMeUp={this.props.pickMeUp} status={this.state.status}/>
                 <ItemElement id={this.props.id} type={item_name} item={this.props.item.item_name} pickMeUp={this.props.pickMeUp} status={this.state.status}/>
                 <ItemElement id={this.props.id} type={price} item={this.props.item.price} pickMeUp={this.props.pickMeUp} status={this.state.status}/>
             </tr>
@@ -105,16 +103,18 @@ class ItemTable extends React.Component{
                 )
         })
         return(
-            <table>
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Item</th>
-                        <th>Price</th>
-                    </tr>
-                </thead>
-                <tbody>{rows}</tbody>
-            </table>
+            <React.Fragment>
+                <h4 className={styles.textCenterReceipt}>Tap on item to edit</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th className={styles.lineManagerReceipt}>Item</th>
+                            <th className={styles.lineManagerReceipt}>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>{rows}</tbody>
+                </table>
+            </React.Fragment>
         );
     }
 }
@@ -131,22 +131,28 @@ class PaymentSummary extends React.Component{
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Sub-Total: </td>
-                        <td>$ {this.props.payment.subtotal}</td>
+                        <td><h2>Sub-Total: </h2></td>
+                        <td><h2>$ {this.props.payment.subtotal}</h2></td>
                     </tr>
                     <tr>
-                        <td>Service Charge (10%): </td>
-                        <td>$ {this.props.payment.serviceCharge}</td>
-                        <td><button onClick={this.props.serviceChargeBooleanHandler}>click</button></td>
+                        <td><h2>Service Charge (10%): </h2></td>
+                        <td><h2 className={styles.lineManagerReceipt}>$ {this.props.payment.serviceCharge}</h2></td>
                     </tr>
                     <tr>
-                        <td>GST (7%): </td>
-                        <td>$ {this.props.payment.gst}</td>
-                        <td><button  onClick={this.props.gstBooleanHandler}>click</button></td>
+                        <td></td>
+                        <td><button onClick={this.props.serviceChargeBooleanHandler}><h2>SrvChg</h2></button></td>
                     </tr>
                     <tr>
-                        <td>Total: </td>
-                        <td>$ {this.props.payment.total}</td>
+                        <td><h2>GST (7%): </h2></td>
+                        <td><h2 className={styles.lineManagerReceipt}>$ {this.props.payment.gst}</h2></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><button onClick={this.props.gstBooleanHandler}><h2>G.S.T</h2></button></td>
+                    </tr>
+                    <tr>
+                        <td><h2>Total: </h2></td>
+                        <td><h2 className={styles.lineManagerReceipt}>$ {this.props.payment.total}</h2></td>
                     </tr>
                 </tbody>
             </table>
@@ -181,13 +187,15 @@ class Receipt extends React.Component{
             )
         }else {
             return(
-                <div>
-                    <ItemTable items={this.props.receipt.items} pickMeUp={this.props.pickMeUp}/>
-                    <PaymentSummary payment={this.props.receipt}
-                      serviceChargeBooleanHandler={this.props.serviceChargeBooleanHandler}
-                      gstBooleanHandler={this.props.gstBooleanHandler}/>
-                    <ButtonProceedTab updateReceipt={this.props.updateReceipt}/>
-                </div>
+                <React.Fragment>
+                    <div className={styles.containerSmallBoss}>
+                        <ItemTable items={this.props.receipt.items} pickMeUp={this.props.pickMeUp}/>
+                        <PaymentSummary payment={this.props.receipt}
+                          serviceChargeBooleanHandler={this.props.serviceChargeBooleanHandler}
+                          gstBooleanHandler={this.props.gstBooleanHandler}/>
+                        <ButtonProceedTab updateReceipt={this.props.updateReceipt}/>
+                    </div>
+                </React.Fragment>
             )
         }
     }
@@ -418,14 +426,19 @@ class MainReceipt extends React.Component {
         // const proceedToItemSelection = this.state.verifyReceipt;
 
        return (
-            <div>
-                <Receipt receipt={this.state.receipt}
-                  pickMeUp={this.pickMeUp}
-                  updateReceipt={this.updateHandler}
-                  serviceChargeBooleanHandler={this.serviceChargeBooleanHandler}
-                  gstBooleanHandler={this.gstBooleanHandler}
-                  />
-            </div>
+            <React.Fragment>
+                 <div className={styles.headerReceipt}>
+                      <h1 className={styles.textCenterReceipt}>Receipt Summary</h1><br/>
+                </div>
+                <div>
+                    <Receipt receipt={this.state.receipt}
+                      pickMeUp={this.pickMeUp}
+                      updateReceipt={this.updateHandler}
+                      serviceChargeBooleanHandler={this.serviceChargeBooleanHandler}
+                      gstBooleanHandler={this.gstBooleanHandler}
+                      />
+                </div>
+            </React.Fragment>
           );
       }
    }

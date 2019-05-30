@@ -1,7 +1,7 @@
 import React from 'react';
 import Cookies from 'js-cookie';
 
-//import styles from './style.scss';
+import styles from './style.scss';
 
 class GroupSelect extends React.Component {
     constructor(){
@@ -18,6 +18,7 @@ class GroupSelect extends React.Component {
           tickedUsers: [],
           checked: false,
           receipt:null,
+          searchToggle: false,
         }
 
     }
@@ -32,7 +33,7 @@ class GroupSelect extends React.Component {
         let id = Cookies.get('receiptId');
         fetch(`/receipt/${id}`)
         .then(response=>response.json())
-        .then(response=>this.setState({receipt: response}))
+        .then(response=>this.setState({receipt: response}));
     }
 
     changeHandler(event){
@@ -40,9 +41,12 @@ class GroupSelect extends React.Component {
     }
 
     enterHandler(event){
-      if (event.keyCode === 13) {
 
-      }
+        let searchToggle = true;
+        this.setState({searchToggle : searchToggle})
+        if (event.keyCode === 8) {
+            this.setState({searchToggle : !searchToggle})
+        }
     }
 
     updateGroupHandler(event){
@@ -53,7 +57,7 @@ class GroupSelect extends React.Component {
             // console.log(this.state.users);
             // console.log(this.state.tickedUsers);
             // console.log(this.state.users)
-
+            let receiptIdCreator = this.state.receipt[0].user_id;
             const checked = event.target.checked
             const users = this.state.users
             const ticked = []
@@ -64,6 +68,10 @@ class GroupSelect extends React.Component {
                   // console.log(user.id)
                   // console.log(user.checked)
                   // console.log(user)
+                    ticked.push(user)
+                    this.setState({tickedUsers: ticked})
+                }
+                if(receiptIdCreator === user.id){//creator of receipt
                     ticked.push(user)
                     this.setState({tickedUsers: ticked})
                 }
@@ -125,10 +133,11 @@ class GroupSelect extends React.Component {
         if(this.state.receipt === null){
             return <p>LOADING</p>
         } else {
+        let searchToggle = this.state.searchToggle;
         let search = this.state.search.toLowerCase()
-        let receiptId = this.state.receipt[0].id;
+        let receiptIdCreator = this.state.receipt[0].user_id;
         let userList = this.state.users.filter(user => user.username.includes(search)).map((user, index) => {
-            if(receiptId === user.id){
+            if(receiptIdCreator === user.id){
 
                 return (
                 <li key={user.id}>
@@ -136,10 +145,16 @@ class GroupSelect extends React.Component {
                     type="checkbox"
                     name="group"
                     value={user.id}
-                    onChange={this.checkerHandler}
-                    defaultChecked={!user.checked}
-                    checked={user.checked}
-                    /> {user.username}
+                    checked={!user.checked}
+                    className={styles.cssCheckbox}
+                    id={user.id}
+                  />
+                  <label
+                    htmlFor={user.id}
+                    className={styles.cssLabel}
+                  >
+                    {user.username}
+                  </label>
                 </li>
                 )
             } else {
@@ -151,7 +166,16 @@ class GroupSelect extends React.Component {
                         value={user.id}
                         onChange={this.checkerHandler}
                         checked={user.checked}
-                        /> {user.username}
+                        className={styles.cssCheckbox}
+                        id={user.id}
+                      />
+
+                      <label
+                        htmlFor={user.id}
+                        className={styles.cssLabel}
+                      >
+                        {user.username}
+                      </label>
                     </li>
                 )
             }
@@ -163,16 +187,14 @@ class GroupSelect extends React.Component {
             <div>
 
               <input
+                type="text"
                 placeholder="Search for users.."
                 onChange={this.changeHandler}
                 onKeyDown={this.enterHandler}
                 value={this.state.search}
               />
 
-
-              <ul>
-                {userList}
-              </ul>
+                {searchToggle ?   (<ul>{userList}</ul> ): (<p></p>)}
 
                 <button onClick={(e)=>{this.updateGroupHandler(e)}} type="button">View receipt</button>
             </div>

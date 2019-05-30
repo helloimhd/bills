@@ -91,7 +91,8 @@ class IndividualSummary extends React.Component {
             let priceToSave = totalPrice.reduce(reducer) + otherChargesSplit;
             let plsSave = {
                 userId: user.friend_id,
-                amount: priceToSave,
+                // Math.round((priceToSave + 0.00001) * 100) / 100
+                amount: Math.round((priceToSave + 0.001) * 100) / 100,
                 receiptId : user.receipt_id,
             }
 
@@ -130,10 +131,10 @@ class IndividualSummary extends React.Component {
 
                 let otherChargesTotal = this.state.receipt[0].total - this.state.receipt[0].subtotal;
                 let peopleInGroup = this.state.users.length;
-                let otherChargesSplit = otherChargesTotal/peopleInGroup;
+                let otherChargesSplit = (otherChargesTotal/peopleInGroup);
 
-                let itemArr=[];
-                let totalPrice = [];
+                let itemArr=[]; //items belonging to user[index]
+                let totalPrice = []; //all prices of itemArr
                 let putItemsInArr = this.state.items.map((item)=>{
                     for(let i = 0; i < item.users_id.length; i++){
                         if(item.users_id[i] === user.friend_id){
@@ -173,17 +174,37 @@ class IndividualSummary extends React.Component {
 
                 return(
                     <div key={indexUser}>
-                        <h2 className={styles.userNameSum} >{userForCurrent}</h2>
+                        <h2 className={styles.userNameSum}>{userForCurrent}</h2>
                            <div>
                            {itemList}
                            </div>
-                        <h3 className={styles.indvSumOwed}>Total: ${splitPrice}</h3>
+                           <h3 className={styles.indvSumOwed}>Service & GST: ${otherChargesSplit.toFixed(2)}</h3>
+                        <h3 className={styles.indvSumOwed}>${splitPrice}</h3>
                         <div className={styles.lineManager}></div>
                     </div>
                 );
             });
 
             return(
+                <React.Fragment>
+                    <div className={styles.headerSummary}>
+                      <h1 className={styles.textCenterSummary}>Individual Payment Summary</h1><br/>
+                    </div>
+                    <div style={{marginTop: 80 + "px"}}>
+                        <div>
+                            {userSummary}
+                        </div>
+                    </div>
+                        <button className={styles.indvSumButton} onClick={()=>{this.updateIndvAmount()}}><a href='/'>Back to Home</a></button>
+                </React.Fragment>
+            );
+        }
+    }
+}
+
+export default IndividualSummary;
+                
+                /*
                 <div className={styles.absoluteCenterBigBoss}>
                     <div className={styles.containerSmallBoss}>
                         <h1 className= {styles.billSum}>Pay It</h1>
@@ -192,9 +213,4 @@ class IndividualSummary extends React.Component {
                         <button className={styles.indvSumButton} onClick={()=>{this.updateIndvAmount()}}><a href='/'>Back to Home</a></button>
                     </div>
                 </div>
-            );
-        }
-    }
-}
-
-export default IndividualSummary;
+                */
