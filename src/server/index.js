@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const db = require('./db');
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-process.env.PORT = process.env.PORT || 3000;
+process.env.PORT = process.env.PORT || 80;
 
 function onUnhandledError(err) {
   console.log('ERROR:', err);

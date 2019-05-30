@@ -183,21 +183,27 @@ class GroupSelect extends React.Component {
 
 
         return(
+            <React.Fragment>
+                <div className={styles.header}>
+                    <h1 className={styles.textCenter}>SEARCH</h1><br/>
+                </div>
 
-            <div>
+               <div style={{marginTop: 50 + "px"}}>
+                  <input
+                    type="text"
+                    placeholder="Search for users.."
+                    onChange={this.changeHandler}
+                    onKeyDown={this.enterHandler}
+                    value={this.state.search}
+                  />
 
-              <input
-                type="text"
-                placeholder="Search for users.."
-                onChange={this.changeHandler}
-                onKeyDown={this.enterHandler}
-                value={this.state.search}
-              />
+                    {searchToggle ?   (<ul>{userList}</ul> ): (<p></p>)}
 
-                {searchToggle ?   (<ul>{userList}</ul> ): (<p></p>)}
+                    <button onClick={(e)=>{this.updateGroupHandler(e)}} type="button">View receipt</button>
+                </div>
 
-                <button onClick={(e)=>{this.updateGroupHandler(e)}} type="button">View receipt</button>
-            </div>
+                <div className={styles.footer}></div>
+            </React.Fragment>
           );
         }
     }

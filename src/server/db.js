@@ -24,7 +24,8 @@ if (process.env.DATABASE_URL) {
   };
 } else {
   configs = {
-    user: 'herda',
+    user: 'postgres',
+    password: 'herda95',
     host: '127.0.0.1',
     database: 'bills',
     port: 5432

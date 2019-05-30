@@ -163,28 +163,35 @@ class SplitItems extends React.Component{
 
       let options = this.state.items.map((item, index) => {
         return (
-            <option value={index}>{item.item_name} {index}</option>
+            <option value={index}>{item.item_name}</option>
           )
       })
 
         return(
           <React.Fragment>
-                <ul>
-                  <li>
-                    <select onChange={this.selectChangeHandler} value={this.state.activeIndex}>
-                      {options}
-                    </select>
-                  </li>
+                <div className={styles.header}>
+                  <h1 className={styles.textCenter}>Split</h1><br/>
+                </div>
+                <div style={{marginTop: 80 + "px"}} >
+                    <ul>
+                      <li>
+                        <select onChange={this.selectChangeHandler} value={this.state.activeIndex}>
+                          {options}
+                        </select>
+                      </li>
 
-                  <li>
-                    <button onClick={this.updateItems}><a href="/wholeSummary">Done Splitting</a></button>
-                  </li>
+                      <li>
+                        <button onClick={this.updateItems}><a href="/wholeSummary">Done Splitting</a></button>
+                      </li>
+                    </ul>
+
+
+                    <ul>
+                      {itemList}
                 </ul>
+                </div>
 
-
-                <ul>
-                  {itemList}
-                </ul>
+                <div className={styles.footer}></div>
                 </React.Fragment>
         );
     }
