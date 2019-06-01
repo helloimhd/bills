@@ -126,15 +126,17 @@ class IndividualSummary extends React.Component {
         if (this.state.items === null || this.state.users === null || this.state.userDetails === null ||this.state.receipt === null) {
             return <p>LOADING</p>
         } else {
-
+            let priceSummaryForAll = [];
+            const reducer = (accumulator, currentValue) => accumulator + currentValue;
             let userSummary = this.state.users.map((user,indexUser)=>{
 
                 let otherChargesTotal = this.state.receipt[0].total - this.state.receipt[0].subtotal;
-                let peopleInGroup = this.state.users.length;
-                let otherChargesSplit = (otherChargesTotal/peopleInGroup);
+                let peopleInGroup = this.state.users.length;  // this is bad
+                let otherChargesSplit = (otherChargesTotal/peopleInGroup); // this is bad too
 
                 let itemArr=[]; //items belonging to user[index]
                 let totalPrice = []; //all prices of itemArr
+
                 let putItemsInArr = this.state.items.map((item)=>{
                     for(let i = 0; i < item.users_id.length; i++){
                         if(item.users_id[i] === user.friend_id){
@@ -161,41 +163,59 @@ class IndividualSummary extends React.Component {
                 })
 
                 let userForCurrent, userIdCurrent;
-                let userName = this.state.userDetails.map((userDetail,index)=>{
+
+                let userName = this.state.userDetails.map((userDetail,index)=>{ // gets the correct user name for receipt
                     if(userDetail.id === user.friend_id){
                        userForCurrent = userDetail.username;
                        userIdCurrent = userDetail.id;
                     }
                 });
 
-                const reducer = (accumulator, currentValue) => accumulator + currentValue;
-                let splitPrice = totalPrice.reduce(reducer) + otherChargesSplit;
+                let splitPrice = totalPrice.reduce(reducer);// sums up totalPrice array
+
+                let gst_serviceCharge = 0;
+                // if subtotal is not equal total, means tehre is service charge and gst, else gst_serviccahrge = 0;
+                if(this.state.receipt[0].total !== this.state.receipt[0].subtotal){
+
+                   let serviceCharge = splitPrice * 0.1;
+                   let gst = (splitPrice + serviceCharge) * 0.07;
+                   gst_serviceCharge = gst + serviceCharge;
+
+                }
+
+                splitPrice = splitPrice + gst_serviceCharge;
+
+                priceSummaryForAll.push(splitPrice);
+
                 splitPrice = splitPrice.toFixed(2);
 
                 return(
                     <div key={indexUser}>
                         <h2 className={styles.userNameSum}>{userForCurrent}</h2>
                            <div>
-                           {itemList}
+                               {itemList}
                            </div>
-                           <h3 className={styles.indvSumOwed}>Service & GST: ${otherChargesSplit.toFixed(2)}</h3>
+                           <h3 className={styles.indvSumOwed}>(Service & GST: ${gst_serviceCharge.toFixed(2)})</h3>
                         <h3 className={styles.indvSumOwed}>${splitPrice}</h3>
                         <div className={styles.lineManager}></div>
                     </div>
                 );
             });
 
+            let calculatedTotal = priceSummaryForAll.reduce(reducer)
+
             return(
                 <React.Fragment>
                     <div className={styles.headerSummary}>
-                      <h1 className={styles.textCenterSummary}>Individual Payment Summary</h1><br/>
+                        <h1 className={styles.textCenterSummary}>Individual Payment Summary</h1><br/>
                     </div>
                     <div style={{marginTop: 80 + "px"}}>
                         <div>
                             {userSummary}
+                            <h1>Calculated Total: $ {calculatedTotal.toFixed(3)}</h1>
                         </div>
                     </div>
-                        <button className={styles.indvSumButton} onClick={()=>{this.updateIndvAmount()}}><a href='/'>Back to Home</a></button>
+                    <button className={styles.indvSumButton} onClick={()=>{this.updateIndvAmount()}}><a href='/'>Back to Home</a></button>
                 </React.Fragment>
             );
         }
@@ -203,14 +223,3 @@ class IndividualSummary extends React.Component {
 }
 
 export default IndividualSummary;
-                
-                /*
-                <div className={styles.absoluteCenterBigBoss}>
-                    <div className={styles.containerSmallBoss}>
-                        <h1 className= {styles.billSum}>Pay It</h1>
-                        <div className={styles.lineManager}></div>
-                        {userSummary}
-                        <button className={styles.indvSumButton} onClick={()=>{this.updateIndvAmount()}}><a href='/'>Back to Home</a></button>
-                    </div>
-                </div>
-                */
