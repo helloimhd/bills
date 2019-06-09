@@ -52,4 +52,15 @@ module.exports = (app, db) => {
     ////SAVE AMOUNT FOR EACH PERSON
     app.post(`/save/group`, groups.updateIndvPay);
 
+
+    //******************//
+    //******************//
+    //******************//
+
+    //get items, receipt and group
+    //using items controller....because its the least cluttered...
+    app.get(`/massiveLoad/:id`, items.startConfirmationQuery);
+
+
+
 };
