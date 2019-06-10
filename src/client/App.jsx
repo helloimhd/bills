@@ -20,6 +20,7 @@ import Username from './components/individualSummary/usernameSummary';
 
 import Guides from './components/pictureGuides/guides'
 import SplitItems from './components/splitItems/splitItems'
+import Test from './components/test/test';
 
 class Main extends React.Component{
     constructor(){
@@ -35,6 +36,13 @@ class Main extends React.Component{
 
         return(
             <Router>
+            <Route path="/test" render={() => (
+                  isLoggedIn ? (
+                    <Test />
+                  ) : (
+                    <Login />
+                  )
+                )} />
                 <Route path="/guides" exact render={() => (
                     <Guides />
                 )} />
