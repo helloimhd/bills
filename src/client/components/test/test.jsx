@@ -95,6 +95,13 @@ class Test extends React.Component {
                     pageNum:number,
                     [fuck]: state,
                 });
+        } else if (pageName == 'receipt'){
+                this.setState({
+                    pageNum:number,
+                    obj: state
+                }, function () {
+                  console.log('aftersetagainomg', this.state.obj)
+                });
         } else {
             this.setState({
                 pageNum:number
