@@ -13,7 +13,7 @@ import TakePhoto from './components/receipt/takePhoto';
 
 import Login from './components/user/login';
 import Register from './components/user/register';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import WholeSummary from './components/wholeSummary/wholeSummary';
 import IndividualSummary from './components/individualSummary/individualSummary';
 import Username from './components/individualSummary/usernameSummary';
@@ -22,27 +22,38 @@ import Guides from './components/pictureGuides/guides'
 import SplitItems from './components/splitItems/splitItems'
 import Test from './components/test/test';
 
-class Main extends React.Component{
-    constructor(){
+class Main extends React.Component {
+    constructor() {
         super();
+        this.state = {
+
+        }
     }
 
-    render(){
+    handlerMe = (stuff)=>{
+        console.log('Grab values from child',stuff);
+        this.setState({stuff: stuff});
+    }
+
+    render() {
         let isLoggedIn = false;
         //console.log(document.cookie);
         if (document.cookie !== "") {
             isLoggedIn = true
         }
 
-        return(
+        return (
             <Router>
-            <Route path="/test" render={() => (
+
+                <Route path="/test" render={(props) => (
                   isLoggedIn ? (
-                    <Test />
+
+                    <Test {...props} stuff={this.state.stuff} handle={this.handlerMe} />
                   ) : (
                     <Login />
                   )
                 )} />
+
                 <Route path="/guides" exact render={() => (
                     <Guides />
                 )} />
@@ -127,7 +138,7 @@ class Main extends React.Component{
     }
 }
 
- // <Route path="/" exact component={Receipt} />
+// <Route path="/" exact component={Receipt} />
 
 
 export default hot(module)(Main);

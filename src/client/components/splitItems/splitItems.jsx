@@ -61,9 +61,12 @@ class SplitItems extends React.Component{
     }
 
     componentDidMount(){
-      console.log('mounting')
-      this.getAllItems()
-      this.getAllUsers()
+
+        this.setState({items: this.props.items})
+        this.setState({users: this.props.users})
+      // console.log('mounting')
+      // this.getAllItems()
+      // this.getAllUsers()
     }
 
     onNextClick() {
@@ -112,6 +115,31 @@ class SplitItems extends React.Component{
         let itemList = this.state.items.map((item, itemIndex) => {
 
           let usersList = this.state.users.map((user, userIndex) => {
+            // let checker = false;
+            // for (i=0; i<item.users_id; i++) {
+
+            // }
+            if (item.users_id.includes(user.id)) {
+            return(
+                <li key={user.id}>
+                  <input
+                    className={styles.cssCheckbox}
+                    type="checkbox"
+                    value={user.id}
+                    onChange={this.checkerHandler}
+                    id={user.id + "-" + item.id}
+                    checked
+                  />
+                  <label
+                    htmlFor={user.id + "-" + item.id}
+                    className={styles.cssLabel}
+                  >
+                    {user.username}
+                  </label>
+                </li>
+              )
+            } else {
+
             return(
                 <li key={user.id}>
                   <input
@@ -129,6 +157,7 @@ class SplitItems extends React.Component{
                   </label>
                 </li>
               )
+            }
           })
 
           if (itemIndex === this.state.activeIndex) {
@@ -192,6 +221,8 @@ class SplitItems extends React.Component{
                 </div>
 
                 <div className={styles.footer}></div>
+                    <button onClick={()=>{this.props.previousButton(this.state.items)}}>Back</button>
+                    <button onClick={()=>{this.props.nextButton(this.state.items, 'items')}}>Next</button>
                 </React.Fragment>
         );
     }

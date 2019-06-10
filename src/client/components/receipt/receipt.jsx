@@ -261,13 +261,11 @@ class MainReceipt extends React.Component {
     }
 
     componentDidMount=()=>{
-        this.getReceiptHandler();
-    }
+        // this.getReceiptHandler();
+        console.log('LOADING',this.props);
 
-    // componentWillUnmount = () => {
-    // this.mounted = false;
-    // clearTimeout(this.timer);
-    // };
+        this.setState({receipt:this.props.receipt})
+    }
 
     getReceiptHandler=()=>{ //clunky way to retrieve backend data on RECEIPT, ITEMS and GroupMembers
         //retrieves receipt and item info
@@ -351,7 +349,7 @@ class MainReceipt extends React.Component {
         }
         this.setState({receipt});
 
-        console.log(receipt);
+        console.log('TAKEN FRMO CHILD',receipt);
 
         this.quickMath(this.state.serviceChargeBoolean, this.state.gstBoolean);
     }
@@ -388,13 +386,20 @@ class MainReceipt extends React.Component {
 
         let newTotal = newSubtotal + newSc + newGst;
 
-        let receipt = Object.assign({},this.state.receipt);
-        receipt.subtotal = (newSubtotal).toFixed(2);
-        receipt.serviceCharge = (newSc).toFixed(2);
-        receipt.gst = (newGst).toFixed(2);
-        receipt.total = (newTotal).toFixed(2);
+        let fuck = Object.assign({},this.state.receipt);
 
-        this.setState({receipt});
+        fuck.subtotal = (newSubtotal).toFixed(2);
+        fuck.serviceCharge = (newSc).toFixed(2);
+        fuck.gst = (newGst).toFixed(2);
+        fuck.total = (newTotal).toFixed(2);
+        console.log('RECEIPTTT', fuck)
+        console.log('subtotal', this.state.receipt.subtotal);
+        this.setState({receipt: fuck});
+        console.log('subtotal after set', this.state.receipt.subtotal);
+        // this.setState({ [stuff]: 9999 });
+
+
+        console.log('UPDATE??',this.state);
 
     }
 
@@ -438,6 +443,7 @@ class MainReceipt extends React.Component {
                       gstBooleanHandler={this.gstBooleanHandler}
                       />
                 </div>
+                    <button onClick={()=>{this.props.nextButton(this.state.receipt, 'receipt')}}>Next</button>
             </React.Fragment>
           );
       }
@@ -446,10 +452,10 @@ class MainReceipt extends React.Component {
 
 
 
-ItemElement.propTypes = {
-  id: PropTypes.integer,
-  type: PropTypes.string,
-  pickMeUp: PropTypes.func,
-};
+// ItemElement.propTypes = {
+//   id: PropTypes.integer,
+//   type: PropTypes.string,
+//   pickMeUp: PropTypes.func,
+// };
 
 export default MainReceipt;

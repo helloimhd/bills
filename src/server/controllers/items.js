@@ -37,32 +37,73 @@ module.exports = (db) => {
         })
     }
 
-    //query to db( item, receipt, group);
+    //query to db( item, receipt, group,users);
 
     let startConfirmationQuery = (req, res) => {
         console.log('HUGE QUERY CONTROLLER');
         console.log('receipt ID', req.params.id);
         //get items
-        const items = (err, items) => {
+        const receipt = (err, receipt) => {
 
-            // console.log('Done with getting ITEMS',items)
-            //get group members
-            const group = (err, groupId) => {
+            const items = (err, items) => {
 
-                // console.log('Done with getting Group members', groupId.rows)
-                let obj = {
-                    receiptId: req.params.id,
-                    items: items.allItems,
-                    groupMembers: groupId.rows,
+                // console.log('Done with getting ITEMS',items)
+                //get group members
+                const group = (err, groupId) => {
+
+                    let groupMembers = groupId.rows;
+                    let dataArray = [];
+                    let completed = 0;
+                    for (let i = 0; i < groupMembers.length; i++) {
+                        let userId = parseInt(groupMembers[i].friend_id)
+                        db.users.findUserById(userId, (err, userResults) => {
+                            if (err) {
+                                console.error('error getting group member(s)', err);
+                                res.status(500).send("Error getting group stuff");
+                            } else {
+                                dataArray.push(userResults.rows[0]);
+                            }
+                            completed++;
+                            if (groupMembers.length === completed) {
+                                let obj = {
+                                    receiptId: receipt.rows[0],
+                                    items: items.allItems,
+                                    groupMembers: groupId.rows,
+                                    usersDetails: dataArray,
+                                }
+                                console.log('ready to send', completed);
+                                res.send(obj);
+                            }
+                        })
+                    }
                 }
-
-                res.send(obj)
+                db.groups.getGroupMembers(req.params.id, group)
             }
-            db.groups.getGroupMembers(req.params.id, group)
+            db.items.getItems(req.params.id, items)
         }
-        db.items.getItems(req.params.id, items)
+        db.receipts.getReceiptById(req.params.id, receipt)
     }
 
+
+    //  let groupMembers = groupId.rows;
+    // let dataArray = [];
+    // let completed = 0;
+    // for (let i=0; i<groupMembers.length; i++) {
+    //     let userId = parseInt(groupMembers[i].friend_id)
+    //     db.users.findUserById(userId, (err, userResults) => {
+    //         if (err) {
+    //             console.error('error getting group member(s)', err);
+    //             res.status(500).send("Error getting group stuff");
+    //         } else {
+    //             dataArray.push(userResults.rows[0]);
+    //         }
+    //         completed++;
+    //         if (groupMembers.length === completed){
+    //             res.send(dataArray)
+
+    //         }
+    //     })
+    // }
 
     return {
         getItems,
