@@ -127,6 +127,10 @@ class Test extends React.Component {
         }
     }
 
+    homeHandler=()=>{
+        console.log('SAVE EVERYTHING NOWWW', this.state.obj);
+    }
+
   render() {
 
     let page;
@@ -154,9 +158,12 @@ class Test extends React.Component {
             />
     } else if (this.state.pageNum == 4 && this.state.loaded){
         page = <IndividualSummary
-
+            items={this.state.obj.items}
+            users={this.state.obj.users}
+            receipt={this.state.obj}
             nextButton={this.changePageForward}
             previousButton={this.changePageBack}
+            done={this.homeHandler}
             />
     }
     return (

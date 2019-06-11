@@ -14,16 +14,11 @@ class ItemElement extends React.Component {
   }
 
   editItemHandler = () => {
-    // console.log('HELLO EDITTING');
-    // console.log(this.props);
     this.setState({ isEditMode: !this.state.isEditMode });
   }
 
   updateItemHandler = (e) => {
-    // console.log('HELLO UPDATEEE');
-    // console.log(this.refs.input.value);
     if (e.keyCode === 13) {
-
       this.setState({
         isEditMode: false,
       })
@@ -39,8 +34,20 @@ class ItemElement extends React.Component {
     }
   }
 
-  test = () => {
-    console.log('OUT OF FOCUSSSS');
+  updateItemHandlerBlur = (e) => {
+    this.setState({
+      isEditMode: false,
+    })
+
+    let itemEdited = this.refs.input.value;
+
+    let itemElement = [];
+
+    itemElement.push(this.props.id);
+    itemElement.push(this.props.type);
+
+    this.props.pickMeUp(itemEdited, itemElement);
+
   }
 
   renderEditView(item) {
@@ -48,8 +55,16 @@ class ItemElement extends React.Component {
       item = item.toFixed(2);
     };
     return <td>
-                    <input id={this.props.id} type={this.props.type} defaultValue={item} ref="input" onKeyDown={(e)=>{this.updateItemHandler(e)}} onBlur={()=>{this.test()}} onTouchEnd={(e)=>{this.updateItemHandler(e)}} style = {{width: 150}}/>
-                </td>
+              <input
+                autoFocus
+                id={this.props.id}
+                type={this.props.type}
+                defaultValue={item} ref="input"
+                onKeyDown={(e)=>{this.updateItemHandler(e)}}
+                onBlur={(e)=>{this.updateItemHandlerBlur(e)}}
+                style = {{width: 150}}
+              />
+            </td>
   }
 
   renderDefaultView = (item) => {
@@ -76,16 +91,27 @@ class ItemRow extends React.Component {
     }
   }
   render() {
-
     let quantity = "quantity";
     let item_name = "item_name";
     let price = "price";
-    // console.log(this.props.item.item_name)
+
     return (
       <tr>
-                <ItemElement id={this.props.id} type={item_name} item={this.props.item.item_name} pickMeUp={this.props.pickMeUp} status={this.state.status}/>
-                <ItemElement id={this.props.id} type={price} item={this.props.item.price} pickMeUp={this.props.pickMeUp} status={this.state.status}/>
-            </tr>
+        <ItemElement
+          id={this.props.id}
+          type={item_name}
+          item={this.props.item.item_name}
+          pickMeUp={this.props.pickMeUp}
+          status={this.state.status}
+        />
+        <ItemElement
+          id={this.props.id}
+          type={price}
+          item={this.props.item.price}
+          pickMeUp={this.props.pickMeUp}
+          status={this.state.status}
+        />
+      </tr>
     );
   }
 }
@@ -160,20 +186,6 @@ class PaymentSummary extends React.Component {
   }
 }
 
-class ButtonProceedTab extends React.Component {
-  constructor() {
-    super();
-  }
-  render() {
-    return (
-      <div>
-                <p>Proceed?</p>
-                <button onClick={()=>{this.props.updateReceipt()}}><a href="/splitTesting">Yes</a></button>
-            </div>
-    );
-  }
-}
-
 class Receipt extends React.Component {
   constructor() {
     super();
@@ -182,8 +194,8 @@ class Receipt extends React.Component {
     if (this.props.receipt.length === 0) {
       return (
         <div>
-                    <p></p>
-                </div>
+          <p></p>
+        </div>
       )
     } else {
       return (
@@ -193,7 +205,6 @@ class Receipt extends React.Component {
                         <PaymentSummary payment={this.props.receipt}
                           serviceChargeBooleanHandler={this.props.serviceChargeBooleanHandler}
                           gstBooleanHandler={this.props.gstBooleanHandler}/>
-                        <ButtonProceedTab updateReceipt={this.props.updateReceipt}/>
                     </div>
                 </React.Fragment>
       )
@@ -215,49 +226,6 @@ class MainReceipt extends React.Component {
       serviceChargeBoolean: true,
       gstBoolean: true,
     }
-  }
-
-  updateReceiptRequest = () => {
-
-    console.log('send request to update receipt')
-    let receipt = this.state.receipt;
-    let input = { obj: receipt };
-
-    fetch(`/update/receipt`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-      body: JSON.stringify(input),
-    }).then(res => console.log('updated receipts'));
-    // console.log(res.json())
-
-  }
-
-  updateItemsRequest = () => {
-
-    console.log('send request to update items');
-    let items = this.state.receipt.items;
-    let input = { obj: items };
-    console.log(input);
-    fetch(`/update/items`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-      body: JSON.stringify(input),
-    }).then(res => console.log('Updated items'));
-  }
-
-  updateHandler = () => {
-
-    console.log('updates receipt and items');
-    this.updateReceiptRequest();
-    this.updateItemsRequest();
-
-    // window.location.href = '/splitTesting'
   }
 
   componentDidMount = () => {
@@ -289,72 +257,6 @@ class MainReceipt extends React.Component {
     })
   }
 
-  // getReceiptHandler = () => { //clunky way to retrieve backend data on RECEIPT, ITEMS and GroupMembers
-  //   //retrieves receipt and item info
-  //   console.log('SEND AND GET SOMETHING')
-  //   var reactThis = this;
-  //   // var img_token = '280gTIQNwoTQeInc'; // need to find a way to retrieve img token..... !!!!!!!*(****!!!)
-  //   var receipt_id;
-  //   var obj = {};
-  //   // ws06oyvmcgCsdsNL
-  //   // guQnFRzRY4MXMm6F
-
-  //   async function getReceipt(id) { // async request to backend
-
-  //     let response = await fetch(`/receipt/${id}`);
-  //     let data = await response.json();
-  //     return data;
-  //   }
-
-  //   async function getItems(id) { // async request to backend
-
-  //     let response = await fetch(`/items/${id}`);
-  //     let data = await response.json();
-  //     console.log(data)
-  //     return data;
-  //   }
-  //   // Cookies.get('receiptId')
-  //   getReceipt(Cookies.get('receiptId')).then(receiptOutput => { //sending request to get receipt
-  //     getItems(Cookies.get('receiptId')).then(itemOutput => { // sending request to get items
-
-  //       for (let i = 0; i < itemOutput.length; i++) {
-
-  //         itemOutput[i].item_name = (itemOutput[i].item_name).replace(/[^a-zA-Z ]/g, "")
-  //       }
-  //       console.log(itemOutput)
-  //       obj = { // arranging response jsons. Saving obj to this.state.receipt
-  //         receipt_id: receiptOutput[0].id,
-  //         user_id: receiptOutput[0].user_id,
-  //         group_id: receiptOutput[0].group_id,
-  //         img_token: receiptOutput[0].img_token,
-  //         subtotal: (receiptOutput[0].subtotal).toFixed(2),
-  //         serviceCharge: (receiptOutput[0].subtotal * 0.1).toFixed(2),
-  //         gst: (receiptOutput[0].subtotal * 0.07).toFixed(2),
-  //         total: ((receiptOutput[0].subtotal * 0.1) + (receiptOutput[0].subtotal * 0.07) + (receiptOutput[0].subtotal)).toFixed(2),
-  //         items: itemOutput,
-  //       };
-
-  //       this.setState({ receipt: obj });
-  //       this.viewReceiptHandler();
-  //       this.doneViewingReceiptHandler();
-  //       // toggles condition to view receipt component
-
-  //     })
-  //   })
-
-  // }
-
-  // viewReceiptHandler = () => {
-
-  //   this.setState({ hasReceipt: true });
-  //   this.quickMath(this.state.serviceChargeBoolean, this.state.gstBoolean)
-  // }
-
-  // doneViewingReceiptHandler = () => {
-
-  //   this.setState({ verifyReceipt: true });
-  // }
-
   pickMeUp = (input, itemLocation) => { //function to take values from tableElement and update app.jsx's this.state.receipt items
 
     let latestEdit = input; //user edited input
@@ -373,14 +275,12 @@ class MainReceipt extends React.Component {
       this.quickMath(this.state.serviceChargeBoolean, this.state.gstBoolean)
     });
 
-    console.log('TAKEN FRMO CHILD', receipt);
-
-    // this.quickMath(this.state.serviceChargeBoolean, this.state.gstBoolean);
+    // console.log('TAKEN FRMO CHILD', receipt);
   }
 
 
   quickMath = (serviceChargeBoolean, gstBoolean) => { // when user edits receipt, function checks prices and updates state
-    console.log("STARTOF FN!!!", this.state.receipt)
+    // console.log("STARTOF FN!!!", this.state.receipt)
     let updatedReceiptItems = this.state.receipt;
     let prices = [];
 
@@ -418,7 +318,7 @@ class MainReceipt extends React.Component {
     receipt.total = (newTotal).toFixed(2);
     console.log('subtotal', this.state.receipt.subtotal);
     this.setState({ receipt: receipt }, function() {
-      console.log('after set', this.state.receipt);
+      // console.log('after set', this.state.receipt);
     });
 
   }
@@ -452,7 +352,6 @@ class MainReceipt extends React.Component {
       return <p>loading</p>
     } else {
       const proceedToReceipt = this.state.hasReceipt;
-      // const proceedToItemSelection = this.state.verifyReceipt;
 
       return (
         <React.Fragment>
@@ -474,13 +373,5 @@ class MainReceipt extends React.Component {
     }
   }
 }
-
-
-
-// ItemElement.propTypes = {
-//   id: PropTypes.integer,
-//   type: PropTypes.string,
-//   pickMeUp: PropTypes.func,
-// };
 
 export default MainReceipt;
