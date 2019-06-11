@@ -123,6 +123,7 @@ module.exports = (dbPI) => {
 
 
     let getReceiptById = (receiptId, callback) => {
+        console.log('HELLO GETTING RECEIPT');
         let getQuery = `SELECT * FROM receipts WHERE id ='${receiptId}'`;
 
         dbPI.query(getQuery, (err, results) => {

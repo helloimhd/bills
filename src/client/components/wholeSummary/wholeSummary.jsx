@@ -99,14 +99,27 @@ class WholeSummary extends React.Component {
                           <br/>
                           <br/>
                           <tr>
+                              <td className={styles.intern}>Subotal $</td>
+                              <td></td>
+                              <td className={styles.intern}>{this.state.receipt.subtotal}</td>
+                          </tr>
+                          <tr>
+                              <td className={styles.intern}>Service Charge $</td>
+                              <td></td>
+                              <td className={styles.intern}>{this.state.receipt.serviceCharge}</td>
+                          </tr>
+                          <tr>
+                              <td className={styles.intern}>GST $</td>
+                              <td></td>
+                              <td className={styles.intern}>{this.state.receipt.gst}</td>
+                          </tr>
+                          <tr>
                               <td className={styles.intern}>Grand Total $</td>
                               <td></td>
                               <td className={styles.intern}>{this.state.receipt.total}</td>
                           </tr>
                       </tbody>
                     </table>
-                    <br />
-                    <a className={styles.cleaner} href="/summaryReceipt">Next Page (Individual)</a>
                </div>
 
                     <button onClick={()=>{this.props.previousButton(this.state.receipt)}}>Back</button>

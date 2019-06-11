@@ -49,54 +49,34 @@ module.exports = (db) => {
 
                 // console.log('Done with getting ITEMS',items)
                 //get group members
-                const group = (err, groupId) => {
-
-                    let groupMembers = groupId.rows;
-                    let dataArray = [];
-                    let completed = 0;
-                    for (let i = 0; i < groupMembers.length; i++) {
-                        let userId = parseInt(groupMembers[i].friend_id)
-                        db.users.findUserById(userId, (err, userResults) => {
-                            if (err) {
-                                console.error('error getting group member(s)', err);
-                                res.status(500).send("Error getting group stuff");
-                            } else {
-                                dataArray.push(userResults.rows[0]);
-                            }
-                            completed++;
-                            if (groupMembers.length === completed) {
-                                let obj = {
-                                    receiptId: receipt.rows[0],
-                                    items: items.allItems,
-                                    groupMembers: groupId.rows,
-                                    usersDetails: dataArray,
-                                }
-                                console.log('ready to send', completed);
-                                res.send(obj);
-                            }
-                        })
-                    }
+                let obj = {
+                    receiptId: receipt.rows[0],
+                    items: items.allItems,
+                    // groupMembers: groupId.rows,
+                    // usersDetails: dataArray,
                 }
-                db.groups.getGroupMembers(req.params.id, group)
+                console.log('ready to send', obj);
+                res.send(obj);
             }
+            // })
             db.items.getItems(req.params.id, items)
         }
         db.receipts.getReceiptById(req.params.id, receipt)
     }
 
-    let endConfirmationQuery = ( req, res )=>{
-        console.log('In the controller',req.body);
-        const receipt = (err,receipt)=>{
-            const items = (err,items)=>{
+    let endConfirmationQuery = (req, res) => {
+        console.log('In the controller', req.body);
+        const receipt = (err, receipt) => {
+            const items = (err, items) => {
                 console.log('UPDATED ITEMS!');
-                const group = (err, group)=>{
+                const group = (err, group) => {
                     console.log('UPDATED GROUP AMOUNTS!');
                 }
-                db.groups.bigDaddyGroupUpdate(req.body.group,group)
+                db.groups.bigDaddyGroupUpdate(req.body.group, group)
             }
             db.items.bidDaddyUpdateItem(req.body.items, items)
         }
-        db.receipts.updateReceipt(req.body,receipt);
+        db.receipts.updateReceipt(req.body, receipt);
     }
 
     return {

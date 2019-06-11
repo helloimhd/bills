@@ -10,7 +10,6 @@ class IndividualSummary extends React.Component {
         this.state = {
             items: null,
             users: null,
-            // userDetails :null,
             receipt:null,
             group: null,
             saveAmount: null,
@@ -20,12 +19,6 @@ class IndividualSummary extends React.Component {
 
     componentDidMount(){
 
-        // this.getAllItems();
-        // // this.getAllUsers();
-        // // this.getUsersHandler();
-        // this.getReceipt();
-        // this.getUsersHandlersss();
-        console.log('MOUNTING', this.props)
         this.setState({
             items: this.props.items,
             users: this.props.users,
@@ -36,40 +29,7 @@ class IndividualSummary extends React.Component {
 
         setTimeout(() =>{this.calcAmount()}, 1000);
     }
-    // Cookies.get('receiptId')
-    getReceipt=()=>{
-        let receiptId = 1;
-        fetch(`/receipt/${receiptId}`)
-          .then(response=>response.json())
-          .then(response=>this.setState({receipt: response}))
-    }
 
-    getAllItems=()=>{
-      let receiptId = 1;
-      fetch(`/items/${receiptId}`)
-        .then(response=>response.json())
-        .then(response=>this.setState({items: response}))
-    }
-
-    // getAllUsers=()=>{
-    //   let receiptId = 1;
-    //   fetch(`/groupSummary/${receiptId}`)
-    //     .then(response=>response.json())
-    //     .then(response=>this.setState({users: response}))
-    // }
-
-    // getUsersHandler(){
-    //   fetch(`/search/group`)
-    //     .then(response=>response.json())
-    //     .then(response=>this.setState({userDetails: response.users}))
-    // }
-
-    getUsersHandlersss=()=>{
-      let receiptId = 1
-      fetch(`/group/${receiptId}`)
-        .then(response=>response.json())
-        .then(response=>this.setState({users: response}))
-    }
     calcAmount=()=>{
         console.log(this.state.users);
         let usersGroupsArr = this.state.users;
@@ -138,9 +98,7 @@ class IndividualSummary extends React.Component {
         this.setState({
             receipt : anotherDuplicate,
         })
-
         console.log('ALL STATE',this.state);
-        // this.props.done(this.state.saveAmount);
     }
 
     render() {
@@ -236,6 +194,3 @@ class IndividualSummary extends React.Component {
 }
 
 export default IndividualSummary;
-
-// <a href='/'>
-// </a>

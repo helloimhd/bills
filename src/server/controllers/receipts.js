@@ -146,7 +146,7 @@ module.exports = (db) => {
                                                             if (lineItemsCounter === lineItems.length) {
                                                                 console.log(lineItemsCounter);
                                                                 //response.send("Databases are updated");
-                                                                response.redirect('/group');
+                                                                response.redirect('/test');
                                                             } else {
                                                                 console.log("not yet")
                                                             }
