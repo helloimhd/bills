@@ -227,7 +227,8 @@ class IndividualSummary extends React.Component {
                             <h1>Calculated Total: $ {calculatedTotal.toFixed(3)}</h1>
                         </div>
                     </div>
-                    <button className={styles.indvSumButton} onClick={()=>{this.props.done()}}>Back to Home</button>
+                    <button onClick={()=>{this.props.previousButton(this.state.items)}}>Back</button>
+                    <button className={styles.indvSumButton} onClick={()=>{this.props.done()}}>Confirm</button>
                 </React.Fragment>
             );
         }

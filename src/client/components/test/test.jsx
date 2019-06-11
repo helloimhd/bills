@@ -1,5 +1,6 @@
 import React from 'react';
 
+import GroupSelect from '../groupSelect/groupSelect';
 import Receipt from '../receipt/receipt';
 import SplitItems from '../splitItems/splitItems'
 import WholeSummary from '../wholeSummary/wholeSummary';
@@ -10,13 +11,13 @@ class Test extends React.Component {
     super()
     this.prettyPrint = this.prettyPrint.bind(this)
     this.state = {
-        obj: null,
-        loaded:false,
-        pageNum:1,
+      obj: null,
+      loaded: false,
+      pageNum: 1,
     }
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.dataReqHandler()
   }
 
@@ -31,23 +32,23 @@ class Test extends React.Component {
         // document.getElementById('writeHere').value = JSON.stringify(this.state.everything);
         console.log('i come back for you now', response)
 
-        let obj= {
-                receipt_id: response.receiptId.id,
-                user_id: response.receiptId.user_id,
-                group_id: response.receiptId.group_id,
-                img_token: response.receiptId.img_token,
-                subtotal: (response.receiptId.subtotal).toFixed(2),
-                serviceCharge: (response.receiptId.subtotal*0.1).toFixed(2),
-                gst: (response.receiptId.subtotal*0.07).toFixed(2),
-                total: ((response.receiptId.subtotal*0.1) + (response.receiptId.subtotal*0.07) + (response.receiptId.subtotal)).toFixed(2),
-                items: response.items,
-                users: response.usersDetails,
-                group: response.groupMembers,
-                }
+        let obj = {
+          receipt_id: response.receiptId.id,
+          user_id: response.receiptId.user_id,
+          group_id: response.receiptId.group_id,
+          img_token: response.receiptId.img_token,
+          subtotal: (response.receiptId.subtotal).toFixed(2),
+          serviceCharge: (response.receiptId.subtotal * 0.1).toFixed(2),
+          gst: (response.receiptId.subtotal * 0.07).toFixed(2),
+          total: ((response.receiptId.subtotal * 0.1) + (response.receiptId.subtotal * 0.07) + (response.receiptId.subtotal)).toFixed(2),
+          items: response.items,
+          users: response.usersDetails,
+          group: response.groupMembers,
+        }
 
-        this.setState({obj:obj});
+        this.setState({ obj: obj });
 
-        this.setState({loaded:true})
+        this.setState({ loaded: true })
 
       });
   }
@@ -60,104 +61,127 @@ class Test extends React.Component {
     document.getElementById('writeHere').value = pretty;
   }
 
-  updateReceiptRequest=()=>{
+  updateReceiptRequest = () => {
 
-        console.log('send request to update receipt')
-        let receipt = this.state.receipt;
-        let input = { obj: receipt };
+    console.log('send request to update receipt')
+    let receipt = this.state.receipt;
+    let input = { obj: receipt };
 
-        fetch(`/update/receipt`,{
-            method:'POST',
-            headers:{
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-            },
-            body: JSON.stringify(input),
-        }).then(res=>console.log('updated receipts'));
-        // console.log(res.json())
+    fetch(`/update/receipt`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify(input),
+    }).then(res => console.log('updated receipts'));
+    // console.log(res.json())
 
+  }
+
+  changePageForward = (state, pageName = null) => {
+
+    var number = this.state.pageNum;
+    number++;
+    console.log('PASSS BACK', state);
+    if (pageName == null) {
+      this.setState({
+        pageNum: number,
+        [pageName]: state,
+      });
+    } else if (pageName == 'users') {
+      // console.log("STETE INSDIE TEST", state)
+      let duplicate = this.state.obj
+      // console.log(duplicate)
+      duplicate.users = state
+      this.setState({
+        pageNum: number,
+        obj: duplicate,
+      }, function() {
+        // console.log(this.state.obj.users)
+      });
+    } else if (pageName == 'items') {
+      // console.log("STETE INSDIE TEST", state)
+      let duplicate = this.state.obj
+      // console.log(duplicate)
+      duplicate.items = state
+      this.setState({
+        pageNum: number,
+        obj: duplicate,
+      }, function() {
+        // console.log(this.state.obj.items)
+      });
+    } else if (pageName == 'receipt') {
+      this.setState({
+        pageNum: number,
+        obj: state
+      }, function() {
+        console.log('aftersetagainomg', this.state.obj)
+      });
+    } else {
+      this.setState({
+        pageNum: number
+      })
     }
 
-    changePageForward=( state, pageName = null)=>{
+  }
 
-        var number = this.state.pageNum;
-        number++;
-        console.log('PASSS BACK',state);
-        if (pageName == null) {
-            this.setState({
-                pageNum:number,
-                [pageName]: state,
-            });
-        } else if (pageName == 'items'){
-                let fuck = this.state.obj.pageName
-                console.log(fuck)
-                this.setState({
-                    pageNum:number,
-                    [fuck]: state,
-                });
-        } else if (pageName == 'receipt'){
-                this.setState({
-                    pageNum:number,
-                    obj: state
-                }, function () {
-                  console.log('aftersetagainomg', this.state.obj)
-                });
-        } else {
-            this.setState({
-                pageNum:number
-            })
-        }
+  changePageBack = (state, pageName = null) => {
 
+    var number = this.state.pageNum;
+    number--;
+    console.log('PASSS BACK', state);
+    if (pageName == null) {
+      this.setState({
+        pageNum: number,
+        [pageName]: state,
+      });
+    } else {
+      this.setState({
+        pageNum: number
+      })
     }
+  }
 
-    changePageBack=(state, pageName = null)=>{
-
-        var number = this.state.pageNum;
-        number--;
-        console.log('PASSS BACK',state);
-        if (pageName == null) {
-            this.setState({
-                pageNum:number,
-                [pageName]: state,
-            });
-        } else {
-            this.setState({
-                pageNum:number
-            })
-        }
-    }
-
-    homeHandler=()=>{
-        console.log('SAVE EVERYTHING NOWWW', this.state.obj);
-    }
+  homeHandler = () => {
+    console.log('SAVE EVERYTHING NOWWW', this.state.obj);
+  }
 
   render() {
 
     let page;
 
-    if (this.state.pageNum === 1 && this.state.loaded){
-        page = <Receipt
+    if (this.state.pageNum === 1 && this.state.loaded) {
+      page = <GroupSelect
+            receipt={this.state.obj}
+            users={this.state.obj.users}
+            update={this.updateReceiptRequest}
+            nextButton={this.changePageForward}
+            previousButton={this.changePageBack}
+            />;
+    } else if (this.state.pageNum === 2 && this.state.loaded) {
+      page = <Receipt
             receipt={this.state.obj}
             update={this.updateReceiptRequest}
             nextButton={this.changePageForward}
             previousButton={this.changePageBack}
             />;
-    } else if (this.state.pageNum == 2 && this.state.loaded){
-        page = <SplitItems
+    } else if (this.state.pageNum == 3 && this.state.loaded) {
+      page = <SplitItems
             items={this.state.obj.items}
             users={this.state.obj.users}
             nextButton={this.changePageForward}
             previousButton={this.changePageBack}
             />;
-    } else if (this.state.pageNum == 3 && this.state.loaded){
-        page = <WholeSummary
+    } else if (this.state.pageNum == 4 && this.state.loaded) {
+      page = <WholeSummary
             receipt={this.state.obj}
             receiptItems={this.state.obj.items}
             nextButton={this.changePageForward}
             previousButton={this.changePageBack}
             />
-    } else if (this.state.pageNum == 4 && this.state.loaded){
-        page = <IndividualSummary
+    } else if (this.state.pageNum == 5 && this.state.loaded) {
+      page = <IndividualSummary
             items={this.state.obj.items}
             users={this.state.obj.users}
             receipt={this.state.obj}
@@ -167,7 +191,7 @@ class Test extends React.Component {
             />
     }
     return (
-        <div>
+      <div>
             {page}
         </div>
     )
@@ -175,8 +199,3 @@ class Test extends React.Component {
 }
 
 export default Test;
- //
-
-  // <div><p>HELLO</p></div>
-  //           <button onClick={this.prettyPrint}>Pretty Print</button>
-  //           <textarea id="writeHere" style={{'width': 1000 + 'px', 'height': 600 + 'px'}}></textarea>
