@@ -83,6 +83,20 @@ module.exports = (dbPI) => {
         })
     }
 
+    let bigDaddyGroupUpdate = (dataIn, callback) => {
+
+        for(let i = 0 ; i < dataIn.length ; i ++){
+
+            let query = `UPDATE groups set amount = ($1) where friend_id = ($2) AND receipt_id = ($3)`;
+            //let valuesUpdate = [ dataIn.item_name, dataIn.price, dataIn.quantity, dataIn.users_id]
+            let valuesUpdate = [ dataIn[i].amount, dataIn[i].friend_id, dataIn[i].receipt_id]
+
+            dbPI.query( query, valuesUpdate, (err,r)=>{
+               callback(err,r)
+            });
+        }
+    }
+
   return {
     getUsersData,
     updateGroupData,
@@ -90,5 +104,6 @@ module.exports = (dbPI) => {
     indvGroupInfo,
     getUserGroups,
     updateGroupAmount,
+    bigDaddyGroupUpdate,
   };
 };

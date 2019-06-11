@@ -61,6 +61,9 @@ module.exports = (app, db) => {
     //using items controller....because its the least cluttered...
     app.get(`/massiveLoad/:id`, items.startConfirmationQuery);
 
+    // SAVE EVERYTHING
+    app.post(`/end`, items.endConfirmationQuery);
+
 
 
 };

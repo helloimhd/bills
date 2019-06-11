@@ -128,7 +128,20 @@ class Test extends React.Component {
     }
 
     homeHandler=()=>{
+
         console.log('SAVE EVERYTHING NOWWW', this.state.obj);
+
+        let input = this.state.obj;
+
+        fetch(`/end`,{
+            method:'POST',
+            headers:{
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify(input),
+        }).then(res=>console.log('update EVERYTHINGGG'));
+
     }
 
   render() {
@@ -161,6 +174,7 @@ class Test extends React.Component {
             items={this.state.obj.items}
             users={this.state.obj.users}
             receipt={this.state.obj}
+            group={this.state.obj.group}
             nextButton={this.changePageForward}
             previousButton={this.changePageBack}
             done={this.homeHandler}

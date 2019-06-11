@@ -54,9 +54,28 @@ module.exports = (dbPI) => {
         });
     }
 
+
+    let bidDaddyUpdateItem = (dataIn, callback)=>{
+
+        // console.log('ITEMS INSIDE MODEL', dataIn)
+        // console.log('NUMBER OF ITEMS', dataIn.length)
+        for(let i = 0 ; i < dataIn.length ; i ++){
+
+            let query = `UPDATE items set item_name = ($1), price = ($2), users_id = ($3) where id = ${dataIn[i].id}`
+
+            //let valuesUpdate = [ dataIn.item_name, dataIn.price, dataIn.quantity, dataIn.users_id]
+            let valuesUpdate = [ dataIn[i].item_name, dataIn[i].price, dataIn[i].users_id]
+
+            dbPI.query( query, valuesUpdate, (err,r)=>{
+               callback(err,r)
+            });
+        }
+    }
+
   return {
     createItems,
     getItems,
     updateItems,
+    bidDaddyUpdateItem,
   };
 };

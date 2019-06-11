@@ -84,30 +84,25 @@ module.exports = (db) => {
         db.receipts.getReceiptById(req.params.id, receipt)
     }
 
-
-    //  let groupMembers = groupId.rows;
-    // let dataArray = [];
-    // let completed = 0;
-    // for (let i=0; i<groupMembers.length; i++) {
-    //     let userId = parseInt(groupMembers[i].friend_id)
-    //     db.users.findUserById(userId, (err, userResults) => {
-    //         if (err) {
-    //             console.error('error getting group member(s)', err);
-    //             res.status(500).send("Error getting group stuff");
-    //         } else {
-    //             dataArray.push(userResults.rows[0]);
-    //         }
-    //         completed++;
-    //         if (groupMembers.length === completed){
-    //             res.send(dataArray)
-
-    //         }
-    //     })
-    // }
+    let endConfirmationQuery = ( req, res )=>{
+        console.log('In the controller',req.body);
+        const receipt = (err,receipt)=>{
+            const items = (err,items)=>{
+                console.log('UPDATED ITEMS!');
+                const group = (err, group)=>{
+                    console.log('UPDATED GROUP AMOUNTS!');
+                }
+                db.groups.bigDaddyGroupUpdate(req.body.group,group)
+            }
+            db.items.bidDaddyUpdateItem(req.body.items, items)
+        }
+        db.receipts.updateReceipt(req.body,receipt);
+    }
 
     return {
         getItems,
         updateItems,
         startConfirmationQuery,
+        endConfirmationQuery,
     };
 };

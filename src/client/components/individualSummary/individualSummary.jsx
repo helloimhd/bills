@@ -12,6 +12,7 @@ class IndividualSummary extends React.Component {
             users: null,
             // userDetails :null,
             receipt:null,
+            group: null,
             saveAmount: null,
             total:0,
         }
@@ -29,6 +30,7 @@ class IndividualSummary extends React.Component {
             items: this.props.items,
             users: this.props.users,
             receipt: this.props.receipt,
+            group: this.props.group
                 })
 
 
@@ -78,7 +80,7 @@ class IndividualSummary extends React.Component {
         let newTotal = 0;
         const reducer = (accumulator, currentValue) => accumulator + currentValue;
 
-        usersGroupsArr.forEach(user=>{
+        usersGroupsArr.forEach((user,index)=>{
             let itemArr=[];
             let totalPrice = [];
             itemsList.forEach(item=>{
@@ -117,34 +119,33 @@ class IndividualSummary extends React.Component {
 
                 splitPrice = splitPrice + gst_serviceCharge;;
 
-            console.log("RECEIPT!",this.state.receipt);
+                let newAmount = Math.round((splitPrice + 0.001) * 100) / 100;
 
-            let plsSave = {
-                userId: user.id,
-                // Math.round((priceToSave + 0.00001) * 100) / 100
-                amount: Math.round((splitPrice + 0.001) * 100) / 100,
-                receiptId : this.state.receipt.id,
-            }
+                let duplicate = this.state.receipt;
 
-            objToSave.push(plsSave);
-            newTotal = plsSave.amount + newTotal;
+                duplicate.group[index].amount = newAmount;
+
+                this.setState({
+                    receipt:duplicate,
+                })
+
+            newTotal = newAmount + newTotal;
         })
 
-        console.log(objToSave);
+        let anotherDuplicate = this.state.receipt;
+        anotherDuplicate.total = newTotal;
 
-        this.setState({saveAmount:objToSave});
+        this.setState({
+            receipt : anotherDuplicate,
+        })
 
-
-        console.log('NEW TOTAL', newTotal);
-        let updateTotal = this.state.receipt.total;
-        this.setState({[updateTotal]:newTotal});
         console.log('ALL STATE',this.state);
         // this.props.done(this.state.saveAmount);
     }
 
     render() {
 
-        if (this.state.items === null || this.state.users === null  ||this.state.receipt === null) {
+        if (this.state.items === null || this.state.users === null  ||this.state.receipt === null || this.state.group === null) {
             return <p>LOADING</p>
         } else {
             let priceSummaryForAll = [];
